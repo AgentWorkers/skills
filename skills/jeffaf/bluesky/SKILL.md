@@ -1,9 +1,10 @@
 ---
 name: bluesky
+version: 1.2.0
 description: Read, post, and interact with Bluesky (AT Protocol) via CLI. Use when user asks to check Bluesky, post to Bluesky, view their Bluesky timeline, search Bluesky, or check Bluesky notifications. Supports timeline, posting, profile lookup, search, and notifications.
 homepage: https://bsky.app
 metadata:
-  clawdbot:
+  moltbot:
     emoji: "🦋"
     requires:
       bins: ["python3"]
@@ -20,7 +21,7 @@ First-time setup requires an app password from Bluesky:
 2. Create a new app password
 3. Run: `bsky login --handle yourhandle.bsky.social --password xxxx-xxxx-xxxx-xxxx`
 
-Credentials are stored in `~/.config/bsky/config.json`.
+**Security:** Password is NOT stored. The CLI exports a session token on login, which auto-refreshes. Your app password only exists in memory during login.
 
 ## Commands
 
@@ -37,6 +38,10 @@ bsky tl                    # Alias
 # Posting
 bsky post "Hello world!"   # Create a post
 bsky p "Short post"        # Alias
+bsky post "Test" --dry-run # Preview without posting
+
+# Version
+bsky --version             # Show version
 
 # Delete
 bsky delete <post_id>      # Delete a post by ID or URL
