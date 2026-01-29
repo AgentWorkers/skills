@@ -1,0 +1,11 @@
+{
+  "owner": "thomeksolutions",
+  "slug": "web-deploy-github",
+  "displayName": "Web Deploy GitHub Pages",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1769721637588,
+    "commit": null
+  },
+  "history": []
+}
