@@ -1,0 +1,11 @@
+{
+  "owner": "rowbotik",
+  "slug": "wled",
+  "displayName": "Wled",
+  "latest": {
+    "version": "0.1.1",
+    "publishedAt": 1769789122143,
+    "commit": null
+  },
+  "history": []
+}
