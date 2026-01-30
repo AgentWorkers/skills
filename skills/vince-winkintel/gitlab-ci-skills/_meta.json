@@ -1,0 +1,11 @@
+{
+  "owner": "vince-winkintel",
+  "slug": "gitlab-ci-skills",
+  "displayName": "GitLab CI Skills",
+  "latest": {
+    "version": "1.0.2",
+    "publishedAt": 1769811500222,
+    "commit": null
+  },
+  "history": []
+}
