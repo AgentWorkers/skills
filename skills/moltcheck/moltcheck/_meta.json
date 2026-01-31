@@ -3,11 +3,16 @@
   "slug": "moltcheck",
   "displayName": "Moltcheck Skill",
   "latest": {
-    "version": "1.0.3",
-    "publishedAt": 1769885542419,
-    "commit": "https://github.com/clawdbot/skills/commit/a7a0ba90cc9392491f1ef4a63a0ad9c66b73012e"
+    "version": "1.0.4",
+    "publishedAt": 1769886457225,
+    "commit": null
   },
   "history": [
+    {
+      "version": "1.0.3",
+      "publishedAt": 1769885542419,
+      "commit": "https://github.com/clawdbot/skills/commit/a7a0ba90cc9392491f1ef4a63a0ad9c66b73012e"
+    },
     {
       "version": "1.0.1",
       "publishedAt": 1769885331072,

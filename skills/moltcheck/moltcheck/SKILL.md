@@ -1,5 +1,6 @@
 ---
-summary: Security scanner for Moltbot skills. Scan GitHub repositories for vulnerabilities before installation.
+name: moltcheck
+description: Security scanner for Moltbot skills. Scan GitHub repositories for vulnerabilities before installation.
 ---
 
 # MoltCheck Skill
