@@ -1,0 +1,11 @@
+{
+  "owner": "kesslerio",
+  "slug": "calendly",
+  "displayName": "Calendly Integration",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1769838023545,
+    "commit": null
+  },
+  "history": []
+}
