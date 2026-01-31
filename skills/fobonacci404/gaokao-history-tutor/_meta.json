@@ -3,11 +3,16 @@
   "slug": "gaokao-history-tutor",
   "displayName": "gaokao-history-tutor",
   "latest": {
-    "version": "1.0.3",
-    "publishedAt": 1769758842958,
-    "commit": "https://github.com/clawdbot/skills/commit/4a06736ca37f518243db9a6f44b8141368112daf"
+    "version": "1.0.1",
+    "publishedAt": 1769698956513,
+    "commit": null
   },
   "history": [
+    {
+      "version": "1.0.3",
+      "publishedAt": 1769758842958,
+      "commit": "https://github.com/clawdbot/skills/commit/4a06736ca37f518243db9a6f44b8141368112daf"
+    },
     {
       "version": "1.0.1",
       "publishedAt": 1769698956513,
