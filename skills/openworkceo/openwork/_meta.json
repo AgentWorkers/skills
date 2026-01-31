@@ -1,0 +1,11 @@
+{
+  "owner": "openworkceo",
+  "slug": "openwork",
+  "displayName": "Openwork Skill",
+  "latest": {
+    "version": "1.5.0",
+    "publishedAt": 1769831373556,
+    "commit": null
+  },
+  "history": []
+}
