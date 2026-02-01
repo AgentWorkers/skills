@@ -1,20 +1,20 @@
 ---
 name: deepread
-description: OCR that never fails silently. Multi-pass document processing API with intelligent quality review flags. Extract text and structured data from PDFs with AI-powered confidence scoring. Free tier - 2,000 pages/month.
+description: AI-native OCR platform that turns documents into high-accuracy data in minutes. Using multi-model consensus, DeepRead achieves 95%+ accuracy and flags only uncertain fields for review—reducing manual work from 100% to 5-10%. Zero prompt engineering required.
 ---
 
 # DeepRead - Production OCR API
 
-OCR that never fails silently. Process PDFs and extract structured data with AI-powered confidence scoring that tells you exactly which fields need human review.
+DeepRead is an AI-native OCR platform that turns documents into high-accuracy data in minutes. Using multi-model consensus, DeepRead achieves 95%+ accuracy and flags only uncertain fields for review—reducing manual work from 100% to 5-10%. Zero prompt engineering required.
 
 ## What This Skill Does
 
-DeepRead is a production-grade document processing API that **reduces human review from 100% to ~10%** through intelligent quality assessment.
+DeepRead is a production-grade document processing API that gives you high-accuracy structured data output in minutes with human review flagging so manual review is limited to the flagged exceptions
 
 **Core Features:**
-- **Text Extraction**: Convert PDFs to clean markdown
+- **Text Extraction**: Convert PDFs and images to clean markdown
 - **Structured Data**: Extract JSON fields with confidence scores
-- **Quality Flags**: AI determines which fields need human verification (`hil_flag`)
+- **Quality Flags**: Human Review tagging for uncertain fields (`hil_flag`)
 - **Multi-Pass Processing**: Multiple validation passes for maximum accuracy
 - **Multi-Model Consensus**: Cross-validation between models for reliability
 - **Free Tier**: 2,000 pages/month (no credit card required)

@@ -3,9 +3,15 @@
   "slug": "deepread-ocr",
   "displayName": "Deepread OCR",
   "latest": {
-    "version": "1.0.0",
-    "publishedAt": 1769752851973,
-    "commit": "https://github.com/clawdbot/skills/commit/19b2627ed48e36bdd7c83503460db749c743998b"
+    "version": "1.0.1",
+    "publishedAt": 1769968456742,
+    "commit": null
   },
-  "history": []
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1769752851973,
+      "commit": "https://github.com/clawdbot/skills/commit/19b2627ed48e36bdd7c83503460db749c743998b"
+    }
+  ]
 }
