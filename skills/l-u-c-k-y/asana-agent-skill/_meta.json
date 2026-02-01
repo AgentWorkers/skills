@@ -1,0 +1,11 @@
+{
+  "owner": "l-u-c-k-y",
+  "slug": "asana-agent-skill",
+  "displayName": "Asana",
+  "latest": {
+    "version": "0.2.0",
+    "publishedAt": 1769958490004,
+    "commit": null
+  },
+  "history": []
+}
