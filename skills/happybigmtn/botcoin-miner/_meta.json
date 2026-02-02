@@ -3,11 +3,16 @@
   "slug": "botcoin-miner",
   "displayName": "Botcoin-Miner",
   "latest": {
-    "version": "3.0.0",
-    "publishedAt": 1770016816409,
-    "commit": "https://github.com/clawdbot/skills/commit/1d083ef1acb545475c57bbf8064963c9ad28b5b1"
+    "version": "3.1.2",
+    "publishedAt": 1770055009004,
+    "commit": null
   },
   "history": [
+    {
+      "version": "3.0.0",
+      "publishedAt": 1770016816409,
+      "commit": "https://github.com/clawdbot/skills/commit/1d083ef1acb545475c57bbf8064963c9ad28b5b1"
+    },
     {
       "version": "1.0.2",
       "publishedAt": 1769910083177,
