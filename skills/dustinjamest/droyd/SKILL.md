@@ -17,9 +17,18 @@ Execute crypto research, trading, and data operations using natural language thr
 
 If the user already has a DROYD API key:
 
+1) Download the Droyd Skill
 ```bash
-mkdir -p ~/.clawdbot/skills/droyd
-cat > ~/.clawdbot/skills/droyd/config.json << 'EOF'
+clawhub install droyd
+```
+or if clawhub is not installed
+```bash
+mkdir -p ~/.openclaw/skills/droyd` and copy the contents of the zip file download
+```
+
+2) configure creditials 
+```bash
+cat > ~/.openclaw/workspace/skills/droyd/config.json << 'EOF'
 {
   "apiKey": "YOUR_API_KEY_HERE",
   "apiUrl": "https://api.droyd.ai"
@@ -36,8 +45,8 @@ API keys can be obtained at [droyd.ai](https://droyd.ai) in account settings.
 3. **Configure**:
 
 ```bash
-mkdir -p ~/.clawdbot/skills/droyd
-cat > ~/.clawdbot/skills/droyd/config.json << 'EOF'
+mkdir -p ~/.openclaw/skills/droyd
+cat > ~/.openclaw/skills/droyd/config.json << 'EOF'
 {
   "apiKey": "YOUR_API_KEY_HERE",
   "apiUrl": "https://api.droyd.ai"

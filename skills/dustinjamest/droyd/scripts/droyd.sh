@@ -5,7 +5,7 @@
 set -euo pipefail
 
 # Load config
-CONFIG_FILE="${DROYD_CONFIG:-$HOME/.clawdbot/skills/droyd/config.json}"
+CONFIG_FILE="${DROYD_CONFIG:-$HOME/.openclaw/skills/droyd/config.json}"
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
   echo "Error: Config file not found at $CONFIG_FILE" >&2
