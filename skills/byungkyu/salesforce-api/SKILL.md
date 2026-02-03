@@ -23,10 +23,10 @@ curl -s -X GET 'https://gateway.maton.ai/salesforce/services/data/v59.0/query?q=
 ## Base URL
 
 ```
-https://gateway.maton.ai/salesforce/services/data/v59.0/{endpoint}
+https://gateway.maton.ai/salesforce/{native-api-path}
 ```
 
-The gateway proxies requests to your Salesforce instance (automatically determined from OAuth credentials) and injects your access token.
+Replace `{native-api-path}` with the actual Salesforce REST API endpoint path. The gateway proxies requests to `{instance}.salesforce.com` (automatically replaced with your connection config) and injects your access token.
 
 ## Authentication
 
@@ -44,7 +44,7 @@ export MATON_API_KEY="YOUR_API_KEY"
 
 ### Getting Your API Key
 
-1. Sign in at [maton.ai](https://maton.ai)
+1. Sign in or create an account at [maton.ai](https://maton.ai)
 2. Go to [maton.ai/settings](https://maton.ai/settings)
 3. Copy your API key
 
@@ -81,8 +81,11 @@ curl -s -X GET 'https://ctrl.maton.ai/connections/{connection_id}' \
   "connection": {
     "connection_id": "21fd90f9-5935-43cd-b6c8-bde9d915ca80",
     "status": "ACTIVE",
+    "creation_time": "2025-12-08T07:20:53.488460Z",
+    "last_updated_time": "2026-01-31T20:03:32.593153Z",
     "url": "https://connect.maton.ai/?session_token=...",
-    "app": "salesforce"
+    "app": "salesforce",
+    "metadata": {}
   }
 }
 ```
@@ -96,15 +99,17 @@ curl -s -X DELETE 'https://ctrl.maton.ai/connections/{connection_id}' \
   -H 'Authorization: Bearer YOUR_API_KEY'
 ```
 
-### Using Multiple Connections
+### Specifying Connection
 
-If you have multiple Salesforce orgs connected, specify which to use:
+If you have multiple Salesforce connections, specify which one to use with the `Maton-Connection` header:
 
 ```bash
 curl -s -X GET 'https://gateway.maton.ai/salesforce/services/data/v59.0/sobjects' \
   -H 'Authorization: Bearer YOUR_API_KEY' \
-  -H 'Maton-Connection: {connection_id}'
+  -H 'Maton-Connection: 21fd90f9-5935-43cd-b6c8-bde9d915ca80'
 ```
+
+If omitted, the gateway uses the default (oldest) active connection.
 
 ## API Reference
 
