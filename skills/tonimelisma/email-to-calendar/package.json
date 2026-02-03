@@ -1,7 +1,7 @@
 {
   "name": "email-to-calendar",
-  "version": "1.0.0",
-  "description": "Extract calendar events from forwarded emails, create Google Calendar events with duplicate detection",
+  "version": "1.4.0",
+  "description": "Extract calendar events from emails (direct monitoring or forwarded), create Google Calendar events with duplicate detection",
   "author": "tonimelisma",
   "license": "MIT",
   "keywords": ["skill", "email", "calendar", "gmail", "automation"],
@@ -10,6 +10,6 @@
     "requires": {
       "bins": ["python3", "bash", "jq", "gog"]
     },
-    "triggers": ["forwarded email", "email to calendar", "extract events", "create calendar event"]
+    "triggers": ["forwarded email", "email to calendar", "extract events", "create calendar event", "scan inbox", "check emails"]
   }
 }

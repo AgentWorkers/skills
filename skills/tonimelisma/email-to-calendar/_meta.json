@@ -1,11 +1,17 @@
 {
   "owner": "tonimelisma",
   "slug": "email-to-calendar",
-  "displayName": "Email to Calendar",
+  "displayName": "Email To Calendar",
   "latest": {
-    "version": "1.0.0",
-    "publishedAt": 1770018401156,
-    "commit": "https://github.com/clawdbot/skills/commit/5daba848e861c19b84db0073d222f18299613608"
+    "version": "1.4.0",
+    "publishedAt": 1770078103192,
+    "commit": null
   },
-  "history": []
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1770018401156,
+      "commit": "https://github.com/clawdbot/skills/commit/5daba848e861c19b84db0073d222f18299613608"
+    }
+  ]
 }

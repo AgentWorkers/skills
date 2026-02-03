@@ -1,6 +1,18 @@
 #!/bin/bash
-# Create or update a calendar event
-# Usage: create_event.sh <calendar_id> <title> <date> <start_time> <end_time> <description> <attendee_email> [event_id]
+# Create or update a calendar event with automatic tracking
+# Usage: create_event.sh <calendar_id> <title> <date> <start_time> <end_time> <description> <attendee_email> [event_id] [email_id]
+#
+# If event_id is provided, updates existing event. Otherwise creates new one.
+# Captures the event ID from gog's JSON output and stores it in events.json tracking.
+# Returns the event ID on success for reference.
+
+SCRIPT_DIR="$(dirname "$0")"
+
+# Detect if --send-updates flag is supported (tonimelisma fork)
+SEND_UPDATES_FLAG=""
+if gog calendar create --help 2>&1 | grep -q -- '--send-updates'; then
+    SEND_UPDATES_FLAG="--send-updates all"
+fi
 
 CALENDAR_ID="${1:-primary}"
 TITLE="$2"
@@ -10,6 +22,7 @@ END_TIME="$5"
 DESCRIPTION="$6"
 ATTENDEE_EMAIL="$7"
 EXISTING_EVENT_ID="${8:-}"
+EMAIL_ID="${9:-}"
 
 if [ -z "$TITLE" ] || [ -z "$DATE" ]; then
     echo "Usage: create_event.sh <calendar_id> <title> <date> <start_time> <end_time> <description> <attendee_email> [event_id]" >&2
@@ -104,44 +117,74 @@ fi
 START_ISO="${ISO_DATE}T${START_PARSED}:00"
 END_ISO="${ISO_DATE}T${END_PARSED}:00"
 
-# Check if this is an update or create
-if [ -n "$EXISTING_EVENT_ID" ]; then
-    # Update existing event
-    echo "Updating existing event: $EXISTING_EVENT_ID"
+# Function to create a new event
+create_new_event() {
     if [ -n "$ATTENDEE_EMAIL" ]; then
-        gog calendar update "$CALENDAR_ID" "$EXISTING_EVENT_ID" \
-            --summary "$TITLE" \
-            --from "$START_ISO" \
-            --to "$END_ISO" \
-            --description "$DESCRIPTION" \
-            --add-attendee "$ATTENDEE_EMAIL" \
-            --send-updates all \
-            --json 2>/dev/null
-    else
-        gog calendar update "$CALENDAR_ID" "$EXISTING_EVENT_ID" \
-            --summary "$TITLE" \
-            --from "$START_ISO" \
-            --to "$END_ISO" \
-            --description "$DESCRIPTION" \
-            --json 2>/dev/null
-    fi
-else
-    # Create new event with attendee support
-    if [ -n "$ATTENDEE_EMAIL" ]; then
-        gog calendar create "$CALENDAR_ID" \
+        RESULT=$(gog calendar create "$CALENDAR_ID" \
             --summary "$TITLE" \
             --from "$START_ISO" \
             --to "$END_ISO" \
             --description "$DESCRIPTION" \
             --attendees "$ATTENDEE_EMAIL" \
-            --send-updates all \
-            --json 2>/dev/null
+            $SEND_UPDATES_FLAG \
+            --json 2>&1)
     else
-        gog calendar create "$CALENDAR_ID" \
+        RESULT=$(gog calendar create "$CALENDAR_ID" \
             --summary "$TITLE" \
             --from "$START_ISO" \
             --to "$END_ISO" \
             --description "$DESCRIPTION" \
-            --json 2>/dev/null
+            --json 2>&1)
     fi
+    # Extract event ID from JSON response
+    EVENT_ID=$(echo "$RESULT" | jq -r '.id // empty' 2>/dev/null)
+}
+
+# Check if this is an update or create
+if [ -n "$EXISTING_EVENT_ID" ]; then
+    # Update existing event
+    echo "Updating existing event: $EXISTING_EVENT_ID" >&2
+    if [ -n "$ATTENDEE_EMAIL" ]; then
+        RESULT=$(gog calendar update "$CALENDAR_ID" "$EXISTING_EVENT_ID" \
+            --summary "$TITLE" \
+            --from "$START_ISO" \
+            --to "$END_ISO" \
+            --description "$DESCRIPTION" \
+            --add-attendee "$ATTENDEE_EMAIL" \
+            $SEND_UPDATES_FLAG \
+            --json 2>&1)
+    else
+        RESULT=$(gog calendar update "$CALENDAR_ID" "$EXISTING_EVENT_ID" \
+            --summary "$TITLE" \
+            --from "$START_ISO" \
+            --to "$END_ISO" \
+            --description "$DESCRIPTION" \
+            --json 2>&1)
+    fi
+
+    # Self-healing: Check if event was deleted externally (404/410 error)
+    if echo "$RESULT" | grep -qiE "404|not found|410|gone|does not exist|deleted"; then
+        echo "Event $EXISTING_EVENT_ID no longer exists, removing from tracking and creating new" >&2
+        "$SCRIPT_DIR/delete_tracked_event.sh" --event-id "$EXISTING_EVENT_ID"
+        # Fall back to creating a new event
+        create_new_event
+    else
+        EVENT_ID="$EXISTING_EVENT_ID"
+    fi
+else
+    # Create new event
+    create_new_event
+fi
+
+# Output the result
+echo "$RESULT"
+
+# Track the event if we have an ID
+if [ -n "$EVENT_ID" ]; then
+    TRACK_ARGS="--event-id \"$EVENT_ID\" --calendar-id \"$CALENDAR_ID\" --summary \"$TITLE\" --start \"$START_ISO\""
+    if [ -n "$EMAIL_ID" ]; then
+        TRACK_ARGS="$TRACK_ARGS --email-id \"$EMAIL_ID\""
+    fi
+    eval "$SCRIPT_DIR/track_event.sh" $TRACK_ARGS >&2
+    echo "Event ID: $EVENT_ID" >&2
 fi
