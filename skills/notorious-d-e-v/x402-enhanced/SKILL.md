@@ -696,6 +696,167 @@ func main() {
 
 ---
 
+# Paywall UI (Server Middleware)
+
+The `@x402/paywall` package provides a pre-built paywall UI that displays when users hit a 402 Payment Required response. It handles wallet connection (MetaMask, Coinbase Wallet, Phantom, etc.), USDC balance checking, and payment submission.
+
+**Important:** This package is designed for **server-side use only**. It generates a complete, self-contained HTML page (~1.9MB) with embedded React, wagmi, and wallet adapters that the server returns when a 402 response is triggered. It is **not** a standalone React component library and **cannot** be imported into an existing React application.
+
+**Looking for React components instead?**
+- **For Solana React apps:** Use `@payai/x402-solana-react` - drop-in paywall components with themes
+- **For custom EVM/Solana React:** Build with `wagmi` + `viem` (EVM) or `@solana/wallet-adapter-react` (Solana)
+- **Multi-chain SDKs:** `@dexterai/x402`, `x402-solana`
+
+See the [Custom React Frontend Integration](#custom-react-frontend-integration) section below for details.
+
+---
+
+## Installation (Server-Side)
+
+```bash
+npm install @x402/paywall
+```
+
+**Bundle sizes by import:**
+| Import | Size | Networks |
+|--------|------|----------|
+| `@x402/paywall` | 3.5MB | EVM + Solana |
+| `@x402/paywall/evm` | 3.4MB | EVM only |
+| `@x402/paywall/svm` | 1.0MB | Solana only |
+
+## Usage (Server Middleware)
+
+### EVM Only
+
+```typescript
+import { createPaywall } from "@x402/paywall";
+import { evmPaywall } from "@x402/paywall/evm";
+
+const paywall = createPaywall()
+  .withNetwork(evmPaywall)
+  .withConfig({
+    appName: "My App",
+    appLogo: "/logo.png",
+    testnet: true,
+  })
+  .build();
+```
+
+### Solana Only
+
+```typescript
+import { createPaywall } from "@x402/paywall";
+import { svmPaywall } from "@x402/paywall/svm";
+
+const paywall = createPaywall()
+  .withNetwork(svmPaywall)
+  .withConfig({
+    appName: "My Solana App",
+    testnet: true,
+  })
+  .build();
+```
+
+### Multi-Network
+
+```typescript
+import { createPaywall } from "@x402/paywall";
+import { evmPaywall } from "@x402/paywall/evm";
+import { svmPaywall } from "@x402/paywall/svm";
+
+const paywall = createPaywall()
+  .withNetwork(evmPaywall)  // First-match priority
+  .withNetwork(svmPaywall)  // Fallback option
+  .withConfig({
+    appName: "Multi-chain App",
+    testnet: true,
+  })
+  .build();
+```
+
+## Configuration Options
+
+```typescript
+interface PaywallConfig {
+  appName?: string;    // App name shown in wallet connection
+  appLogo?: string;    // App logo URL
+  currentUrl?: string; // URL of protected resource
+  testnet?: boolean;   // Use testnet (default: true)
+}
+```
+
+## Integration with Express
+
+```typescript
+import express from "express";
+import { paymentMiddleware, x402ResourceServer } from "@x402/express";
+import { ExactEvmScheme } from "@x402/evm/exact/server";
+import { HTTPFacilitatorClient } from "@x402/core/server";
+import { createPaywall } from "@x402/paywall";
+import { evmPaywall } from "@x402/paywall/evm";
+
+const app = express();
+
+const facilitatorClient = new HTTPFacilitatorClient({ url: "https://x402.org/facilitator" });
+
+const paywall = createPaywall()
+  .withNetwork(evmPaywall)
+  .withConfig({ appName: "My API", testnet: true })
+  .build();
+
+app.use(
+  paymentMiddleware(
+    {
+      "GET /premium": {
+        accepts: [{ scheme: "exact", price: "$0.01", network: "eip155:84532", payTo: "0x..." }],
+        description: "Premium content",
+        mimeType: "application/json",
+      },
+    },
+    new x402ResourceServer(facilitatorClient).register("eip155:84532", new ExactEvmScheme()),
+    undefined,  // paywallConfig (using custom paywall instead)
+    paywall,    // custom paywall provider
+  ),
+);
+
+app.get("/premium", (req, res) => res.json({ content: "Premium data" }));
+app.listen(4021);
+```
+
+## Auto-Detection (Simple Usage)
+
+If you pass a `paywallConfig` object instead of a custom paywall, the middleware will automatically use `@x402/paywall` if installed:
+
+```typescript
+app.use(
+  paymentMiddleware(
+    routes,
+    server,
+    { appName: "My App", testnet: true },  // paywallConfig - auto-detects @x402/paywall
+  ),
+);
+```
+
+## How First-Match Selection Works
+
+When the server returns multiple payment options, the paywall selects the first one that has a registered handler:
+
+```typescript
+// Server returns:
+{ "accepts": [
+  { "network": "solana:5eykt...", ... },  // First option
+  { "network": "eip155:8453", ... }       // Second option
+]}
+
+// If both handlers registered, Solana is selected (first in accepts)
+const paywall = createPaywall()
+  .withNetwork(evmPaywall)
+  .withNetwork(svmPaywall)
+  .build();
+```
+
+---
+
 ## Pricing Configuration
 
 ### Simple USD Pricing
