@@ -4,28 +4,43 @@ import json
 import os
 import sys
 from pathlib import Path
+from typing import Optional
 
 
-def load_gemini_key() -> str | None:
+def load_gemini_key() -> Optional[str]:
+    """Load Gemini API key.
+
+    Order:
+    1) GEMINI_API_KEY env var
+    2) ~/.openclaw/openclaw.json (OpenClaw config)
+    """
+
     # Prefer env var if set.
     env_key = (os.environ.get("GEMINI_API_KEY") or "").strip()
     if env_key:
         return env_key
 
-    # Fall back to Clawdbot config (local machine).
-    cfg_path = Path.home() / ".clawdbot" / "clawdbot.json"
-    try:
-        raw = cfg_path.read_text(encoding="utf-8")
-        cfg = json.loads(raw)
-        return (
-            cfg.get("skills", {})
-            .get("entries", {})
-            .get("nano-banana-pro", {})
-            .get("apiKey")
-            or ""
-        ).strip() or None
-    except Exception:
-        return None
+    cfg_paths = [
+        Path.home() / ".openclaw" / "openclaw.json",
+    ]
+
+    for cfg_path in cfg_paths:
+        try:
+            raw = cfg_path.read_text(encoding="utf-8")
+            cfg = json.loads(raw)
+            api_key = (
+                cfg.get("skills", {})
+                .get("entries", {})
+                .get("nano-banana-pro", {})
+                .get("apiKey")
+                or ""
+            ).strip()
+            if api_key:
+                return api_key
+        except Exception:
+            continue
+
+    return None
 
 
 def main() -> int:
@@ -37,7 +52,10 @@ def main() -> int:
 
     api_key = load_gemini_key()
     if not api_key:
-        print("Missing GEMINI_API_KEY (env or ~/.clawdbot/clawdbot.json skills.entries.nano-banana-pro.apiKey)", file=sys.stderr)
+        print(
+            "Missing GEMINI_API_KEY (env) or nano-banana-pro apiKey in ~/.openclaw/openclaw.json",
+            file=sys.stderr,
+        )
         return 2
 
     out_path = Path(args.out).expanduser().resolve()
