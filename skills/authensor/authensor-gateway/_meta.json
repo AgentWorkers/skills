@@ -1,0 +1,11 @@
+{
+  "owner": "authensor",
+  "slug": "authensor-gateway",
+  "displayName": "Authensor Gateway",
+  "latest": {
+    "version": "0.1.0",
+    "publishedAt": 1770123512410,
+    "commit": null
+  },
+  "history": []
+}
