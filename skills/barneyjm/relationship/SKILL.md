@@ -4,6 +4,25 @@ description: "Calculate spatial relationships between two points including dista
 metadata: {"clawdbot":{"emoji":"📐","requires":{"env":["CAMINO_API_KEY"]},"primaryEnv":"CAMINO_API_KEY"}}
 ---
 
+## Installation
+
+**Companion Skills**: This is part of the Camino AI location intelligence suite. Install all 6 skills (query, places, relationship, context, route, journey) for comprehensive coverage.
+
+```bash
+# Install all skills from repo
+npx skills add https://github.com/barneyjm/camino-skills
+
+# Or install specific skills
+npx skills add https://github.com/barneyjm/camino-skills --skill relationship
+```
+
+**Via clawhub:**
+```bash
+npx clawhub@latest install relationship
+# or: pnpm dlx clawhub@latest install relationship
+# or: bunx clawhub@latest install relationship
+```
+
 # Relationship - Spatial Calculations
 
 Calculate distance, direction, travel time, and human-readable descriptions between two points.
