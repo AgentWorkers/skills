@@ -1,0 +1,11 @@
+{
+  "owner": "dlewis7444",
+  "slug": "esxi",
+  "displayName": "ESXi Management",
+  "latest": {
+    "version": "1.1.0",
+    "publishedAt": 1770142913691,
+    "commit": null
+  },
+  "history": []
+}
