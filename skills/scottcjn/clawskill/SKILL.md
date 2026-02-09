@@ -2,6 +2,43 @@
 
 Mine **RTC (RustChain Tokens)** by proving your agent runs on real hardware. One command to install, automatic attestation, built-in wallet.
 
+## Security & Transparency
+
+**This skill is open-source mining software**, not malware. Before installing, you can verify everything:
+
+```bash
+# Preview what will happen — nothing installed
+clawskill install --dry-run
+
+# Show SHA256 hashes of bundled files
+clawskill install --verify
+```
+
+| Concern | How We Address It |
+|---------|-------------------|
+| **Code origin** | All miner scripts are **bundled inside the package** — no external downloads at install time. Inspect them yourself in the `data/` directory. Source code: [RustChain GitHub repo](https://github.com/Scottcjn/Rustchain). |
+| **Background service** | **Opt-in only.** Install does NOT create a service by default. You must explicitly pass `--service` to enable auto-start. Without it, the miner runs in the foreground only when you say so. |
+| **Hardware fingerprinting** | Required for Proof-of-Antiquity consensus. Collects CPU model, timing variance, and cache latency — nothing personal. No files, passwords, browsing data, or credentials are accessed. Full disclosure shown before install with a consent prompt. |
+| **Network endpoint** | The RustChain node uses a **CA-signed TLS certificate** (Let's Encrypt). All communication is standard HTTPS with certificate verification. |
+
+### What Data Is Collected
+
+During attestation (every few minutes when mining), the following is sent to the RustChain node:
+
+- CPU model name and architecture (e.g. "AMD Ryzen 5 8645HS", "x86_64")
+- Clock timing variance (coefficient of variation — proves real oscillator, not emulated)
+- Cache latency profile (proves real L1/L2/L3 hierarchy)
+- VM detection flags (hypervisor present: yes/no)
+- Wallet name (your chosen identifier)
+
+**NOT collected**: file contents, browsing history, credentials, IP geolocation, personal data, or anything from your filesystem.
+
+### Clean Uninstall
+
+```bash
+clawskill uninstall   # Removes ALL files, services, and configs
+```
+
 ## Install
 
 ```bash
@@ -15,14 +52,15 @@ npm install -g clawskill
 ## Setup
 
 ```bash
-# Install miner + configure wallet
+# Install miner + configure wallet (shows disclosure, asks consent)
 clawskill install --wallet my-agent-miner
 
-# Start mining in background
+# Start mining in foreground (Ctrl+C to stop)
 clawskill start
-```
 
-Your agent is now mining RTC. That's it.
+# Or: start with background auto-restart (opt-in)
+clawskill start --service
+```
 
 ## How It Works
 
@@ -55,25 +93,23 @@ Your agent is now mining RTC. That's it.
 
 | Command | Description |
 |---------|-------------|
-| `clawskill install` | Download miner, create wallet, set up service |
-| `clawskill start` | Start mining in background |
+| `clawskill install` | Extract miner, create wallet (consent prompt, no service by default) |
+| `clawskill install --service` | Install + create background service |
+| `clawskill install --dry-run` | Preview without making any changes |
+| `clawskill install --verify` | Show SHA256 hashes of bundled files |
+| `clawskill start` | Start mining in foreground |
+| `clawskill start --service` | Start + create auto-restart service |
 | `clawskill stop` | Stop mining |
-| `clawskill status` | Check miner + network status |
+| `clawskill status` | Check miner + network status + file hashes |
 | `clawskill logs` | View miner output |
-| `clawskill uninstall` | Remove everything |
-
-## Why VMs Are Penalized
-
-RustChain uses **Proof-of-Antiquity (PoA)** consensus. The network rewards machines that bring **real compute** — physical CPUs with genuine timing characteristics, thermal profiles, and instruction path jitter. VMs flatten all of these signals, making them trivially detectable via the 6 fingerprint checks.
-
-This prevents "VM farms" from gaming rewards. If you want to earn RTC, run on bare metal.
+| `clawskill uninstall` | Remove everything cleanly |
 
 ## What Gets Installed
 
-- Miner scripts from the [RustChain GitHub repo](https://github.com/Scottcjn/Rustchain)
-- Python virtual environment with dependencies
-- Systemd user service (Linux) or LaunchAgent (macOS)
-- All files stored in `~/.clawskill/`
+- Miner scripts **bundled with the package** (2 Python files, no external downloads)
+- Python virtual environment with one dependency (`requests`)
+- All files stored in `~/.clawskill/` (user-scoped, no root needed)
+- **No background service unless you pass `--service`**
 
 ## Requirements
 
@@ -83,11 +119,11 @@ This prevents "VM farms" from gaming rewards. If you want to earn RTC, run on ba
 
 ## Links
 
+- **Source Code**: https://github.com/Scottcjn/Rustchain (MIT License)
 - **PyPI**: https://pypi.org/project/clawskill/
 - **npm**: https://www.npmjs.com/package/clawskill
-- **GitHub**: https://github.com/Scottcjn/Rustchain
+- **Block Explorer**: https://bulbous-bouffant.metalseed.net/explorer
 - **BoTTube**: https://bottube.ai
-- **Block Explorer**: https://50.28.86.131/explorer
 
 ## License
 
