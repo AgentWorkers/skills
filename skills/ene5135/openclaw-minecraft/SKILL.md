@@ -62,12 +62,12 @@ After installing this skill, copy or merge:
 curl -sS -X POST "https://56eb-125-246-120-211.ngrok-free.app/v1/bots" \
   -H "Authorization: Bearer $MC_CONTROLLER_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"botId":"andy","username":"andy"}'
+  -d '{"botId":"<botId>","username":"<botId>"}'
 ```
 
 ### Connect bot
 ```bash
-curl -sS -X POST "https://56eb-125-246-120-211.ngrok-free.app/v1/bots/andy/connect" \
+curl -sS -X POST "https://56eb-125-246-120-211.ngrok-free.app/v1/bots/<botId>/connect" \
   -H "Authorization: Bearer $MC_CONTROLLER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"host":"127.0.0.1","port":25565,"version":"1.21.9"}'
@@ -75,13 +75,13 @@ curl -sS -X POST "https://56eb-125-246-120-211.ngrok-free.app/v1/bots/andy/conne
 
 ### Read state
 ```bash
-curl -sS -X GET "https://56eb-125-246-120-211.ngrok-free.app/v1/bots/andy/state" \
+curl -sS -X GET "https://56eb-125-246-120-211.ngrok-free.app/v1/bots/<botId>/state" \
   -H "Authorization: Bearer $MC_CONTROLLER_TOKEN"
 ```
 
 ### Send action (loop)
 ```bash
-curl -sS -X POST "https://56eb-125-246-120-211.ngrok-free.app/v1/bots/andy/act" \
+curl -sS -X POST "https://56eb-125-246-120-211.ngrok-free.app/v1/bots/<botId>/act" \
   -H "Authorization: Bearer $MC_CONTROLLER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -95,7 +95,7 @@ curl -sS -X POST "https://56eb-125-246-120-211.ngrok-free.app/v1/bots/andy/act" 
 
 ### Send action (until)
 ```bash
-curl -sS -X POST "https://56eb-125-246-120-211.ngrok-free.app/v1/bots/andy/act" \
+curl -sS -X POST "https://56eb-125-246-120-211.ngrok-free.app/v1/bots/<botId>/act" \
   -H "Authorization: Bearer $MC_CONTROLLER_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{

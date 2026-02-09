@@ -1,30 +1,31 @@
 # Heartbeat
 
-## Minecraft Autonomy (every 2 minutes)
-1. Health check: `GET https://56eb-125-246-120-211.ngrok-free.app/health`.
-2. Auth token:
-   - If `memory/mc-auth.json` missing or `accessToken` empty, call:
-     `POST https://56eb-125-246-120-211.ngrok-free.app/v1/auth/open/register` with `{"agentName":"<your-agent-name>"}`.
-   - Save response to `memory/mc-auth.json`.
-   - Use `accessToken` (or `MC_CONTROLLER_TOKEN` if set) for all API calls.
-3. Ensure bot exists:
-   - `GET /v1/bots` and check for `botId`.
-   - If missing, `POST /v1/bots` with `{ "botId":"<botId>", "username":"<botId>" }`.
-4. Ensure bot connected (every heartbeat):
-   - `GET /v1/bots/{botId}` and check `status`.
-   - If `status` is `connected`, continue.
-   - If `status` is `connecting`, wait 2 seconds and end this heartbeat.
-   - If `status` is `kicked`, `error`, or `disconnected`, call `POST /v1/bots/{botId}/connect`.
-   - If connect fails, record the error in `memory/mc-autonomy.json` and end this heartbeat.
-5. Observe: `GET /v1/bots/{botId}/state`.
-6. If `metadata.currentTaskId` exists, wait 2 seconds and end this heartbeat.
-7. Plan: decide ONE safe action based on `nearby`, `health`, `hunger`.
-8. Announce plan in Minecraft chat:
-   - Template: `[plan] <one short sentence>`
-   - Example: `[plan] Heading to nearby oak to gather wood.`
+## OpenClaw Minecraft (every 30 seconds)
+1. Observe: `GET /v1/bots/{botId}/state`.
+2. If `metadata.currentTaskId` exists or `metadata.queueLength` > 0, wait 2 seconds and end this heartbeat.
+3. Plan: decide an action bundle (up to 10 steps) based on `nearby`, `health`, `hunger`, and persona `priorityRules`.
+   - If the previous bundle failed, choose a safer fallback bundle.
+4. Announce plan in Minecraft chat:
+   - Use persona `chatTemplate`, e.g., `[plan][carpenter] {plan}`.
+   - Example: `[plan][carpenter] Heading to nearby oak to gather wood.`
    - `POST /v1/bots/{botId}/act` with `action: "chat"` and the template above.
-9. Act: `POST /v1/bots/{botId}/act` using `mode: until` or `mode: loop` and set `timeoutMs`.
-10. Log decisions in `memory/mc-autonomy.json` with timestamps.
+5. Act: send each step in order using `POST /v1/bots/{botId}/act` with `queue: "queue"`.
+    - Use `mode: until` or `mode: loop` and set `timeoutMs`.
+    - If a step fails, stop the remaining steps and use a fallback bundle next heartbeat.
+    - Example bundle: move_to -> dig -> move_to.
+6. Log decisions in `memory/mc-autonomy.json` with timestamps.
+
+Example 10-step bundle:
+1) move_to (nearest tree)
+2) dig (tree block)
+3) dig (tree block)
+4) move_to (next tree)
+5) dig (tree block)
+6) move_to (safe point)
+7) place (crafting table)
+8) equip (tool)
+9) move_to (resource)
+10) dig (resource)
 
 ## Decision Hints
 - If health is low, move to a safe spot or stop.
