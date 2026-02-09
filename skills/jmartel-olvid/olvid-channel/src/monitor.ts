@@ -1,4 +1,4 @@
-import type { ChannelAccountSnapshot, RuntimeEnv, OpenClawConfig } from "openclaw/plugin-sdk";
+import type {ChannelAccountSnapshot, RuntimeEnv, OpenClawConfig, ReplyPayload} from "openclaw/plugin-sdk";
 import { datatypes, OlvidClient } from "@olvid/bot-node";
 import { ResolvedOlvidAccount, resolveOlvidAccount } from "./accounts.js";
 import { getOlvidRuntime } from "./runtime.js";
@@ -56,6 +56,13 @@ class OpenClawBot extends OlvidClient {
 
   private async onMessageReceivedHandler(message: datatypes.Message) {
     const runtime = getOlvidRuntime();
+    const logger = runtime.logging.getChildLogger({
+      channel: "olvid",
+      accountId: this.account.accountId,
+    });
+
+    // TODO TODEL
+    logger.info("message received")
 
     // load metadata
     const discussion: datatypes.Discussion = await this.discussionGet({
@@ -136,7 +143,7 @@ class OpenClawBot extends OlvidClient {
       sessionKey: ctxPayload.SessionKey ?? route.sessionKey,
       ctx: ctxPayload,
       onRecordError: (err: unknown) => {
-        console.error?.(`olvid: failed updating session meta: ${String(err)}`);
+        logger.error(`olvid: failed updating session meta: ${String(err)}`);
       },
     });
 
@@ -144,13 +151,17 @@ class OpenClawBot extends OlvidClient {
       ctx: ctxPayload,
       cfg: this.cfg,
       dispatcherOptions: {
-        deliver: async (payload) => {
+        deliver: async (payload: ReplyPayload) => {
+          if (payload.replyToCurrent) {
+            payload.replyToId = messageIdToString(message.id);
+          }
           await deliverOlvidReply({
             payload: payload as {
               text?: string;
               mediaUrls?: string[];
               mediaUrl?: string;
               replyToId?: string;
+              replyToCurrent?: boolean
             },
             accountId: this.account.accountId,
             discussionId: discussion.id,
@@ -158,7 +169,7 @@ class OpenClawBot extends OlvidClient {
           });
         },
         onError: (err, info) => {
-          console.error?.(`olvid ${info.kind} reply failed: ${String(err)}`);
+          logger.error?.(`olvid ${info.kind} reply failed: ${String(err)}`);
         },
       },
     });
