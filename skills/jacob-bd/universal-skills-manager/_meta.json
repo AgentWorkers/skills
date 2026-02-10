@@ -1,11 +1,17 @@
 {
   "owner": "jacob-bd",
   "slug": "universal-skills-manager",
-  "displayName": "Universal Skill Manager",
+  "displayName": "Universal Skills Manager",
   "latest": {
-    "version": "1.4.0",
-    "publishedAt": 1770700461519,
-    "commit": "https://github.com/openclaw/skills/commit/4aa926f423fc6471e611d40b2bfed07ed61ce653"
+    "version": "1.4.1",
+    "publishedAt": 1770751041729,
+    "commit": null
   },
-  "history": []
+  "history": [
+    {
+      "version": "1.4.0",
+      "publishedAt": 1770700461519,
+      "commit": "https://github.com/openclaw/skills/commit/4aa926f423fc6471e611d40b2bfed07ed61ce653"
+    }
+  ]
 }
