@@ -1,0 +1,11 @@
+{
+  "owner": "samthomson",
+  "slug": "nostr-nak",
+  "displayName": "Nostr Nak",
+  "latest": {
+    "version": "1.0.2",
+    "publishedAt": 1770639965439,
+    "commit": null
+  },
+  "history": []
+}
