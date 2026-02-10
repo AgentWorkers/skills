@@ -1,0 +1,11 @@
+{
+  "owner": "okaris",
+  "slug": "agent-tools",
+  "displayName": "Agent Tools",
+  "latest": {
+    "version": "0.1.0",
+    "publishedAt": 1770656829255,
+    "commit": null
+  },
+  "history": []
+}
