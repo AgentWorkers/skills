@@ -3,9 +3,15 @@
   "slug": "anydocs",
   "displayName": "anydocs - Generic Documentation Indexing & Search",
   "latest": {
-    "version": "1.0.1",
-    "publishedAt": 1770571774981,
-    "commit": "https://github.com/openclaw/skills/commit/02b9141acfc8327ca8230d86b57483f54be13059"
+    "version": "1.0.2",
+    "publishedAt": 1770764222692,
+    "commit": null
   },
-  "history": []
+  "history": [
+    {
+      "version": "1.0.1",
+      "publishedAt": 1770571774981,
+      "commit": "https://github.com/openclaw/skills/commit/02b9141acfc8327ca8230d86b57483f54be13059"
+    }
+  ]
 }

@@ -1,3 +1,51 @@
+---
+name: anydocs
+description: Generic Documentation Indexing & Search. Index any documentation site (SPA/static) and search it instantly.
+tools:
+  - name: anydocs_search
+    description: Search indexed documentation profiles. Returns ranked results with snippets.
+    parameters:
+      type: object
+      properties:
+        query:
+          type: string
+          description: Search query (keyword or phrase)
+        profile:
+          type: string
+          description: Profile name (e.g. 'discord', 'openclaw')
+        limit:
+          type: number
+          description: Max results to return (default 5)
+      required: [query]
+  - name: anydocs_index
+    description: Build or update the search index for a documentation profile.
+    parameters:
+      type: object
+      properties:
+        profile:
+          type: string
+          description: Profile name to index
+        use_browser:
+          type: boolean
+          description: Use browser rendering for SPAs (requires gateway token)
+      required: [profile]
+  - name: anydocs_config
+    description: Configure a new documentation profile.
+    parameters:
+      type: object
+      properties:
+        profile:
+          type: string
+          description: Profile name
+        base_url:
+          type: string
+          description: Base URL of the docs
+        sitemap_url:
+          type: string
+          description: URL to sitemap.xml
+      required: [profile, base_url, sitemap_url]
+---
+
 # anydocs - Generic Documentation Indexing & Search
 
 A powerful, reusable skill for indexing and searching **ANY** documentation site.
