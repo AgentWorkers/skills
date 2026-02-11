@@ -8,6 +8,11 @@ description: |
 metadata:
   author: maton
   version: "1.0"
+  clawdbot:
+    emoji: 🧠
+    requires:
+      env:
+        - MATON_API_KEY
 ---
 
 # SignNow
@@ -663,9 +668,7 @@ SignNow errors include detailed messages:
 }
 ```
 
-### Troubleshooting: Invalid API Key
-
-**When you receive a "Invalid API key" error, ALWAYS follow these steps before concluding there is an issue:**
+### Troubleshooting: API Key Issues
 
 1. Check that the `MATON_API_KEY` environment variable is set:
 
@@ -684,9 +687,18 @@ print(json.dumps(json.load(urllib.request.urlopen(req)), indent=2))
 EOF
 ```
 
+### Troubleshooting: Invalid App Name
+
+1. Ensure your URL path starts with `signnow`. For example:
+
+- Correct: `https://gateway.maton.ai/signnow/user`
+- Incorrect: `https://gateway.maton.ai/user`
+
 ## Resources
 
 - [SignNow API Reference](https://docs.signnow.com/docs/signnow/reference)
 - [SignNow Developer Portal](https://www.signnow.com/developers)
 - [SignNow Postman Collection](https://github.com/signnow/postman-collection)
 - [SignNow SDKs](https://github.com/signnow)
+- [Maton Community](https://discord.com/invite/dBfFAcefs2)
+- [Maton Support](mailto:support@maton.ai)
