@@ -1,0 +1,11 @@
+{
+  "owner": "cinience",
+  "slug": "alicloud-backup-hbr",
+  "displayName": "Alicloud Backup Hbr",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1770768492121,
+    "commit": null
+  },
+  "history": []
+}
