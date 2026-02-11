@@ -3,11 +3,16 @@
   "slug": "odoo-openclaw-skill",
   "displayName": "Odoo",
   "latest": {
-    "version": "2.0.2",
-    "publishedAt": 1770749221220,
-    "commit": "https://github.com/openclaw/skills/commit/c943571b75a9df0d41f95b15420edbd914ae5b18"
+    "version": "2.0.5",
+    "publishedAt": 1770819560242,
+    "commit": null
   },
   "history": [
+    {
+      "version": "2.0.2",
+      "publishedAt": 1770749221220,
+      "commit": "https://github.com/openclaw/skills/commit/c943571b75a9df0d41f95b15420edbd914ae5b18"
+    },
     {
       "version": "0.1.4",
       "publishedAt": 1770522410184,

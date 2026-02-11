@@ -1,11 +1,23 @@
 ---
 name: odoo
-description: Use when the user asks for Odoo accounting audits, VAT/cashflow analysis, inventory valuation, financial reporting, compliant financial statements (P&L, Balance Sheet, Cash Flow), custom ad-hoc reports, or any financial intelligence that must come directly from Odoo via RPC with reproducible, evidence-backed numbers. Automatically detects and complies with the company's local accounting standards (IFRS, US GAAP, Ind-AS, UK GAAP, SOCPA, CAS, JGAAP, etc.).
+description: "Query Odoo data including salesperson performance, customer analytics, orders, invoices, CRM, accounting, VAT, inventory, and AR/AP. Generates WhatsApp cards, PDFs, Excel. Use when user explicitly mentions Odoo or asks for Odoo data."
 ---
 
 # Odoo Financial Intelligence
 
 **Read-only, Evidence-First, Ledger-Based Reports**
+
+## Quick Reference: Common Odoo Models
+
+| Model | What It Contains | Use For |
+|-------|------------------|---------|
+| `res.users` | Users/Salespeople | Find salesperson by name, get user_id |
+| `sale.order` | Sales Orders | Revenue by salesperson, order counts, status |
+| `account.move` | Invoices/Journal Entries | Invoice tracking, payments, P&L data |
+| `res.partner` | Contacts/Customers | Customer info, top customers by revenue |
+| `product.product` | Products | Product sales, inventory |
+| `account.account` | Chart of Accounts | Financial reporting, balance sheet |
+| `account.move.line` | Journal Lines | Detailed ledger entries |
 
 ## Security & Credentials
 
@@ -30,9 +42,9 @@ nano .env
 
 ### Model Invocation Policy
 
-**Model invocation is DISABLED** for this skill. It must be explicitly invoked by the user.
+**Model invocation is DISABLED** per `skill.json` policy. This skill handles sensitive financial data and external Odoo connections — it must be explicitly invoked by the user.
 
-**Reason:** The skill handles sensitive financial data and connects to external Odoo instances. Autonomous invocation could expose confidential accounting data or trigger unwanted external connections.
+**Data Handling:** All queries are read-only. No data is modified or exfiltrated.
 
 ### Data Handling
 
@@ -167,6 +179,23 @@ reporter.generate(..., standard="US_GAAP")
 
 ## Commands
 
+### Sales & CRM Queries
+
+```bash
+# Salesperson performance - use direct RPC for flexibility
+./venv/bin/python -c "
+from src.visualizers.whatsapp_cards import WhatsAppCardGenerator
+# Query sale.order by user_id, aggregate by month/status
+# Generate cards with generate_kpi_card() and generate_comparison_card()
+"
+
+# Example RPC query for salesperson:
+# - sale.order (user_id, amount_total, state, date_order)
+# - account.move (invoice_user_id, amount_total, payment_state)
+# - res.users (salesperson info)
+# - res.partner (customer info)
+```
+
 ### Pre-built Reports
 
 ```bash
@@ -184,6 +213,27 @@ cfo_cli.py expenses --from YYYY-MM-DD --to YYYY-MM-DD --company-id ID
 
 # Executive Summary - one-page CFO snapshot
 cfo_cli.py executive --from YYYY-MM-DD --to YYYY-MM-DD --company-id ID
+```
+
+### Direct RPC Queries (Advanced)
+
+For sales/CRM data not covered by pre-built commands, use direct RPC:
+
+```python
+# Query sales orders by salesperson
+orders = jsonrpc('sale.order', 'search_read',
+    [[('user_id', '=', SALESPERSON_ID)]],
+    {'fields': ['name', 'partner_id', 'amount_total', 'state', 'date_order']})
+
+# Query invoices by salesperson
+invoices = jsonrpc('account.move', 'search_read',
+    [[('invoice_user_id', '=', SALESPERSON_ID), ('move_type', '=', 'out_invoice')]],
+    {'fields': ['name', 'partner_id', 'amount_total', 'payment_state']})
+
+# Find salesperson by name
+users = jsonrpc('res.users', 'search_read',
+    [[('name', 'ilike', 'name_here')]],
+    {'fields': ['id', 'name', 'login']})
 ```
 
 ### Ad-hoc Reports
@@ -238,18 +288,30 @@ If required params are missing, the skill will ask:
 
 Just ask naturally:
 
+**Sales & CRM:**
+- "How is [name] salesperson performance?"
+- "Show me top customers for [salesperson]"
+- "Compare sales team performance"
+- "Which salesperson has the most orders?"
+
+**Financial Reports:**
 - "Give me a financial health report for last quarter"
 - "Show revenue vs expenses for the past 6 months"
 - "What's my AR aging?"
 - "Generate an executive summary for this month"
 - "Show me profit & loss statement based on chart of accounts"
 
+**General Queries:**
+- "How many orders did we get this month?"
+- "Who are the top 10 customers?"
+- "Show invoice status for [customer name]"
+
 The skill will:
 1. Check for multiple companies and ask which one
 2. Parse your request
 3. Ask for any missing info
-4. Fetch data from Odoo using ledger entries
-5. Generate charts + PDF
+4. Fetch data from Odoo using ledger entries or direct RPC
+5. Generate charts + WhatsApp cards
 6. Deliver via WhatsApp cards and/or PDF
 
 ## Hard Rules
