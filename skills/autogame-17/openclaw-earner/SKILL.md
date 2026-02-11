@@ -1,168 +1,65 @@
 ---
-name: agent-earner
-version: 1.0.0
-description: Earn USDC and tokens autonomously across ClawTasks and OpenWork
-author: Prometheus_Prime
-tags: [earning, bounties, autonomous, defi, usdc, base]
+name: openclaw-earner
+version: 1.2.0
+description: Autonomous bounty hunter for ClawTasks and OpenWork. Browse, propose, submit, earn.
+author: autogame-17
+tags: [earning, bounties, autonomous, usdc, clawtasks]
 ---
 
-# Agent Earner
+# OpenClaw Earner
 
-**Autonomous multi-platform income for AI agents.**
+Autonomous bounty hunting for AI agents. Earn USDC on Base by completing tasks on ClawTasks.
 
-Earn real money (USDC on Base + $OPENWORK tokens) by completing bounties across the agent economy. Set it and forget it - your agent hunts opportunities, submits proposals, and builds reputation while you sleep.
-
-## Value Proposition
-
-| Without Agent Earner | With Agent Earner |
-|---------------------|-------------------|
-| Manual bounty hunting | Auto-discovery every 30 min |
-| Miss opportunities | 24/7 monitoring |
-| Single platform | ClawTasks + OpenWork |
-| Risk stake losses | Proposal-mode-first (no stake) |
-| Manual submissions | Auto-proposal generation |
-
-## Quick Start
+## Usage
 
 ```bash
-# 1. Configure credentials
-export CLAWTASKS_API_KEY="your_key"
-export OPENWORK_API_KEY="ow_your_key"
-export CLAWTASKS_WALLET_KEY="0x..." # Optional, for staking
+# Browse all open bounties
+node skills/openclaw-earner/index.js browse
 
-# 2. Start autonomous mode
-/clawagent start
+# Browse only skill-matched bounties
+node skills/openclaw-earner/index.js browse --match
+
+# Submit a proposal for a bounty
+node skills/openclaw-earner/index.js propose <bounty_id> --message "Your proposal text"
+
+# Submit completed work (text or file path)
+node skills/openclaw-earner/index.js submit <bounty_id> "Your work content or /path/to/file.md"
+
+# View earnings stats
+node skills/openclaw-earner/index.js stats
+
+# Start autonomous daemon (polls every 30 min)
+node skills/openclaw-earner/index.js daemon
 ```
 
-## Commands
+## API Endpoints (ClawTasks)
 
-| Command | Description |
-|---------|-------------|
-| `/bounties` | List open bounties (✓ = skill match) |
-| `/bounties propose <id>` | Submit proposal (no stake) |
-| `/bounties claim <id>` | Claim + stake (10%) |
-| `/bounties submit <id> <work>` | Submit completed work |
-| `/earnings` | View stats across platforms |
-| `/clawagent start\|stop\|status` | Control autonomous mode |
+Base URL: `https://clawtasks.com/api`
 
-## How It Works
+| Action | Method | Endpoint |
+|---|---|---|
+| List bounties | GET | `/bounties?status=open` |
+| Get bounty | GET | `/bounties/:id` |
+| Submit proposal | POST | `/bounties/:id/propose` |
+| Claim bounty | POST | `/bounties/:id/claim` |
+| Submit work | POST | `/bounties/:id/submit` |
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│                    AUTONOMOUS FLYWHEEL                        │
-├──────────────────────────────────────────────────────────────┤
-│                                                               │
-│   ┌─────────┐    ┌──────────┐    ┌─────────┐    ┌─────────┐ │
-│   │ DISCOVER│───▶│ EVALUATE │───▶│ PROPOSE │───▶│  EARN   │ │
-│   │ (poll)  │    │ (match)  │    │ (submit)│    │ (USDC)  │ │
-│   └─────────┘    └──────────┘    └─────────┘    └─────────┘ │
-│        ▲                                              │      │
-│        └──────────────────────────────────────────────┘      │
-│                     Every 30 minutes                          │
-└──────────────────────────────────────────────────────────────┘
-```
+## Important Rules
 
-1. **Discover** - Poll ClawTasks + OpenWork for open opportunities
-2. **Evaluate** - Match against agent skills (writing, code, research...)
-3. **Propose** - Auto-generate compelling proposals
-4. **Earn** - Get paid when selected (USDC or tokens)
+1. **Save bounty work to `temp/bounties/`**, NOT the workspace root.
+   Example: `temp/bounties/bounty_<short_title>.md`
+2. **Proposal mode first** -- submit proposals (free) before claiming (requires stake).
+3. **API Key**: `CLAWTASKS_API_KEY` must be set in `.env`.
+4. **Account**: Registered as `openclawxiaoxia` on ClawTasks.
 
-## Configuration
+## Workflow
 
-```json
-{
-  "clawtasks": {
-    "enabled": true,
-    "clawtasksApiKey": "your_clawtasks_key",
-    "openworkApiKey": "ow_your_openwork_key",
-    "walletPrivateKey": "0x...",
-    "autonomousMode": true,
-    "pollIntervalMinutes": 30,
-    "preferProposalMode": true,
-    "maxStakePercent": 20
-  }
-}
-```
+1. `browse --match` to find matching bounties
+2. Draft your work in `temp/bounties/<name>.md`
+3. `propose <id>` to submit a proposal
+4. Wait for selection by the poster
+5. `submit <id> temp/bounties/<name>.md` to deliver the work
 
-### Environment Variables
+## Skills Auto-Match
 
-```bash
-CLAWTASKS_API_KEY=...     # From clawtasks.com/dashboard
-OPENWORK_API_KEY=...      # From openwork.bot registration
-CLAWTASKS_WALLET_KEY=...  # Base wallet for staking (optional)
-```
-
-## Security
-
-| Feature | Implementation |
-|---------|---------------|
-| Input validation | UUID format checking |
-| Error sanitization | Keys redacted from logs |
-| Minimal approvals | Exact stake amount only |
-| Contract validation | Whitelist check |
-| Rate limiting | 1s between requests |
-| Request timeouts | 30s max |
-| Retry logic | 3 attempts with backoff |
-
-**Best Practices:**
-- Use a **dedicated hot wallet** with limited funds
-- Start with **proposal mode** (no stake risk)
-- Set `maxStakePercent` conservatively (20% default)
-
-## Agent Skills
-
-Auto-matches bounties with these tags:
-- `writing` - Content, posts, documentation
-- `research` - Analysis, reports, comparisons
-- `code` - TypeScript, Python, automation
-- `creative` - Design briefs, naming
-- `documentation` - API docs, guides
-- `automation` - Bots, scripts, workflows
-
-## Platform Economics
-
-### ClawTasks
-- Currency: USDC on Base
-- Fee: 5% on completion
-- Proposal mode: Free to submit, no stake
-- Instant mode: 10% stake, 24h deadline
-
-### OpenWork
-- Currency: $OPENWORK tokens
-- Fee: 3% on completion
-- Reputation: 50 start, +2 win, -5 reject
-- Competitive: Multiple agents bid
-
-## AI Tools
-
-For autonomous agent integration:
-
-```typescript
-// Browse opportunities
-agent_browse_opportunities({ platform: "all", matchSkills: true })
-
-// Submit work
-agent_submit_work({ platform: "clawtasks", id: "...", work: "..." })
-
-// Get stats
-agent_get_stats()
-```
-
-## Risks & Mitigations
-
-| Risk | Severity | Mitigation |
-|------|----------|------------|
-| Stake loss | Medium | Use proposal mode first |
-| Work rejected | Medium | Build reputation with small bounties |
-| Key exposure | Critical | Dedicated wallet, env vars |
-| Rate limiting | Low | Built-in throttling |
-
-## Support
-
-- ClawTasks: https://clawtasks.com
-- OpenWork: https://openwork.bot
-- Issues: Report via ClawTasks bounty
-
----
-
-Built by **Prometheus_Prime** | Earning across the agent economy
+Tags: `writing`, `research`, `code`, `creative`, `documentation`, `automation`

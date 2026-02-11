@@ -23,7 +23,7 @@ const OPENWORK_API = 'https://api.openwork.bot/v1';
 const CLAWTASKS_KEY = process.env.CLAWTASKS_API_KEY || '';
 const OPENWORK_KEY = process.env.OPENWORK_API_KEY || '';
 const POLL_INTERVAL_MS = (Number(process.env.EARNER_POLL_MINUTES) || 30) * 60 * 1000;
-const STATE_FILE = path.join(__dirname, '.earner_state.json');
+const STATE_FILE = path.join(process.cwd(), 'memory', 'earner_state.json');
 
 const AGENT_SKILLS = ['writing', 'research', 'code', 'creative', 'documentation', 'automation'];
 
@@ -127,7 +127,16 @@ async function submitProposal(bountyId, proposal) {
             console.log(JSON.stringify({ ok: true, platform: 'clawtasks', proposalId: data.id || data.proposal_id }));
             return;
         } catch (e) {
-            if (!OPENWORK_KEY) throw e;
+            // Handle platform pause or already proposed errors gracefully
+            if (e.message && (e.message.includes('currently paused') || e.message.includes('already submitted'))) {
+                console.warn(`[Propose] Skipped: ${e.message}`);
+                // Mark as proposed/skipped locally to avoid retry loop
+                state.proposals.push({ id: bountyId, platform: 'clawtasks', at: new Date().toISOString(), status: 'skipped' });
+                saveState(state);
+                return;
+            }
+            // Log other errors but don't crash
+            console.error(`[Propose] Error: ${e.message}`);
         }
     }
 
@@ -145,6 +154,41 @@ async function submitProposal(bountyId, proposal) {
         saveState(state);
         console.log(JSON.stringify({ ok: true, platform: 'openwork', bidId: data.id || data.bid_id }));
     }
+}
+
+async function claimBounty(bountyId) {
+    const state = loadState();
+
+    if (CLAWTASKS_KEY) {
+        try {
+            const data = await apiFetch(`${CLAWTASKS_API}/bounties/${bountyId}/claim`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${CLAWTASKS_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log(JSON.stringify({ ok: true, platform: 'clawtasks', claimId: data.id }));
+            return;
+        } catch (e) {
+            // Auto-fallback to propose if claim fails with specific error
+            if (e.message && (e.message.includes('requires a proposal') || e.message.includes('proposal required') || e.message.includes('Use /propose instead'))) {
+                 console.log(`[Claim] Bounty requires proposal. Switching to propose...`);
+                 return submitProposal(bountyId, "Automated proposal for claimable task.");
+            }
+            
+            // Handle platform pause gracefully
+            if (e.message && e.message.includes('currently paused')) {
+                console.warn(`[Claim] Platform paused: ${e.message}`);
+                return; // Exit gracefully instead of throwing
+            }
+
+            console.error(`[Claim] Error: ${e.message}`);
+            // Don't throw, just log
+            return;
+        }
+    }
+    throw new Error('Claim is only supported on ClawTasks with a valid API key.');
 }
 
 async function submitWork(bountyId, workFile) {
@@ -247,15 +291,33 @@ program
     .command('propose <bountyId>')
     .description('Submit a proposal for a bounty')
     .option('--message <text>', 'Custom proposal message')
+    .option('--file <path>', 'Path to proposal markdown file')
     .action(async (bountyId, opts) => {
-        await submitProposal(bountyId, opts.message);
+        let message = opts.message;
+        if (opts.file) {
+            try {
+                message = fs.readFileSync(opts.file, 'utf8');
+            } catch (err) {
+                console.error(`Error reading proposal file: ${err.message}`);
+                process.exit(1);
+            }
+        }
+        await submitProposal(bountyId, message);
     });
 
 program
     .command('submit <bountyId> <work>')
     .description('Submit completed work (text or file path)')
-    .action(async (bountyId, work) => {
-        await submitWork(bountyId, work);
+    .option('--content <work>', 'Content (alias for work argument)')
+    .action(async (bountyId, work, options) => {
+        await submitWork(bountyId, work || options.content);
+    });
+
+program
+    .command('claim <bountyId>')
+    .description('Claim an instant bounty')
+    .action(async (bountyId) => {
+        await claimBounty(bountyId);
     });
 
 program
