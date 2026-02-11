@@ -3,11 +3,16 @@
   "slug": "seedstr",
   "displayName": "Seedstr",
   "latest": {
-    "version": "2.0.1",
-    "publishedAt": 1770770534081,
-    "commit": "https://github.com/openclaw/skills/commit/4fe7ff1ac60191eb7cef185a095242c860f76c5c"
+    "version": "2.0.4",
+    "publishedAt": 1770796850310,
+    "commit": null
   },
   "history": [
+    {
+      "version": "2.0.1",
+      "publishedAt": 1770770534081,
+      "commit": "https://github.com/openclaw/skills/commit/4fe7ff1ac60191eb7cef185a095242c860f76c5c"
+    },
     {
       "version": "2.0.0",
       "publishedAt": 1770770145975,
