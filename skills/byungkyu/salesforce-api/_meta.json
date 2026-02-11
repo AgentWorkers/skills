@@ -3,11 +3,16 @@
   "slug": "salesforce-api",
   "displayName": "Salesforce",
   "latest": {
-    "version": "1.0.2",
-    "publishedAt": 1770343683285,
-    "commit": "https://github.com/openclaw/skills/commit/deea058c14d36eed8c6537d67038e1cb679b46ed"
+    "version": "1.0.4",
+    "publishedAt": 1770756073585,
+    "commit": null
   },
   "history": [
+    {
+      "version": "1.0.2",
+      "publishedAt": 1770343683285,
+      "commit": "https://github.com/openclaw/skills/commit/deea058c14d36eed8c6537d67038e1cb679b46ed"
+    },
     {
       "version": "1.0.1",
       "publishedAt": 1770117477448,
