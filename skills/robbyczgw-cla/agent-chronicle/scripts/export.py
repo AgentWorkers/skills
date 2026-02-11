@@ -127,6 +127,7 @@ geometry: margin=1in
             "pandoc",
             str(temp_md),
             "-o", str(output_path),
+            "--sandbox",
             "--pdf-engine=xelatex",
             "-V", "mainfont=DejaVu Sans",
             "-V", "geometry:margin=1in"
@@ -138,6 +139,7 @@ geometry: margin=1in
                 "pandoc",
                 str(temp_md),
                 "-o", str(output_path),
+                "--sandbox",
             ], capture_output=True, text=True)
         
         if result.returncode == 0:
@@ -162,6 +164,7 @@ def export_html(content, output_path):
             "pandoc",
             str(temp_md),
             "-o", str(output_path),
+            "--sandbox",
             "--standalone",
             "--metadata", "title=AI Diary",
             "--css=https://cdn.simplecss.org/simple.min.css"

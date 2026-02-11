@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.6.1 — 2026-02-11
+
+- Added `.gitignore` to exclude cache, config, and export files
+- Updated metadata to openclaw format
+- Documentation consistency updates
+
 ## v0.6.0 — 2026-02-05
 
 - **Architecture:** removed raw HTTP calls to the Gateway from `scripts/generate.py`.

@@ -1,13 +1,18 @@
 {
   "owner": "robbyczgw-cla",
   "slug": "agent-chronicle",
-  "displayName": "Agent Chronicle Github",
+  "displayName": "Agent Chronicle",
   "latest": {
-    "version": "0.6.0",
-    "publishedAt": 1770287572767,
-    "commit": "https://github.com/clawdbot/skills/commit/301d2f59b287d87956aceb5bddea63c85c034825"
+    "version": "0.6.2",
+    "publishedAt": 1770801911887,
+    "commit": null
   },
   "history": [
+    {
+      "version": "0.6.0",
+      "publishedAt": 1770287572767,
+      "commit": "https://github.com/clawdbot/skills/commit/301d2f59b287d87956aceb5bddea63c85c034825"
+    },
     {
       "version": "0.5.0",
       "publishedAt": 1770245696009,
