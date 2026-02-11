@@ -1,0 +1,11 @@
+{
+  "owner": "netmsglog",
+  "slug": "reddit-explore",
+  "displayName": "Reddit Explore",
+  "latest": {
+    "version": "0.0.3",
+    "publishedAt": 1770783746310,
+    "commit": null
+  },
+  "history": []
+}
