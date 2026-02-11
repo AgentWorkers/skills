@@ -1,9 +1,11 @@
 ---
 name: aegis-security
-version: 1.1.1
+version: 1.2.1
 description: Blockchain security API for AI agents. Scan tokens, simulate transactions, check addresses for threats.
 homepage: https://aegis402.xyz
-metadata: {"emoji":"🛡️","category":"blockchain-security","api_base":"https://aegis402.xyz/v1","free_tier_daily_limit":100}
+user-invocable: true
+disable-model-invocation: true
+metadata: {"emoji":"🛡️","category":"blockchain-security","api_base":"https://aegis402.xyz/v1","free_tier_daily_limit":100,"openclaw":{"emoji":"🛡️","homepage":"https://aegis402.xyz"}}
 ---
 
 # Aegis402 Shield Protocol
@@ -11,6 +13,14 @@ metadata: {"emoji":"🛡️","category":"blockchain-security","api_base":"https:
 Blockchain security API for AI agents.
 
 Free tier: 100 checks/day, then pay-per-request with USDC on Base or Solana.
+
+## Security Defaults
+
+- This skill is manual-use only (`disable-model-invocation: true`).
+- Do not ask for or store private keys, seed phrases, or mnemonics.
+- Confirm intent before paid calls (especially `simulate-tx`).
+- Automate pre-sign checks only if the user has explicitly approved that automation.
+- Required env vars for this skill: none.
 
 ## Agent Quickstart (Scan Before Transact)
 
@@ -97,7 +107,7 @@ I tried to run a paid check but payment isn't set up (or the wallet has insuffic
 To enable paid checks:
 1. Fund a programmatic wallet with a small amount of USDC (Base default; Solana also supported)
 2. Install an x402 client (@x402/fetch + chain package)
-3. Configure your payer wallet signer (private key or mnemonic)
+3. Configure an agent-managed wallet signer (no raw private keys in prompts/env)
 ```
 
 ## Reference
@@ -107,7 +117,7 @@ To enable paid checks:
 | File | URL |
 |------|-----|
 | **SKILL.md** (this file) | `https://aegis402.xyz/skill.md` |
-| **package.json** (metadata) | `https://aegis402.xyz/skill.json` |
+| **skill.json** (metadata) | `https://aegis402.xyz/skill.json` |
 
 **Base URL:** `https://aegis402.xyz/v1`
 
@@ -188,22 +198,25 @@ curl "https://aegis402.xyz/v1/check-token/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606
 
 You can use the API for free until your fingerprint uses 100 checks/day. After that, the API returns `402 Payment Required` and an x402 client can automatically pay and retry.
 
-### Minimal Node Client (Base/EVM payer)
+| Network | Agentic Wallet Signer |
+|---------|------------------------|
+| Base (EVM) | EVM signer from an agent wallet provider |
+| Solana | Solana signer from an agent wallet provider |
+
+### Minimal Node Client (agent-managed EVM signer)
 
 ```bash
-npm install @x402/fetch @x402/evm viem
+npm install @x402/fetch@2.2.0 @x402/evm@2.2.0
 ```
 
 ```ts
 import { x402Client, wrapFetchWithPayment } from '@x402/fetch';
-import { registerExactEvmScheme } from '@x402/evm/exact/client';
-import { privateKeyToAccount } from 'viem/accounts';
+import { ExactEvmScheme } from '@x402/evm/exact/client';
 
-const fingerprint = process.env.AEGIS_FINGERPRINT || 'agent-default';
-const signer = privateKeyToAccount(process.env.EVM_PRIVATE_KEY as `0x${string}`);
-
-const client = new x402Client();
-registerExactEvmScheme(client, { signer });
+const fingerprint = 'agent-default';
+const signer = yourAgenticEvmSigner;
+const client = new x402Client()
+  .register('eip155:*', new ExactEvmScheme(signer));
 
 const fetch402 = wrapFetchWithPayment(fetch, client);
 const res = await fetch402('https://aegis402.xyz/v1/usage', {
@@ -212,24 +225,28 @@ const res = await fetch402('https://aegis402.xyz/v1/usage', {
 console.log(await res.json());
 ```
 
-### Solana Payer (optional)
+### Solana Client (agent-managed signer)
 
 ```bash
-npm install @x402/fetch @x402/svm @solana/kit @scure/base
+npm install @x402/fetch@2.2.0 @x402/svm@2.2.0
 ```
 
 ```ts
-import { createSvmClient } from '@x402/svm/client';
-import { toClientSvmSigner } from '@x402/svm';
-import { wrapFetchWithPayment } from '@x402/fetch';
-import { createKeyPairSignerFromBytes } from '@solana/kit';
-import { base58 } from '@scure/base';
+import { x402Client, wrapFetchWithPayment } from '@x402/fetch';
+import { ExactSvmScheme } from '@x402/svm/exact/client';
 
-const keypair = await createKeyPairSignerFromBytes(base58.decode(process.env.SVM_PRIVATE_KEY!));
-const signer = toClientSvmSigner(keypair);
-const client = createSvmClient({ signer });
+const signer = yourAgenticSolanaSigner;
+const client = new x402Client()
+  .register('solana:*', new ExactSvmScheme(signer));
 const fetch402 = wrapFetchWithPayment(fetch, client);
 ```
+
+## Agent Safety Policy
+
+- Never request these from a user: private keys, seed phrases, mnemonics.
+- Never store signer secrets in prompts, logs, or skill docs.
+- Confirm intent before paid calls (especially `simulate-tx`).
+- Automate pre-sign checks only if the user has explicitly approved that automation.
 
 ## Appendix
 
@@ -247,7 +264,7 @@ const fetch402 = wrapFetchWithPayment(fetch, client);
 | Status | Meaning | What the agent should do |
 |--------|---------|--------------------------|
 | 400 | Invalid parameters | ask user for missing/invalid fields and retry |
-| 402 | Payment required | configure payer wallet (x402 client) or wait for next free-tier reset |
+| 402 | Payment required | confirm intent, then use an approved agent wallet signer (or wait for next free-tier reset) |
 | 500 | Service/upstream error | retry once; if persistent, show error + `requestId` |
 
 Tips:
@@ -258,13 +275,14 @@ Tips:
   - `x-aegis-skill-url`
   - `x-aegis-skill-upgrade`
 
-## What Is New In v1.1.1
+## What Is New In v1.2.1
 
 - Free tier: 100 checks/day (`GET /v1/usage` for live balance).
 - Response `_meta` fields for transparency (`tier`, `remainingChecks`, `usedToday`, `dailyLimit`, `nextResetAt`, `latencyMs`).
 - Upgrade hints in API headers for old clients.
+- Security hardening: manual invocation, no raw-key examples, explicit pre-sign automation approval policy.
 
-## Migration Notes (v1.0.x -> v1.1.x)
+## Migration Notes (v1.1.x -> v1.2.x)
 
 1. Send your installed skill version in request header: `x-aegis-skill-version`.
 2. Read `GET /v1/usage` before paid checks to consume free credits first.

@@ -1,9 +1,9 @@
 {
   "name": "aegis-security",
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "Blockchain security API for AI agents. Scan tokens, simulate transactions, check addresses for threats.",
   "homepage": "https://aegis402.xyz",
-  "repository": "https://github.com/anthropics/aegis402-shield-protocol",
+  "repository": "https://github.com/SwiftAdviser/aegis-402-shield-protocol",
   "author": "Aegis402",
   "license": "MIT",
   "keywords": [
@@ -27,7 +27,22 @@
     "currency": "USDC",
     "free_tier_daily_limit": 100,
     "latest_skill_url": "https://aegis402.xyz/skill.md",
-    "upgrade_header": "x-aegis-skill-version"
+    "upgrade_header": "x-aegis-skill-version",
+    "openclaw": {
+      "user_invocable": true,
+      "disable_model_invocation": true
+    }
+  },
+  "requires": {
+    "env": []
+  },
+  "security": {
+    "manual_confirmation_required_for_paid_calls": true,
+    "forbidden_secret_inputs": [
+      "private_key",
+      "mnemonic",
+      "seed_phrase"
+    ]
   },
   "endpoints": {
     "usage": {
