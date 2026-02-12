@@ -1,6 +1,6 @@
 # @arkade-os/skill
 
-Arkade SDK skills for agent integration - send and receive Bitcoin over Arkade, onchain via onboard/offboard, Lightning Network via Boltz, and swap USDC/USDT via LendaSwap.
+Arkade skills for agent integration - send and receive Bitcoin over Arkade, onchain via onboard/offboard, Lightning Network via Boltz, and swap USDC/USDT via LendaSwap.
 
 ## Features
 
@@ -89,7 +89,7 @@ const lightning = new ArkaLightningSkill({ wallet, network: "bitcoin" });
 const invoice = await lightning.createInvoice({ amount: 25000 });
 
 // Stablecoin swaps
-const lendaswap = new LendaSwapSkill({ wallet, apiKey: "..." });
+const lendaswap = new LendaSwapSkill({ wallet });
 const quote = await lendaswap.getQuoteBtcToStablecoin(100000, "usdc_pol");
 ```
 
@@ -127,7 +127,6 @@ const quote = await lendaswap.getQuoteBtcToStablecoin(100000, "usdc_pol");
 ## Configuration
 
 - **Data:** `~/.arkade-wallet/config.json`
-- **Env:** `LENDASWAP_API_KEY` for stablecoin swaps
 
 ## Documentation
 

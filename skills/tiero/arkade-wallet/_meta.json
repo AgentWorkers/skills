@@ -3,9 +3,15 @@
   "slug": "arkade-wallet",
   "displayName": "Bitcoin and Tether on Arkade",
   "latest": {
-    "version": "1.0.1",
-    "publishedAt": 1770518581553,
-    "commit": "https://github.com/openclaw/skills/commit/6ad741b3c7b22796af3cab88219e4faa5ab37734"
+    "version": "1.0.2",
+    "publishedAt": 1770857754771,
+    "commit": null
   },
-  "history": []
+  "history": [
+    {
+      "version": "1.0.1",
+      "publishedAt": 1770518581553,
+      "commit": "https://github.com/openclaw/skills/commit/6ad741b3c7b22796af3cab88219e4faa5ab37734"
+    }
+  ]
 }
