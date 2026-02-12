@@ -1,6 +1,6 @@
 ---
 name: veed-ugc
-description: Generate UGC-style promotional videos with AI lip-sync. Takes an image (person with product from Morpheus/Ad-Ready) and a brief, generates a script, and creates a video of the person speaking. Uses ElevenLabs for voice synthesis.
+description: Generate UGC-style promotional videos with AI lip-sync. Takes an image (person with product from Morpheus/Ad-Ready) and a script (pure dialogue), creates a video of the person speaking. Uses ElevenLabs for voice synthesis.
 ---
 
 # Veed-UGC
@@ -11,9 +11,8 @@ Generate UGC (User Generated Content) style promotional videos with AI lip-sync 
 
 Veed-UGC transforms static images into dynamic promotional videos:
 1. Takes a photo of a person with a product (from Morpheus or Ad-Ready)
-2. Receives a brief describing the tone and content
-3. Internally generates a script from the brief
-4. Creates a lip-synced video of the person speaking the script
+2. Receives a **script** (pure dialogue text)
+3. Creates a lip-synced video of the person speaking the script
 
 Perfect for creating authentic-feeling promotional content at scale.
 
@@ -27,39 +26,40 @@ Perfect for creating authentic-feeling promotional content at scale.
 | Input | Description | Example |
 |-------|-------------|---------|
 | `image` | URL of person+product image | Output from Morpheus/Ad-Ready |
-| `brief` | Tone and content direction | "Tono: Argentino informal, promocionando el speaker Sonos como el mejor regalo para papá" |
+| `script` | Pure dialogue text | `"Hola che! Cómo anda todo por allá?"` |
 | `voice_id` | ElevenLabs voice ID | Default: `PBi4M0xL4G7oVYxKgqww` |
 
-## Brief Guidelines
+## ⚠️ CRITICAL: Script Format
 
-The brief should include:
-- **Tone**: The speaking style (informal, profesional, entusiasta, etc.)
-- **Language/Accent**: Regional flavor (Argentino, Mexicano, Español neutro, etc.)
-- **Content direction**: What should the person talk about
-- **Call to action**: What action to promote (optional)
+The `script` input must be **PURE DIALOGUE ONLY**:
 
-### Example Briefs
-
-**Casual Argentine promotion:**
+✅ **CORRECT:**
 ```
-Tono: Argentino informal, como hablando con un amigo.
-Promocionar el speaker Sonos Move como el regalo perfecto para el día del padre.
-Mencionar la portabilidad y el sonido premium.
+Hola che! Cómo anda todo por allá? Mirá esto que acabo de probar, una locura total.
 ```
 
-**Professional product review:**
+❌ **WRONG - No annotations:**
 ```
-Tono: Profesional pero cercano, español neutro.
-Review del producto destacando calidad de construcción y diseño.
-Enfocarse en por qué vale la inversión.
+[Entusiasta] Hola che! (pausa) Cómo anda?
 ```
 
-**Enthusiastic unboxing style:**
+❌ **WRONG - No tone directions:**
 ```
-Tono: Entusiasta, como influencer de tech.
-Reacción al recibir el producto, destacar el packaging y primeras impresiones.
-Incluir call to action para seguir el canal.
+Tono argentino informal: Hola che!
 ```
+
+❌ **WRONG - No stage directions:**
+```
+*sonríe* Hola che! *levanta el producto*
+```
+
+❌ **WRONG - No titles/labels:**
+```
+ESCENA 1:
+Hola che!
+```
+
+**Just write exactly what the person should say. Nothing else.**
 
 ## Voice IDs (ElevenLabs)
 
@@ -67,14 +67,14 @@ Incluir call to action para seguir el canal.
 |-------|-----|-------------|
 | Default | `PBi4M0xL4G7oVYxKgqww` | Main voice |
 
-*More voices coming soon*
+*More voices can be added from ElevenLabs*
 
 ## Usage
 
 ```bash
 uv run ~/.clawdbot/skills/veed-ugc/scripts/generate.py \
   --image "https://example.com/person-with-product.png" \
-  --brief "Tono: Argentino informal, promocionando el producto" \
+  --script "Hola! Les quiero mostrar este producto increíble que acabo de probar." \
   --output "ugc-video.mp4"
 ```
 
@@ -82,9 +82,29 @@ uv run ~/.clawdbot/skills/veed-ugc/scripts/generate.py \
 ```bash
 uv run ~/.clawdbot/skills/veed-ugc/scripts/generate.py \
   --image "./morpheus-output.png" \
-  --brief "Tono: Entusiasta, review del producto" \
+  --script "Mirá, yo antes no usaba esto pero ahora no puedo vivir sin él." \
   --voice-id "PBi4M0xL4G7oVYxKgqww" \
   --output "promo-video.mp4"
+```
+
+## Direct API Call
+
+```javascript
+const response = await fetch("https://api.comfydeploy.com/api/run/deployment/queue", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer YOUR_API_KEY"
+  },
+  body: JSON.stringify({
+    "deployment_id": "627c8fb5-1285-4074-a17c-ae54f8a5b5c6",
+    "inputs": {
+      "image": "/* put your image url here */",
+      "voice_id": "PBi4M0xL4G7oVYxKgqww",
+      "script": "Hola che! Cómo anda todo por allá?"
+    }
+  })
+});
 ```
 
 ## Workflow Integration
@@ -96,28 +116,23 @@ uv run ~/.clawdbot/skills/veed-ugc/scripts/generate.py \
    uv run morpheus... --output product-shot.png
    ```
 
-2. **Create UGC video from the image**
+2. **Write the script** (pure dialogue)
+
+3. **Create UGC video from the image**
    ```bash
-   uv run veed-ugc... --image product-shot.png --brief "..." --output promo.mp4
+   uv run veed-ugc... --image product-shot.png --script "..." --output promo.mp4
    ```
-
-### Batch Production
-
-For campaign production, generate multiple variations:
-- Different briefs (different angles/messages)
-- Different voice IDs (different personas)
-- Different source images (different models/settings)
 
 ## Output
 
 The workflow outputs an MP4 video file with:
 - The original image animated with lip-sync
-- AI-generated voiceover based on the brief
+- AI-generated voiceover from the script
 - Natural head movements and expressions
 
 ## Notes
 
 - Image should clearly show a person's face (frontal or 3/4 view works best)
-- Brief is transformed into a script internally - keep it directional, not literal
-- Video length depends on the generated script
+- Script is spoken **exactly as written** - no interpretation
+- Video length depends on script length
 - Processing time: ~2-5 minutes depending on script length

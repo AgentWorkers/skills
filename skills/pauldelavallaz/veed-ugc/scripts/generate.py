@@ -9,7 +9,7 @@
 Generate UGC-style promotional videos with AI lip-sync using Veed-UGC workflow.
 
 Usage:
-    uv run generate.py --image person.jpg --brief "Tono: Argentino informal" --output video.mp4
+    uv run generate.py --image person.jpg --script "Hola! Les quiero mostrar esto." --output video.mp4
 """
 
 import argparse
@@ -187,7 +187,7 @@ def main():
     
     # Required inputs
     parser.add_argument("--image", "-i", required=True, help="Image path or URL (person with product)")
-    parser.add_argument("--brief", "-b", required=True, help="Brief describing tone and content")
+    parser.add_argument("--script", "-s", required=True, help="Pure dialogue text (no annotations, just what the person says)")
     parser.add_argument("--output", "-o", required=True, help="Output video filename")
     
     # Optional inputs
@@ -219,13 +219,13 @@ def main():
         # Build inputs
         inputs = {
             "image": image_url,
-            "brief": args.brief,
+            "script": args.script,
             "voice_id": args.voice_id
         }
         
         print(f"\nInputs:")
         print(f"  Image: {image_url}")
-        print(f"  Brief: {args.brief[:100]}{'...' if len(args.brief) > 100 else ''}")
+        print(f"  Script: {args.script[:100]}{'...' if len(args.script) > 100 else ''}")
         print(f"  Voice ID: {args.voice_id}")
         
         # Queue run
