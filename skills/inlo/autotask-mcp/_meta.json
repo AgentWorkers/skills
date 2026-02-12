@@ -1,0 +1,11 @@
+{
+  "owner": "inlo",
+  "slug": "autotask-mcp",
+  "displayName": "Autotask MCP Server",
+  "latest": {
+    "version": "1.0.1",
+    "publishedAt": 1770827557282,
+    "commit": null
+  },
+  "history": []
+}
