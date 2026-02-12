@@ -22,6 +22,18 @@ On `agent:bootstrap`:
 4. Generates `NIMA_STATUS.md` with memory count and system info
 5. Injects into `bootstrapFiles` so the agent knows its memory state
 
+## Important: Capture vs. Bootstrap
+
+**This hook does NOT capture memories.** It only:
+- ✅ Injects memory status at session start
+- ✅ Enables memory recall
+
+**For memory capture, use:**
+- Manual: `nima.capture()` or `nima.experience()`
+- Automatic: Heartbeat service (every 10 min)
+
+**Note:** Per-message auto-capture requires `message:received` event — not yet available in OpenClaw.
+
 ## Requirements
 
 - `workspace.dir` must be configured

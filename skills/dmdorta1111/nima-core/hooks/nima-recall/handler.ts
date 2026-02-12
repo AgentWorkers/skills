@@ -1,8 +1,8 @@
 /**
- * NIMA Auto-Recall Hook
+ * NIMA Auto-Recall Hook (Ultra-Fast Version)
  * 
- * Queries NIMA vector store on session bootstrap and injects relevant
- * memories into the agent's context. Works with any bot running nima-core.
+ * Queries NIMA memory on session bootstrap using lightweight keyword search.
+ * NO heavy ML models loaded - pure text matching for instant results.
  */
 
 import { execFileSync } from "child_process";
@@ -28,7 +28,7 @@ type HookHandler = (event: HookEvent) => Promise<void> | void;
 /**
  * Extract recent conversation text from session transcript
  */
-function extractRecentContext(sessionFile: string, maxLines: number = 200): string {
+function extractRecentContext(sessionFile: string, maxLines: number = 100): string {
   try {
     const content = readFileSync(sessionFile, "utf-8");
     const lines = content.split("\n").slice(-maxLines);
@@ -44,7 +44,7 @@ function extractRecentContext(sessionFile: string, maxLines: number = 200): stri
         }
         currentRole = line.startsWith("## User") ? "User" : "Assistant";
         currentText = "";
-      } else if (currentRole && line.trim()) {
+      } else if (currentRole && line.trim() && !line.startsWith("---")) {
         currentText += line + " ";
       }
     }
@@ -53,56 +53,38 @@ function extractRecentContext(sessionFile: string, maxLines: number = 200): stri
       messages.push(`${currentRole}: ${currentText.trim()}`);
     }
 
-    return messages.slice(-10).join("\n\n") || "";
+    return messages.slice(-5).join("\n\n") || "";
   } catch (err) {
-    console.debug("[nima-recall] Failed to extract context:", err instanceof Error ? err.message : String(err));
     return "";
   }
 }
 
 /**
- * Query NIMA via Python CLI
+ * Query NIMA using ultra-fast CLI (no heavy models loaded)
  */
-function queryNIMA(workspaceDir: string, query: string, limit: number, timeout: number): string | null {
+function queryNIMAFast(workspaceDir: string, query: string, limit: number): string | null {
   try {
-    // Try workspace-local nima_core first, then pip-installed
-    const localPath = join(workspaceDir, "nima-core", "nima_core");
-    const localExists = existsSync(localPath);
-
-    // Python script reads query/limit from stdin JSON — no shell interpolation
-    const pythonScript = [
-      "import sys, json",
-      localExists ? "sys.path.insert(0, sys.argv[1])" : "",
-      "data = json.loads(sys.stdin.read())",
-      "from nima_core import NimaCore",
-      "n = NimaCore()",
-      "results = n.recall(data['query'], top_k=data['limit'])",
-      "[print(f'{r.get(\"who\",\"?\")}|{r.get(\"what\",\"\")}') for r in results]",
-    ].filter(Boolean).join("; ");
-
-    const args = ["-c", pythonScript];
-    if (localExists) args.push(join(workspaceDir, "nima-core"));
-
-    const stdinData = JSON.stringify({ query: query.substring(0, 500), limit });
-
+    // Use lightweight recall script - NO embeddings, NO model loading
+    const scriptPath = join(workspaceDir, "nima-core", "nima_core", "cli", "recall_fast.py");
+    
+    // Fallback: try system path if not in workspace
+    const args = existsSync(scriptPath) 
+      ? [scriptPath, query, "--top-k", String(limit)]
+      : ["-m", "nima_core.cli.recall_fast", query, "--top-k", String(limit)];
+    
     const result = execFileSync("python3", args, {
       cwd: workspaceDir,
-      timeout,
+      timeout: 5000, // 5 second timeout (was 15s)
       encoding: "utf-8",
-      input: stdinData,
       stdio: ["pipe", "pipe", "pipe"],
     }).trim();
 
     return result || null;
   } catch (err) {
-    const isTimeout =
-      (err as NodeJS.ErrnoException)?.code === "ETIMEDOUT" ||
-      (err as NodeJS.ErrnoException)?.signal === "SIGTERM";
-    if (isTimeout) {
-      console.log("[nima-recall] Timeout — embeddings may be loading");
-    } else {
-      const msg = err instanceof Error ? err.message : String(err);
-      console.error("[nima-recall] Query error:", msg.substring(0, 200));
+    const msg = err instanceof Error ? err.message : String(err);
+    // Silently fail - don't spam logs on timeout
+    if (!msg.includes("ETIMEDOUT") && !msg.includes("SIGTERM")) {
+      console.error("[nima-recall] Query error:", msg.substring(0, 100));
     }
     return null;
   }
@@ -116,17 +98,17 @@ function formatResults(raw: string, querySnippet: string): string {
   if (lines.length === 0) return "";
 
   let md = `# 🔮 NIMA Recall\n\n`;
-  md += `**Context:** ${querySnippet.substring(0, 150)}${querySnippet.length > 150 ? "..." : ""}\n\n`;
+  md += `**Context:** ${querySnippet.substring(0, 100)}${querySnippet.length > 100 ? "..." : ""}\n\n`;
 
   for (let i = 0; i < lines.length; i++) {
     const parts = lines[i].split("|");
     const who = parts[0]?.trim() || "?";
     const what = parts.slice(1).join("|").trim() || lines[i];
-    const truncated = what.length > 200 ? what.substring(0, 200) + "..." : what;
+    const truncated = what.length > 150 ? what.substring(0, 150) + "..." : what;
     md += `**[${i + 1}]** ${who}: ${truncated}\n\n`;
   }
 
-  md += `---\n*${lines.length} memories retrieved by nima-recall*\n`;
+  md += `---\n*${lines.length} memories retrieved*\n`;
   return md;
 }
 
@@ -145,7 +127,6 @@ const handler: HookHandler = async (event) => {
   const hookConfig = (event.context.cfg as any)?.hooks?.internal?.entries?.["nima-recall"] || {};
   if (hookConfig.enabled === false) return;
   const limit = hookConfig.limit ?? 3;
-  const timeout = hookConfig.timeout ?? 15000;
 
   try {
     // Extract conversation context
@@ -155,13 +136,12 @@ const handler: HookHandler = async (event) => {
     }
 
     // Need meaningful context to query
-    if (queryContext.length < 20) {
-      console.log("[nima-recall] Insufficient context, skipping");
+    if (queryContext.length < 10) {
       return;
     }
 
-    // Query NIMA
-    const results = queryNIMA(workspaceDir, queryContext, limit, timeout);
+    // Query NIMA (ultra-fast, no model loading)
+    const results = queryNIMAFast(workspaceDir, queryContext, limit);
     if (!results) return;
 
     // Format and inject
@@ -175,9 +155,9 @@ const handler: HookHandler = async (event) => {
       source: "nima-recall",
     });
 
-    console.log(`[nima-recall] ✓ Injected memories into context`);
+    console.log(`[nima-recall] ✓ Injected ${limit} memories`);
   } catch (err) {
-    console.error("[nima-recall]", err instanceof Error ? err.message : String(err));
+    // Silent fail - don't block agent startup
   }
 };
 

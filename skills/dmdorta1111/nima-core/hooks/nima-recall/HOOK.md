@@ -21,9 +21,17 @@ On `agent:bootstrap`:
 3. Queries NIMA with semantic search
 4. Injects top N relevant memories as `NIMA_RECALL.md` in bootstrapFiles
 
-## Why This Matters
+## Important: Recall vs. Capture
 
-NIMA stores episodic memories, but they're only useful if queried. This hook ensures relevant memories are automatically surfaced when conversations start, providing continuity across sessions.
+**This hook does NOT capture memories.** It only:
+- ✅ Recalls existing memories on session start
+- ✅ Provides continuity across sessions
+
+**For memory capture, use:**
+- Manual: `nima.capture()` or `nima.experience()`
+- Automatic: Heartbeat service (every 10 min)
+
+**Note:** Per-message auto-capture requires `message:received` event — not yet available in OpenClaw.
 
 ## Requirements
 

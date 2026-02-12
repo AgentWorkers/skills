@@ -153,6 +153,54 @@ class NimaCore:
                 )
             except Exception as e:
                 logger.warning(f"Metacognitive init failed: {e}")
+        
+        # DARING Engine (response modulation)
+        try:
+            from .cognition.daring_engine import DaringEngine
+            self._daring = DaringEngine(
+                affective_core=self._affective if hasattr(self, '_affective') else None,
+                data_dir=str(self._data_dir / 'daring')
+            )
+            logger.info("DARING Engine initialized")
+        except Exception as e:
+            logger.warning(f"DARING Engine init failed: {e}")
+            self._daring = None
+        
+        # COURAGE Engine (fear-overcoming modulation)
+        try:
+            from .cognition.courage_engine import CourageEngine
+            self._courage = CourageEngine(
+                affective_core=self._affective if hasattr(self, '_affective') else None,
+                data_dir=str(self._data_dir / 'courage')
+            )
+            logger.info("COURAGE Engine initialized")
+        except Exception as e:
+            logger.warning(f"COURAGE Engine init failed: {e}")
+            self._courage = None
+        
+        # NURTURING Engine (patient guidance & mentoring)
+        try:
+            from .cognition.nurturing_engine import NurturingEngine
+            self._nurturing = NurturingEngine(
+                affective_core=self._affective if hasattr(self, '_affective') else None,
+                data_dir=str(self._data_dir / 'nurturing')
+            )
+            logger.info("NURTURING Engine initialized")
+        except Exception as e:
+            logger.warning(f"NURTURING Engine init failed: {e}")
+            self._nurturing = None
+        
+        # MASTERY Engine (skill development & flow state)
+        try:
+            from .cognition.mastery_engine import MasteryEngine
+            self._mastery = MasteryEngine(
+                affective_core=self._affective if hasattr(self, '_affective') else None,
+                data_dir=str(self._data_dir / 'mastery')
+            )
+            logger.info("MASTERY Engine initialized")
+        except Exception as e:
+            logger.warning(f"MASTERY Engine init failed: {e}")
+            self._mastery = None
     
     def experience(
         self,
@@ -765,6 +813,341 @@ class NimaCore:
         
         scored.sort(key=lambda x: -x[0])
         return [m for _, m in scored[:top_k]]
+    
+    # ═══════════════════════════════════════════════════════════════
+    # DARING Engine — Variable Response Modulation
+    # ═══════════════════════════════════════════════════════════════
+    
+    def daring_analyze(self, message: str, context: Optional[Dict] = None) -> Dict:
+        """
+        Analyze message for DARING activation level.
+        
+        Args:
+            message: User message to analyze
+            context: Additional context (domain, history, etc.)
+            
+        Returns:
+            Dict with level, style, domain, confidence, reasons
+        """
+        if not hasattr(self, '_daring') or self._daring is None:
+            return {'error': 'DARING Engine not initialized'}
+        
+        analysis = self._daring.analyze_message(message, context)
+        return analysis.to_dict()
+    
+    def daring_register_domain(self, name: str, base_threshold: float = 0.50,
+                               triggers: Optional[List[str]] = None,
+                               affect_modifiers: Optional[Dict[str, float]] = None) -> Dict:
+        """
+        Register a custom domain with DARING parameters.
+        
+        Args:
+            name: Domain identifier
+            base_threshold: Starting DARING threshold (0-1)
+            triggers: Keywords that indicate this domain
+            affect_modifiers: Affect intensity modifiers
+            
+        Returns:
+            Registered domain profile
+        """
+        if not hasattr(self, '_daring') or self._daring is None:
+            return {'error': 'DARING Engine not initialized'}
+        
+        profile = self._daring.register_domain(name, base_threshold, triggers, affect_modifiers)
+        return {
+            'name': profile.name,
+            'base_threshold': profile.base_threshold,
+            'triggers': profile.triggers,
+            'affect_modifiers': profile.affect_modifiers
+        }
+    
+    def daring_record_outcome(self, analysis: Dict, success: bool, 
+                              user_feedback: Optional[str] = None) -> None:
+        """
+        Record DARING outcome for learning.
+        
+        Args:
+            analysis: DaringAnalysis dict from daring_analyze()
+            success: Whether the DARING response was successful
+            user_feedback: Optional user feedback
+        """
+        if not hasattr(self, '_daring') or self._daring is None:
+            return
+        
+        from .cognition.daring_engine import DaringAnalysis, ResponseStyle
+        
+        # Reconstruct analysis object
+        analysis_obj = DaringAnalysis(
+            level=analysis.get('level', 0.5),
+            style=ResponseStyle(analysis.get('style', 'balanced')),
+            domain=analysis.get('domain', 'default'),
+            confidence=analysis.get('confidence', 0.5),
+            activation_reasons=analysis.get('activation_reasons', []),
+            affect_contributions=analysis.get('affect_contributions', {})
+        )
+        
+        self._daring.record_outcome(analysis_obj, success, user_feedback)
+    
+    def daring_stats(self) -> Dict:
+        """Get DARING Engine statistics."""
+        if not hasattr(self, '_daring') or self._daring is None:
+            return {'error': 'DARING Engine not initialized'}
+        
+        return self._daring.get_stats()
+    
+    # ═══════════════════════════════════════════════════════════════
+    # COURAGE Engine — Fear-Overcoming Response Modulation
+    # ═══════════════════════════════════════════════════════════════
+    
+    def courage_analyze(self, message: str, context: Optional[Dict] = None) -> Dict:
+        """
+        Analyze message for COURAGE activation level.
+        
+        COURAGE is for feared-but-important tasks.
+        
+        Args:
+            message: User message to analyze
+            context: Additional context
+            
+        Returns:
+            Dict with level, style, domain, fear_level, importance
+        """
+        if not hasattr(self, '_courage') or self._courage is None:
+            return {'error': 'COURAGE Engine not initialized'}
+        
+        analysis = self._courage.analyze_message(message, context)
+        return analysis.to_dict()
+    
+    def courage_register_domain(self, name: str, base_threshold: float = 0.50,
+                                triggers: Optional[List[str]] = None,
+                                affect_modifiers: Optional[Dict[str, float]] = None) -> Dict:
+        """
+        Register a custom domain with COURAGE parameters.
+        
+        Args:
+            name: Domain identifier
+            base_threshold: Starting COURAGE threshold (0-1)
+            triggers: Keywords that indicate this domain
+            affect_modifiers: Affect intensity modifiers
+            
+        Returns:
+            Registered domain profile
+        """
+        if not hasattr(self, '_courage') or self._courage is None:
+            return {'error': 'COURAGE Engine not initialized'}
+        
+        profile = self._courage.register_domain(name, base_threshold, triggers, affect_modifiers)
+        return {
+            'name': profile.name,
+            'base_threshold': profile.base_threshold,
+            'triggers': profile.triggers,
+            'affect_modifiers': profile.affect_modifiers
+        }
+    
+    def courage_record_outcome(self, analysis: Dict, success: bool,
+                               user_feedback: Optional[str] = None) -> None:
+        """
+        Record COURAGE outcome for learning.
+        
+        Args:
+            analysis: CourageAnalysis dict from courage_analyze()
+            success: Whether the COURAGE response was successful
+            user_feedback: Optional user feedback
+        """
+        if not hasattr(self, '_courage') or self._courage is None:
+            return
+        
+        from .cognition.courage_engine import CourageAnalysis, ResponseStyle
+        
+        analysis_obj = CourageAnalysis(
+            level=analysis.get('level', 0.5),
+            style=ResponseStyle(analysis.get('style', 'cautious')),
+            domain=analysis.get('domain', 'default'),
+            confidence=analysis.get('confidence', 0.5),
+            activation_reasons=analysis.get('activation_reasons', []),
+            affect_contributions=analysis.get('affect_contributions', {}),
+            fear_level=analysis.get('fear_level', 0.3),
+            importance_level=analysis.get('importance_level', 0.5)
+        )
+        
+        self._courage.record_outcome(analysis_obj, success, user_feedback)
+    
+    def courage_stats(self) -> Dict:
+        """Get COURAGE Engine statistics."""
+        if not hasattr(self, '_courage') or self._courage is None:
+            return {'error': 'COURAGE Engine not initialized'}
+        
+        return self._courage.get_stats()
+    
+    # ═══════════════════════════════════════════════════════════════
+    # NURTURING Engine — Patient Guidance & Mentoring
+    # ═══════════════════════════════════════════════════════════════
+    
+    def nurturing_analyze(self, message: str, context: Optional[Dict] = None) -> Dict:
+        """
+        Analyze message for NURTURING activation level.
+        
+        NURTURING is for teaching, mentoring, caregiving —
+        situations requiring patience and sustained attention.
+        
+        Args:
+            message: User message to analyze
+            context: Additional context
+            
+        Returns:
+            Dict with level, style, domain, care_level, patience
+        """
+        if not hasattr(self, '_nurturing') or self._nurturing is None:
+            return {'error': 'NURTURING Engine not initialized'}
+        
+        analysis = self._nurturing.analyze_message(message, context)
+        return analysis.to_dict()
+    
+    def nurturing_register_domain(self, name: str, base_threshold: float = 0.50,
+                                  triggers: Optional[List[str]] = None,
+                                  affect_modifiers: Optional[Dict[str, float]] = None) -> Dict:
+        """
+        Register a custom domain with NURTURING parameters.
+        
+        Args:
+            name: Domain identifier
+            base_threshold: Starting NURTURING threshold (0-1)
+            triggers: Keywords that indicate this domain
+            affect_modifiers: Affect intensity modifiers
+            
+        Returns:
+            Registered domain profile
+        """
+        if not hasattr(self, '_nurturing') or self._nurturing is None:
+            return {'error': 'NURTURING Engine not initialized'}
+        
+        profile = self._nurturing.register_domain(name, base_threshold, triggers, affect_modifiers)
+        return {
+            'name': profile.name,
+            'base_threshold': profile.base_threshold,
+            'triggers': profile.triggers,
+            'affect_modifiers': profile.affect_modifiers
+        }
+    
+    def nurturing_record_outcome(self, analysis: Dict, success: bool,
+                                 user_feedback: Optional[str] = None) -> None:
+        """
+        Record NURTURING outcome for learning.
+        
+        Args:
+            analysis: NurturingAnalysis dict from nurturing_analyze()
+            success: Whether the NURTURING response was successful
+            user_feedback: Optional user feedback
+        """
+        if not hasattr(self, '_nurturing') or self._nurturing is None:
+            return
+        
+        from .cognition.nurturing_engine import NurturingAnalysis, ResponseStyle
+        
+        analysis_obj = NurturingAnalysis(
+            level=analysis.get('level', 0.5),
+            style=ResponseStyle(analysis.get('style', 'guiding')),
+            domain=analysis.get('domain', 'default'),
+            confidence=analysis.get('confidence', 0.5),
+            activation_reasons=analysis.get('activation_reasons', []),
+            affect_contributions=analysis.get('affect_contributions', {}),
+            care_level=analysis.get('care_level', 0.5),
+            patience_indicator=analysis.get('patience_indicator', 0.5)
+        )
+        
+        self._nurturing.record_outcome(analysis_obj, success, user_feedback)
+    
+    def nurturing_stats(self) -> Dict:
+        """Get NURTURING Engine statistics."""
+        if not hasattr(self, '_nurturing') or self._nurturing is None:
+            return {'error': 'NURTURING Engine not initialized'}
+        
+        return self._nurturing.get_stats()
+    
+    # ═══════════════════════════════════════════════════════════════════
+    # MASTERY Engine — Skill Development & Flow State
+    # ═══════════════════════════════════════════════════════════════════
+    
+    def mastery_analyze(self, message: str, context: Optional[Dict] = None) -> Dict:
+        """
+        Analyze message for MASTERY activation level.
+        
+        MASTERY is for skill development, flow states, and joyful competence.
+        
+        Args:
+            message: User message to analyze
+            context: Additional context
+            
+        Returns:
+            Dict with level, style, domain, play_level, challenge_match, progress
+        """
+        if not hasattr(self, '_mastery') or self._mastery is None:
+            return {'error': 'MASTERY Engine not initialized'}
+        
+        analysis = self._mastery.analyze_message(message, context)
+        return analysis.to_dict()
+    
+    def mastery_register_domain(self, name: str, base_threshold: float = 0.50,
+                                triggers: Optional[List[str]] = None,
+                                affect_modifiers: Optional[Dict[str, float]] = None) -> Dict:
+        """
+        Register a custom domain with MASTERY parameters.
+        
+        Args:
+            name: Domain identifier
+            base_threshold: Starting MASTERY threshold (0-1)
+            triggers: Keywords that indicate this domain
+            affect_modifiers: Affect intensity modifiers
+            
+        Returns:
+            Registered domain profile
+        """
+        if not hasattr(self, '_mastery') or self._mastery is None:
+            return {'error': 'MASTERY Engine not initialized'}
+        
+        profile = self._mastery.register_domain(name, base_threshold, triggers, affect_modifiers)
+        return {
+            'name': profile.name,
+            'base_threshold': profile.base_threshold,
+            'triggers': profile.triggers,
+            'affect_modifiers': profile.affect_modifiers
+        }
+    
+    def mastery_record_outcome(self, analysis: Dict, success: bool,
+                               user_feedback: Optional[str] = None) -> None:
+        """
+        Record MASTERY outcome for learning.
+        
+        Args:
+            analysis: MasteryAnalysis dict from mastery_analyze()
+            success: Whether the MASTERY response was successful
+            user_feedback: Optional user feedback
+        """
+        if not hasattr(self, '_mastery') or self._mastery is None:
+            return
+        
+        from .cognition.mastery_engine import MasteryAnalysis, ResponseStyle
+        
+        analysis_obj = MasteryAnalysis(
+            level=analysis.get('level', 0.5),
+            style=ResponseStyle(analysis.get('style', 'learning')),
+            domain=analysis.get('domain', 'default'),
+            confidence=analysis.get('confidence', 0.5),
+            activation_reasons=analysis.get('activation_reasons', []),
+            affect_contributions=analysis.get('affect_contributions', {}),
+            play_level=analysis.get('play_level', 0.5),
+            challenge_match=analysis.get('challenge_match', 0.5),
+            progress_indicator=analysis.get('progress_indicator', 0.5)
+        )
+        
+        self._mastery.record_outcome(analysis_obj, success, user_feedback)
+    
+    def mastery_stats(self) -> Dict:
+        """Get MASTERY Engine statistics."""
+        if not hasattr(self, '_mastery') or self._mastery is None:
+            return {'error': 'MASTERY Engine not initialized'}
+        
+        return self._mastery.get_stats()
     
     def _get_embedder(self):
         """Get or create embedder."""

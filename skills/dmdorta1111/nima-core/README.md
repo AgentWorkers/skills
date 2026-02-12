@@ -82,6 +82,53 @@ NIMA hooks into OpenClaw at two points:
 
 > **Note:** OpenClaw does not emit per-message hook events. Real-time capture happens through agent instructions (AGENTS.md), heartbeat polling, or the markdown bridge. See [Heartbeat Service](#heartbeat-service) and [Markdown Bridge](#markdown-bridge--bidirectional-memory-sync).
 
+## Troubleshooting
+
+### Memory Capture Not Working?
+
+If memories aren't being captured automatically, run the diagnostic:
+
+```bash
+# Run diagnostic (included with nima-core)
+python3 -m nima_core.scripts.diagnose_capture
+```
+
+This checks:
+- ✅ Python imports working
+- ✅ NimaCore initializes correctly  
+- ✅ Config settings (v2_enabled, etc.)
+- ✅ Current memory count
+- ✅ Test capture actually works
+
+### Fix Automated Capture
+
+If the diagnostic shows capture works but automation doesn't:
+
+```bash
+# Run the automated capture fix script
+python3 -m nima_core.scripts.fix_automated_capture
+
+# Then restart OpenClaw
+openclaw gateway restart
+```
+
+This script:
+1. Checks OpenClaw hook configuration
+2. Verifies hook directory exists
+3. Creates message capture hooks if missing
+4. Provides next steps for manual fixes
+
+### Manual Capture (Always Works)
+
+If automation is still broken, capture works manually:
+
+```python
+from nima_core import NimaCore
+
+nima = NimaCore()
+nima.capture(who="user", what="memory content", importance=0.8)
+```
+
 ## Quick Start
 
 ```python
@@ -106,9 +153,9 @@ nima.capture("admin", "System deployed successfully", importance=0.9, memory_typ
 
 # Capture a synthesized insight (lightweight, 280 char max, no bloat)
 nima.synthesize(
-    "Mercy (eleison) shares root with olive oil (elaion) — healing, not legal pardon.",
-    domain="theology",
-    sparked_by="Melissa",
+    "Insight from conversation: affect precedes cognition in decision-making.",
+    domain="cognitive_science",
+    sparked_by="user",
 )
 
 # Run dream consolidation

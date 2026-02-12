@@ -1,7 +1,7 @@
 ---
 name: nima-core
 description: Biologically-inspired cognitive memory for AI agents. Panksepp affects, Free Energy consolidation, VSA binding, sparse retrieval, temporal prediction, metacognition. Website - https://nima-core.ai
-version: 1.1.8
+version: 1.2.0
 metadata:
   {
     "openclaw":
@@ -50,6 +50,40 @@ nima = NimaCore(
 nima.experience("Alice asked about the project", who="Alice", importance=0.7)
 results = nima.recall("project")
 ```
+
+## How Memory Capture Works
+
+NIMA provides **three** capture methods:
+
+### 1. Manual Capture (Always Works)
+```python
+nima.capture(who="user", what="what happened", importance=0.8)
+```
+Call this anytime to explicitly store a memory.
+
+### 2. Experience Pipeline (Affects + FE)
+```python
+nima.experience("User asked about...", who="user", importance=0.7)
+```
+Processes through: Affect detection → VSA binding → Free Energy consolidation decision.
+
+### 3. Heartbeat Capture (Automatic)
+Configure the heartbeat service to capture periodically (default: every 10 minutes).
+
+### ⚠️ Important: Hook Events
+
+**OpenClaw currently supports these hook events:**
+- ✅ `agent:bootstrap` — When sessions start
+- ✅ `command:*` — When commands run  
+- ✅ `gateway:startup` — When gateway starts
+- ❌ `message:received` — **NOT AVAILABLE YET** (future feature)
+
+**What this means:**
+- Hooks work for **bootstrap** and **recall** (on session start)
+- **Per-message auto-capture requires `message:received`** — not yet implemented in OpenClaw
+- Use **heartbeat + manual capture** as the reliable approach for now
+
+See `README.md` troubleshooting section for diagnostic scripts.
 
 ## Smart Consolidation
 
@@ -113,3 +147,21 @@ AFFECTIVE CORE — Panksepp's 7 affects (SEEKING, RAGE, FEAR, LUST, CARE, PANIC,
 - `README.md` — Full documentation with all settings
 - `nima_core/config/nima_config.py` — All feature flags
 - `.env.example` — Environment variable template
+
+## Changelog
+
+### v1.1.9 — Hook Efficiency Fix
+- **Fixed:** nima-recall hook was spawning NEW Python process on every bootstrap, loading 77MB projection matrix (2-15s delay)
+- **Solution:** Added `recall_fast.py` CLI using Graphiti SQLite directly — no model loading, ~50-100ms response
+- **Performance:** ~50-250x faster hook recall
+- **Impact:** Eliminates machine lockup from concurrent hook calls
+
+### v1.2.0 — Affective Response Engines + Async Processing
+- **Added:** 4 Layer-2 composite affect engines (DARING, COURAGE, NURTURING, MASTERY)
+- **Added:** Async affective processing with ThreadPoolExecutor — 50,000x speedup on cache hits
+- **Added:** Lazy VSA loading — saves ~173 MB at startup (NIMA_LAZY_LOAD=true)
+- **Added:** Response modulator for dynamic response styling
+- **Added:** Voyage AI embedding support (1024D, optional)
+- **Added:** LRU cache for repeated affective queries (60s TTL)
+- **Performance:** Parallel engine execution, 0.01ms cached lookups
+- **Impact:** Real-time emotional intelligence with minimal resource overhead
