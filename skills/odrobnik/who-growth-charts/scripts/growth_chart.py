@@ -75,19 +75,61 @@ WHO_DATA_FILES = {
 
 BASE_DIR = Path(__file__).parent
 
+
+def _find_workspace_root() -> Path:
+    """Walk up from script location to find workspace root (parent of 'skills/')."""
+    import os
+    env = os.environ.get("WHO_GROWTH_CHARTS_WORKSPACE")
+    if env:
+        return Path(env)
+    
+    # Prefer CWD if it looks like a workspace (handles symlinks correctly)
+    cwd = Path.cwd()
+    if (cwd / "skills").is_dir():
+        return cwd
+
+    d = Path(__file__).resolve().parent
+    for _ in range(6):
+        if (d / "skills").is_dir() and d != d.parent:
+            return d
+        d = d.parent
+    return Path.cwd()
+
+
 def get_base_output_dir():
     """Get the base output directory for charts and cache."""
-    # Default to ~/clawd/who-growth-charts (sibling to skills folder)
-    try:
-        # script is in .../clawd/skills/who-growth-charts/scripts/
-        # workspace is ../../../
-        workspace_dir = BASE_DIR.parents[2]
-        if workspace_dir.name != 'clawd': 
-            workspace_dir = Path.home() / 'clawd'
-    except IndexError:
-            workspace_dir = Path.home() / 'clawd'
-    
-    return workspace_dir / 'who-growth-charts'
+    return _find_workspace_root() / 'who-growth-charts'
+
+
+def _safe_filename(name: str) -> str:
+    """Sanitise a child name for use in filenames. Strips path separators and dangerous chars."""
+    # Take basename to prevent directory traversal
+    name = Path(name).name
+    # Replace anything that isn't alphanumeric, space, hyphen, or underscore
+    import re
+    name = re.sub(r'[^\w\s-]', '', name).strip()
+    name = re.sub(r'[\s]+', '_', name).lower()
+    return name or 'child'
+
+
+def _safe_input_path(raw: str) -> Path:
+    """Resolve a data input path and ensure it's under the workspace root or /tmp."""
+    workspace = _find_workspace_root()
+    p = Path(raw).expanduser().resolve()
+    tmp = Path('/tmp').resolve()
+    tmpdir = Path(os.environ.get('TMPDIR', '/tmp')).resolve()
+
+    for root in (workspace, tmp, tmpdir):
+        try:
+            if p == root or p.is_relative_to(root):
+                return p
+        except AttributeError:
+            if str(p).startswith(str(root) + '/') or p == root:
+                return p
+
+    raise ValueError(
+        f"Data file '{raw}' resolves to '{p}' which is outside the workspace ({workspace})."
+    )
 
 CACHE_DIR = get_base_output_dir() / 'cache'
 
@@ -107,7 +149,7 @@ def _get_who_emblem_img():
         print(f"Downloading WHO emblem...", file=sys.stderr)
         ctx = ssl.create_default_context()
         req = urllib.request.Request(WHO_EMBLEM_URL, headers={
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Clawdbot/1.0'
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Moltbot/1.0'
         })
         try:
             with urllib.request.urlopen(req, context=ctx, timeout=30) as response:
@@ -160,7 +202,7 @@ def ensure_who_data(metric: str, sex: str, age_range: str) -> Path:
     # Download with User-Agent header (required by WHO CDN)
     ctx = ssl.create_default_context()
     req = urllib.request.Request(url, headers={
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Clawdbot/1.0'
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Moltbot/1.0'
     })
     try:
         with urllib.request.urlopen(req, context=ctx, timeout=30) as response:
@@ -517,14 +559,14 @@ def plot_growth_chart(child_name, birthdate, sex, heights, weights, chart_type='
     # WHO emblem (if available)
     add_who_emblem(ax, loc='upper left')
     
-    # Save
+    # Save (output stays within workspace)
     if output_dir:
-        out_dir = Path(output_dir)
+        out_dir = _safe_input_path(output_dir)  # reuse path guard for output dir too
     else:
         out_dir = get_base_output_dir()
 
     out_dir.mkdir(parents=True, exist_ok=True)
-    output_file = out_dir / f'{child_name.lower().replace(" ", "_")}_{chart_type}.png'
+    output_file = out_dir / f'{_safe_filename(child_name)}_{chart_type}.png'
     plt.savefig(output_file, dpi=150, bbox_inches='tight')
     plt.close(fig)
     
@@ -547,7 +589,8 @@ def main():
     
     heights, weights = [], []
     if args.data:
-        with open(args.data) as f:
+        data_path = _safe_input_path(args.data)
+        with open(data_path) as f:
             data = json.load(f)
             heights = data.get('heights', [])
             weights = data.get('weights', [])
