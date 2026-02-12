@@ -3,11 +3,16 @@
   "slug": "codex-quota",
   "displayName": "Codex Quota",
   "latest": {
-    "version": "1.1.0",
-    "publishedAt": 1768915737231,
-    "commit": "https://github.com/clawdbot/skills/commit/e47fa2607689d0c4c05ae04e67ab7785d8fe943e"
+    "version": "1.1.3",
+    "publishedAt": 1770824577877,
+    "commit": null
   },
   "history": [
+    {
+      "version": "1.1.0",
+      "publishedAt": 1768915737231,
+      "commit": "https://github.com/clawdbot/skills/commit/e47fa2607689d0c4c05ae04e67ab7785d8fe943e"
+    },
     {
       "version": "1.0.1",
       "publishedAt": 1768062000043,
