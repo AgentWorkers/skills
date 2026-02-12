@@ -1,45 +1,55 @@
 ---
 name: protoss-voice
-description: Generate Protoss-style (StarCraft) voice effects using SoX and FFmpeg.
+description: Apply Protoss-style (StarCraft) psionic effects to ANY audio file. Use as a post-processing layer for TTS or user recordings.
 metadata: {"clawdbot":{"emoji":"🔮","requires":{"bins":["ffmpeg","sox"]},"install":[{"id":"brew","kind":"brew","formula":"sox ffmpeg","bins":["sox","ffmpeg"],"label":"Install Dependencies (brew)"}]}}
 ---
 
 # Protoss Voice Effect
 
 Applies a "Khala" psionic transformation chain to audio files using the V9 "Massive Void" engine.
+**Modular Design:** This skill does NOT generate speech. It transforms existing audio.
 
 ## Usage
 
-Run the script on any audio file:
+Run the script on any input audio file (wav, mp3, ogg, etc):
 
 ```bash
 python3 skills/protoss-voice/protoss_fx.py <path_to_audio_file>
 ```
 
-**Example:**
+**Output:**
+Creates a new file with suffix `_psionic.wav` in the same directory.
+
+## Agent Protocol & Behavior
+
+When acting as a Protoss persona (e.g., Selendis, Artanis, Zeratul, etc), the agent should:
+
+1.  **Generate/Record Base Audio:**
+    *   Use `kokoro-tts` (or any other TTS skill) to generate the raw speech.
+    *   OR accept a user-provided recording.
+2.  **Process (The "Black Box"):**
+    *   Execute `protoss_fx.py` on the raw file.
+    *   *Do not narrate this step unless debugging.*
+3.  **Deliver Final Artifact:**
+    *   Send the **processed** file (`_psionic`) using the `message` tool.
+    *   Clean up raw/intermediate files silently if they are temporary.
+
+## Integration Example (Kokoro)
+
 ```bash
-python3 skills/protoss-voice/protoss_fx.py recordings/my_voice.mp3
+# 1. Generate (Raw)
+python3 skills/kokoro-tts/speak.py "En Taro Adun." -o raw.wav -v ef_dora
+
+# 2. Transform (Psionic)
+python3 skills/protoss-voice/protoss_fx.py raw.wav
+# Output: raw_psionic.wav
+
+# 3. Optimize for Transport (Telegram OGG)
+ffmpeg -i raw_psionic.wav -c:a libopus -b:a 64k -vbr on final.ogg -y
+
+# 4. Send
+message(action="send", media="final.ogg", asVoice=true)
 ```
-
-Files are saved as `*_psionic.mp3` in the source directory.
-
-## Algorithm
-
-The current architecture prioritizes a massive, distinctive spatial presence.
-
-1. **Shadow Generation:** Pitch shift (-2 semitones) + Time stretch (0.9x).
-2. **Void Layer:** Reverse -> Dense Reverb -> Reverse (creates "pre-verb" suction).
-3. **Mastering:** Original voice is discarded. Bass boosted (+5dB), Subsonics cut (<100Hz).
-
-## Integration Workflows
-
-### ElevenLabs Post-Processing
-This skill is designed to be used as a post-processing step for TTS generation.
-When generating voice content to mimic "Selendis" or other Protoss personas:
-
-1. **Generate:** Create raw speech using ElevenLabs.
-2. **Process:** Pass the output file immediately through `protoss_fx.py`.
-3. **Result:** Use the resulting `_psionic.mp3` file as the final asset.
 
 ## Requirements
 
@@ -48,15 +58,3 @@ Requires `ffmpeg` and `sox` (Sound eXchange).
 ```bash
 brew install ffmpeg sox
 ```
-
-## Agent Protocol
-
-When a user requests audio or voice interaction involving a Protoss persona:
-
-1.  **Generate Raw Audio:** Use the `tts` tool to generate the base speech file.
-2.  **Silence:** Do NOT present the output path from the `tts` tool to the user yet.
-3.  **Process:** Execute the python script on the raw file:
-    `python3 skills/protoss-voice/protoss_fx.py <path_from_tts>`
-4.  **Deliver:** Use the `message` tool to send the file explicitly (more reliable than text echo):
-    `message(action="send", filePath="<path_from_script>", asVoice=true)`
-
