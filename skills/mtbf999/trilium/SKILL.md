@@ -20,35 +20,21 @@ This skill requires a Trilium ETAPI token and the server URL. These should be st
 - **Attributes**: Metadata attached to notes (labels, relations).
 - **ETAPI**: The External Trilium API, a REST API for interacting with the database.
 
-## Common Workflows
+## Example Prompts
 
-### 1. Create a Note
-To create a note, you need a `parentNoteId` and the note's content.
-```bash
-# Example using curl (conceptual)
-curl -X POST "$TRILIUM_SERVER_URL/etapi/notes" \
-     -H "Authorization: $TRILIUM_ETAPI_TOKEN" \
-     -H "Content-Type: application/json" \
-     -d '{
-       "parentNoteId": "root",
-       "title": "My New Note",
-       "type": "text",
-       "content": "Hello Trilium!"
-     }'
-```
+### Search for information
+- "Search my Trilium notes for 'Home Lab'"
+- "Find any notes in Trilium about 'Docker configuration'"
+- "What did I write in Trilium about 'Project X'?"
 
-### 2. Search Notes
-Use the search endpoint to find notes by title or content.
-```bash
-curl "$TRILIUM_SERVER_URL/etapi/notes?search=My+Note" \
-     -H "Authorization: $TRILIUM_ETAPI_TOKEN"
-```
+### Create new content
+- "Create a new note in Trilium called 'Meeting Notes' under the root folder"
+- "Add a note to Trilium with title 'Ideas' and content 'Buy more coffee'"
+- "Create a text note in Trilium under my 'Projects' folder"
 
-### 3. Get Note Content
-```bash
-curl "$TRILIUM_SERVER_URL/etapi/notes/$NOTE_ID/content" \
-     -H "Authorization: $TRILIUM_ETAPI_TOKEN"
-```
+### Read and retrieve
+- "Show me the content of my Trilium note called 'Todo List'"
+- "Get the details for the Trilium note with ID 'U5cC2X3KKPdC'"
 
 ## Reference Documentation
 For detailed API information, see [references/api.md](references/api.md).

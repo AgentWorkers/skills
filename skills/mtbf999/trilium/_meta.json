@@ -1,11 +1,17 @@
 {
   "owner": "mtbf999",
   "slug": "trilium",
-  "displayName": "Trilium Notes",
+  "displayName": "Trilium",
   "latest": {
-    "version": "1.0.0",
-    "publishedAt": 1770834119545,
-    "commit": "https://github.com/openclaw/skills/commit/f4865ba53079c321e023fcbfbcadebf0b1c872d9"
+    "version": "1.0.3",
+    "publishedAt": 1770835575382,
+    "commit": null
   },
-  "history": []
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1770834119545,
+      "commit": "https://github.com/openclaw/skills/commit/f4865ba53079c321e023fcbfbcadebf0b1c872d9"
+    }
+  ]
 }
