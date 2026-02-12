@@ -1,11 +1,17 @@
 {
   "owner": "lucasgeeksinthewood",
   "slug": "social",
-  "displayName": "Social",
+  "displayName": "social",
   "latest": {
-    "version": "1.0.1",
-    "publishedAt": 1770485481176,
-    "commit": "https://github.com/openclaw/skills/commit/4eea26bde7dac408066dd35606acd46949ec52ba"
+    "version": "1.0.2",
+    "publishedAt": 1770847986551,
+    "commit": null
   },
-  "history": []
+  "history": [
+    {
+      "version": "1.0.1",
+      "publishedAt": 1770485481176,
+      "commit": "https://github.com/openclaw/skills/commit/4eea26bde7dac408066dd35606acd46949ec52ba"
+    }
+  ]
 }
