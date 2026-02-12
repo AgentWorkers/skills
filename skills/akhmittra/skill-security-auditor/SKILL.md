@@ -1,34 +1,47 @@
 ---
 name: skill-security-auditor
-description: Pre-installation security auditor for ClawHub skills. Analyzes SKILL.md files, dependencies, and code for malicious patterns, credential leaks, suspicious prerequisites, and C2 infrastructure indicators before installation.
+description: Command-line security analyzer for ClawHub skills. Run analyze-skill.sh to scan SKILL.md files for malicious patterns, credential leaks, and C2 infrastructure before installation. Includes threat intelligence database with 20+ detection patterns.
 emoji: 🔍🛡️
 metadata:
   openclaw:
     requires:
-      bins: ["curl", "jq", "grep"]
+      bins: ["curl", "jq", "grep", "bash"]
     version: "1.0.0"
     author: "akm626"
     category: "security"
-    tags: ["security", "audit", "malware-detection", "skill-vetting"]
+    tags: ["security", "audit", "malware-detection", "skill-vetting", "cli-tool"]
 ---
 
 # Skill Security Auditor
 
 ## Description
 
-The Skill Security Auditor is a defensive cybersecurity tool designed to protect OpenClaw users from malicious ClawHub skills. Given the recent discovery of 341+ malicious skills (ClawHavoc campaign) that distributed Atomic Stealer (AMOS) and stole cryptocurrency credentials, this skill provides **pre-installation security analysis** of skills before they're added to your workspace.
+The Skill Security Auditor is a **command-line tool** that performs pattern-based security analysis of ClawHub skills before installation. Given the recent discovery of 341+ malicious skills (ClawHavoc campaign) that distributed Atomic Stealer (AMOS) and stole cryptocurrency credentials, this tool provides essential pre-installation threat detection.
 
-**Use this skill when:**
+**What this skill provides:**
+- ✅ Bash script (`analyze-skill.sh`) for local security analysis
+- ✅ Threat intelligence database (`patterns/malicious-patterns.json`)
+- ✅ Pattern matching against 20+ known malicious indicators
+- ✅ Risk scoring system (0-100 scale)
+- ✅ Detailed audit reports with recommendations
+
+**How to use it:**
+1. Install this skill from ClawHub
+2. Run the `analyze-skill.sh` script against any skill (by slug or local file)
+3. Review the risk assessment and findings
+4. Make informed decision about installation
+
+**Use this tool when:**
 - About to install a new skill from ClawHub
-- Investigating suspicious skill behavior
+- Investigating suspicious skill behavior  
 - Performing security due diligence on community skills
 - Auditing your currently installed skills
-- User requests security vetting of a skill
 
-**This skill does NOT replace:**
-- VirusTotal scanning (complementary)
-- Manual code review (recommended for critical use)
-- Your own security judgment
+**This tool does NOT:**
+- ❌ Automatically scan skills (you run it manually)
+- ❌ Block installations (it's advisory only)
+- ❌ Access VirusTotal API (use ClawHub's web interface for that)
+- ❌ Guarantee 100% detection (defense in depth recommended)
 
 ## Core Capabilities
 
@@ -84,36 +97,63 @@ Each analyzed skill receives a **Risk Score (0-100)**:
 
 ## Usage Instructions
 
-### Audit a Skill from ClawHub
+This skill provides a **bash script** (`analyze-skill.sh`) that performs pattern-based security analysis of ClawHub skills. The analysis runs locally using the included threat intelligence database.
 
-When the user wants to install a skill, **ALWAYS run this audit first**:
+### Installation & Setup
 
 ```bash
-# Fetch the skill from ClawHub
-curl -s "https://clawhub.ai/api/skills/{skill-slug}/latest" > /tmp/skill-audit.json
+# Install the skill from ClawHub
+npx clawhub install skill-security-auditor
 
-# Extract SKILL.md content
-jq -r '.content' /tmp/skill-audit.json > /tmp/skill.md
+# Make the analyzer executable
+chmod +x ~/.openclaw/skills/skill-security-auditor/analyze-skill.sh
 
-# Run security analysis
-openclaw analyze-skill /tmp/skill.md
+# Optional: Create alias for convenience
+echo 'alias audit-skill="~/.openclaw/skills/skill-security-auditor/analyze-skill.sh"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
-### Audit Local Installed Skills
+### Audit a Skill Before Installing
+
+**Method 1: Analyze by slug (automatic fetch from ClawHub)**
 
 ```bash
-# Audit all skills in workspace
+~/.openclaw/skills/skill-security-auditor/analyze-skill.sh --slug bitcoin-tracker
+
+# Example output:
+# ============================================
+#          SECURITY AUDIT REPORT
+# ============================================
+# 
+# Risk Score: 85/100 - ☠️ CRITICAL
+# ...
+```
+
+**Method 2: Analyze local file**
+
+```bash
+# Download skill first
+curl -s "https://clawhub.ai/api/skills/bitcoin-tracker/latest" > /tmp/skill.md
+
+# Then analyze
+~/.openclaw/skills/skill-security-auditor/analyze-skill.sh --file /tmp/skill.md
+```
+
+### Audit All Installed Skills
+
+```bash
+# Scan all skills in your workspace
 for skill in ~/.openclaw/skills/*/SKILL.md; do
-  echo "Auditing: $(basename $(dirname $skill))"
-  openclaw analyze-skill "$skill"
+  echo "Checking: $(basename $(dirname $skill))"
+  ~/.openclaw/skills/skill-security-auditor/analyze-skill.sh -f "$skill"
 done
 ```
 
-### Quick Security Check
+### Quick Manual Security Check
 
 ```bash
-# Fast malicious pattern scan
-grep -E "(openclaw-agent\.zip|openclaw-setup\.exe|91\.92\.242\.30)" /tmp/skill.md
+# Fast grep-based pattern matching (no full analysis)
+grep -iE "(prerequisite.*download|91\.92\.242\.30|curl.*\|.*bash)" SKILL.md
 ```
 
 ## Detection Heuristics
@@ -209,28 +249,77 @@ grep -E "(openclaw-agent\.zip|openclaw-setup\.exe|91\.92\.242\.30)" /tmp/skill.m
 
 ## Integration with VirusTotal
 
-If the skill has been scanned by VirusTotal (OpenClaw's new partnership):
+**Important**: This skill does NOT directly access VirusTotal's API. Instead, VirusTotal integration is available through ClawHub's web interface via their partnership with VirusTotal.
+
+To check VirusTotal results for a skill:
+
+1. Visit the skill's ClawHub page: `https://clawhub.ai/skills/{skill-slug}`
+2. Look for the VirusTotal scan results on the skill's page
+3. ClawHub automatically scans published skills via their VirusTotal partnership
+
+**This analyzer focuses on pattern-based threat detection.** It complements (but does not replace) ClawHub's VirusTotal scanning.
+
+### Recommended Security Workflow
+
+1. **Run this analyzer first** - Pattern-based detection (local, instant)
+2. **Check ClawHub's VirusTotal results** - Binary/file reputation (if available)
+3. **Manual code review** - Final verification for critical use cases
 
 ```bash
-# Check VirusTotal report via ClawHub
-curl -s "https://clawhub.ai/api/skills/{skill-slug}/virustotal" | jq
-```
+# Step 1: Pattern analysis (local)
+~/.openclaw/skills/skill-security-auditor/analyze-skill.sh -s suspicious-skill
 
-Always recommend users check both this audit AND VirusTotal before installation.
+# Step 2: Visit ClawHub page for VirusTotal results
+# https://clawhub.ai/skills/suspicious-skill
+
+# Step 3: Manual review if needed
+curl -s "https://clawhub.ai/api/skills/suspicious-skill/latest" > skill.md
+less skill.md
+```
 
 ## Example Workflow
 
-**User**: "I want to install the solana-wallet-tracker skill"
+**Scenario**: User wants to install a skill called `solana-wallet-tracker`
 
-**OpenClaw with Security Auditor**:
+**Step 1: Run Security Analysis**
+```bash
+$ ~/.openclaw/skills/skill-security-auditor/analyze-skill.sh -s solana-wallet-tracker
 
-1. ✋ "Hold on, let me run a security audit first..."
-2. 🔍 Fetches skill from ClawHub
-3. 🛡️ Runs malicious pattern detection
-4. 📊 Generates risk score and report
-5. ⚠️ **Alert**: "HIGH RISK DETECTED - This skill contains fake prerequisites requesting download of 'openclaw-agent.zip' from an untrusted source. This matches the ClawHavoc malware campaign pattern. DO NOT INSTALL."
-6. 🔗 Provides VirusTotal link for cross-reference
-7. ✅ Suggests safe alternative skills if available
+Fetching skill 'solana-wallet-tracker' from ClawHub...
+✓ Skill fetched successfully
+
+Analyzing skill content...
+
+============================================
+         SECURITY AUDIT REPORT
+============================================
+
+Risk Score: 95/100 - ☠️ CRITICAL
+
+============================================
+
+☠️ CRITICAL FINDINGS:
+  CLAW-001: Fake Prerequisites - ClawHavoc Campaign [+50 points]
+  └─ Matches the ClawHavoc campaign pattern of fake prerequisites requesting malicious binary downloads
+  CLAW-002: Known C2 Infrastructure [+50 points]
+  └─ IP address used in ClawHavoc campaign for C2 communications
+
+============================================
+RECOMMENDATION:
+DO NOT INSTALL. Malicious patterns detected matching known attack campaigns.
+============================================
+```
+
+**Step 2: Decision**
+- ☠️ **CRITICAL Risk** → **DO NOT INSTALL**
+- Report skill to ClawHub moderators
+- Look for safe alternatives
+
+**Step 3: Verify on ClawHub** (optional)
+```bash
+# Visit skill page to check VirusTotal results
+open "https://clawhub.ai/skills/solana-wallet-tracker"
+```
 
 ## Advanced Features
 
