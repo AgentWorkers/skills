@@ -1,11 +1,17 @@
 {
   "owner": "atyachin",
   "slug": "lead-generation",
-  "displayName": "Lead Generation — Find Buyers from Social Media Conversations",
+  "displayName": "Lead Generation",
   "latest": {
-    "version": "1.0.0",
-    "publishedAt": 1770848770892,
-    "commit": "https://github.com/openclaw/skills/commit/27a7a95f66066436cb4c6b9f8f9a5f3fd44b47e0"
+    "version": "1.2.0",
+    "publishedAt": 1770884573551,
+    "commit": null
   },
-  "history": []
+  "history": [
+    {
+      "version": "1.0.0",
+      "publishedAt": 1770848770892,
+      "commit": "https://github.com/openclaw/skills/commit/27a7a95f66066436cb4c6b9f8f9a5f3fd44b47e0"
+    }
+  ]
 }

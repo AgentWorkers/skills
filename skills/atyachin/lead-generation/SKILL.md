@@ -1,5 +1,5 @@
 ---
-name: social-lead-gen
+name: lead-generation
 description: "Lead generation from social media — find high-intent buyers in live Twitter, Instagram, and Reddit conversations. Auto-researches your product, generates targeted search queries, and discovers people actively looking for solutions you offer. Social selling and prospecting powered by 1.5B+ indexed posts."
 homepage: https://xpoz.ai
 metadata:
@@ -48,14 +48,28 @@ Unlike traditional lead gen tools that search company databases, this skill find
 
 ## ⚡ Prerequisites
 
-1. **Xpoz MCP** must be configured and authenticated. Follow the [xpoz-setup](https://clawhub.ai/skills/xpoz-setup) skill.
-2. **Web search and web fetch** tools must be available (included with OpenClaw).
+1. **mcporter** — The [MCP Porter CLI](https://www.npmjs.com/package/mcporter) (`npm i -g mcporter`), an open-source tool for calling MCP servers from the command line.
+2. **Xpoz MCP** must be configured and authenticated. Follow the [xpoz-setup](https://clawhub.ai/skills/xpoz-setup) skill (OAuth 2.1 — user clicks "Authorize" once).
+3. **Web search and web fetch** tools must be available (included with OpenClaw).
+4. **Network access** required to `mcp.xpoz.ai` (the Xpoz MCP endpoint). Product context and search queries are sent to this service for processing.
 
 Verify Xpoz is ready:
 ```bash
 mcporter call xpoz.checkAccessKeyStatus
 ```
 If not `hasAccessKey: true`, follow xpoz-setup first, then return here.
+
+---
+
+## ⚠️ Data Handling & Privacy
+
+This skill sends data to the Xpoz MCP service (`mcp.xpoz.ai`) for processing:
+- **What's sent:** Search queries generated from your product context (keywords, competitor names, pain points)
+- **What's NOT sent:** Your raw website content or proprietary code — only extracted search terms
+- **Local storage:** Product profiles are saved locally in `data/social-lead-gen/` on your machine
+- **Outreach:** This skill only **drafts** outreach messages — it does NOT automatically send messages to leads. You review and send manually.
+
+For Xpoz's privacy policy, see [xpoz.ai/privacy](https://xpoz.ai/privacy).
 
 ---
 
@@ -78,7 +92,7 @@ If not `hasAccessKey: true`, follow xpoz-setup first, then return here.
 
 ## Phase 1: Product Research (One-Time Setup)
 
-**This phase builds deep context about the user's product. Run it once; the results are stored and reused.**
+**This phase builds deep context about the user's product. Run it once; the results are stored locally in `data/social-lead-gen/` and reused for subsequent searches.**
 
 ### Step 1: Ask the user for a reference
 
