@@ -1,14 +1,15 @@
-
 import argparse
 import os
 import requests
 import json
 import base64
+import mimetypes
 
 # --- Argument Parsing ---
-ap = argparse.ArgumentParser(description="Generate an image via ZenMux API.")
+ap = argparse.ArgumentParser(description="Generate an image via ZenMux API (Supports Multi-Image-to-Image).")
 ap.add_argument("--prompt", required=True, help="Text prompt for the image.")
-ap.add_argument("--model", default="google/gemini-2.5-flash-image", help="The model to use for generation.")
+ap.add_argument("--images", nargs="+", help="Paths to one or more reference images for generation.")
+ap.add_argument("--model", default="google/gemini-3-pro-image-preview", help="The model to use for generation.")
 ap.add_argument("--output", default="generated_image.png", help="Output file name for the image.")
 args = ap.parse_args()
 
@@ -28,15 +29,36 @@ try:
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}"
     }
+
+    # Build parts list
+    parts = [{"text": args.prompt}]
+
+    # Add image data if provided (supports multiple images)
+    if args.images:
+        for img_path in args.images:
+            if not os.path.exists(img_path):
+                print(f"Error: Image file not found at {img_path}")
+                continue # Skip missing files
+            
+            mime_type, _ = mimetypes.guess_type(img_path)
+            if not mime_type:
+                mime_type = "image/png" # Default fallback
+                
+            with open(img_path, "rb") as image_file:
+                encoded_string = base64.b64encode(image_file.read()).decode("utf-8")
+                parts.append({
+                    "inlineData": {
+                        "mimeType": mime_type,
+                        "data": encoded_string
+                    }
+                })
+            print(f"Reference image added: {img_path} ({mime_type})")
+
     data = {
         "contents": [
             {
                 "role": "user",
-                "parts": [
-                    {
-                        "text": args.prompt
-                    }
-                ]
+                "parts": parts
             }
         ],
         "generationConfig": {
