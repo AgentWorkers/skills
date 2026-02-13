@@ -1,13 +1,18 @@
 {
   "owner": "ide-rea",
   "slug": "ai-notes-ofvideo",
-  "displayName": "Ai Notes Ofvideo",
+  "displayName": "ai notes of video",
   "latest": {
-    "version": "1.0.10",
-    "publishedAt": 1770782033898,
-    "commit": "https://github.com/openclaw/skills/commit/9f960303da98b41cbaca0d0c48784c676683efb3"
+    "version": "1.1.0",
+    "publishedAt": 1770955841859,
+    "commit": null
   },
   "history": [
+    {
+      "version": "1.0.10",
+      "publishedAt": 1770782033898,
+      "commit": "https://github.com/openclaw/skills/commit/9f960303da98b41cbaca0d0c48784c676683efb3"
+    },
     {
       "version": "1.0.7",
       "publishedAt": 1770704467569,
