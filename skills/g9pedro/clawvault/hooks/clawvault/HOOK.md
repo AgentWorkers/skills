@@ -7,29 +7,6 @@ metadata:
     events: ["gateway:startup", "command:new", "session:start"]
     requires:
       bins: ["clawvault"]
-    install:
-      - id: node
-        kind: node
-        package: clawvault
-        bins: ["clawvault"]
-        label: "Install ClawVault CLI (npm)"
-    env:
-      CLAWVAULT_PATH:
-        required: false
-        description: "Vault directory path (auto-discovered if not set)"
-      GEMINI_API_KEY:
-        required: false
-        description: "Only used by observe --compress for LLM compression on command:new. No other hook event uses this."
-    capabilities:
-      - "executes clawvault CLI via child_process.execSync"
-      - "on gateway:startup — runs clawvault recover to detect context death"
-      - "on command:new — runs clawvault checkpoint then clawvault observe --compress (if GEMINI_API_KEY set)"
-      - "on session:start — runs clawvault session-recap and clawvault context to inject vault memories"
-    network: "Zero network calls from the hook. observe --compress may call Gemini API only when GEMINI_API_KEY is present."
-    does_not:
-      - "modify session transcripts"
-      - "access files outside vault directory and session transcript path"
-      - "make any network calls itself"
 ---
 
 # ClawVault Hook
