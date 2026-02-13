@@ -1,0 +1,11 @@
+{
+  "owner": "bobdevibecoder",
+  "slug": "bobagent-cloudflare",
+  "displayName": "cloudflare",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1770901644048,
+    "commit": null
+  },
+  "history": []
+}
