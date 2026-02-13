@@ -3,11 +3,16 @@
   "slug": "seiso",
   "displayName": "seisoai",
   "latest": {
-    "version": "1.0.13",
-    "publishedAt": 1770926588024,
-    "commit": "https://github.com/openclaw/skills/commit/ac291b6760f827e361fc03e7bd4c786055a3ad49"
+    "version": "1.0.14",
+    "publishedAt": 1771009736791,
+    "commit": null
   },
   "history": [
+    {
+      "version": "1.0.13",
+      "publishedAt": 1770926588024,
+      "commit": "https://github.com/openclaw/skills/commit/ac291b6760f827e361fc03e7bd4c786055a3ad49"
+    },
     {
       "version": "1.0.10",
       "publishedAt": 1770647567948,
