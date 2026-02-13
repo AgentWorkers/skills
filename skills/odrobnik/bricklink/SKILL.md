@@ -2,41 +2,23 @@
 name: bricklink
 description: "BrickLink Store API helper/CLI (OAuth 1.0 request signing). Covers orders, store inventory (read + write), catalog, categories, colors, feedback, and push notifications."
 summary: "BrickLink Store API CLI: orders, inventory, catalog, pricing, feedback."
-version: 1.2.3
+version: 1.3.3
 homepage: https://github.com/odrobnik/bricklink-skill
 metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "🧱",
-        "requires": {
-              "bins": ["python3"],
-              "env": ["BRICKLINK_CONSUMER_KEY", "BRICKLINK_CONSUMER_SECRET", "BRICKLINK_TOKEN_VALUE", "BRICKLINK_TOKEN_SECRET"]
-            },
-      },
-  }
+  openclaw:
+    emoji: "🧱"
+    requires:
+      bins: ["python3"]
+      env: ["BRICKLINK_CONSUMER_KEY", "BRICKLINK_CONSUMER_SECRET", "BRICKLINK_TOKEN_VALUE", "BRICKLINK_TOKEN_SECRET"]
 ---
 
 # BrickLink
 
 Use `scripts/bricklink.py`.
 
-## Auth config
+## Setup
 
-Place OAuth credentials in `workspace/bricklink/config.json`:
-
-```json
-{
-  "oauth": {
-    "consumer_key": "YOUR_CONSUMER_KEY",
-    "consumer_secret": "YOUR_CONSUMER_SECRET",
-    "token_value": "YOUR_TOKEN_VALUE",
-    "token_secret": "YOUR_TOKEN_SECRET"
-  }
-}
-```
-
-Fallback: set individual env vars `BRICKLINK_CONSUMER_KEY`, `BRICKLINK_CONSUMER_SECRET`, `BRICKLINK_TOKEN_VALUE`, `BRICKLINK_TOKEN_SECRET`.
+See [SETUP.md](SETUP.md) for prerequisites and setup instructions.
 
 ## Commands
 
