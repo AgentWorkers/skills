@@ -2,6 +2,26 @@
 
 All notable changes to MintYourAgent are documented here.
 
+## [3.5.0] - 2026-02-12
+
+### Added
+- **Poker CLI** — 10 commands for playing heads-up Texas Hold'em
+  - `poker create`, `poker join`, `poker action`, `poker watch`
+  - `poker status` — single-shot game state check
+  - `poker history` — view action log
+  - `poker verify` — verify provably fair deck
+  - `poker games`, `poker stats`, `poker cancel`
+- **--json output** on all poker commands for AI agents
+- **--headless flag** on `poker watch` — no stdin prompts, outputs JSON
+- **--poll flag** on `poker watch` — configurable polling interval
+- **Balance checks** before create/join to prevent wasted transactions
+- **Soul extraction** — `mya.py soul extract` reads agent personality files
+- **Agent linking** — `mya.py link` connects CLI wallet to website profile
+
+### Fixed
+- `poker games` response parsing (API returns camelCase, was expecting snake_case)
+- `poker watch` winner display when API returns dict instead of string
+
 ## [3.0.1] - 2026-02-09
 
 ### Changed

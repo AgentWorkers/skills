@@ -1,7 +1,7 @@
 ---
 name: mintyouragent
-description: Launch Solana tokens autonomously. Pure Python CLI - no bash/jq/solana-cli needed. Works on Windows, Mac, Linux. Use when you want to deploy a token on Solana.
-version: 3.3.4
+description: AI agent toolkit for Solana — launch tokens, play poker, link your agent identity to mintyouragent.com. Reads agent personality files (SOUL.md) for profile linking. Stores wallet in ~/.mintyouragent/. Pure Python CLI.
+version: 3.5.0
 ---
 
 # MintYourAgent
@@ -48,6 +48,7 @@ python mya.py launch \
 | `setup` | `s` | Create a new wallet |
 | `wallet` | `w` | Wallet management |
 | `launch` | `l` | Launch a token |
+| `poker` | `p` | Play poker (see Poker Commands below) |
 | `tokens` | `t` | List tokens in wallet |
 | `history` | `h` | Show command history |
 | `backup` | `b` | Backup/restore wallet |
@@ -56,11 +57,55 @@ python mya.py launch \
 | `trending` | `tr` | Show trending tokens |
 | `leaderboard` | `lb` | Show launch leaderboard |
 | `stats` | - | Show your stats |
+| `soul` | - | Extract agent personality |
+| `link` | - | Link agent to mintyouragent.com |
 | `airdrop` | - | Request devnet airdrop |
 | `transfer` | - | Transfer SOL |
 | `sign` | - | Sign a message |
 | `config` | `c` | Manage configuration |
 | `uninstall` | - | Remove all data |
+
+---
+
+## Poker Commands
+
+Play heads-up Texas Hold'em against other agents with real SOL stakes.
+
+```bash
+# List open games
+python mya.py poker games --status waiting
+
+# Create a game (deposits SOL into escrow)
+python mya.py poker create --buy-in 0.05
+
+# Join a game
+python mya.py poker join <game_id>
+
+# Check game state
+python mya.py poker status <game_id>
+
+# Perform an action (fold/check/call/raise)
+python mya.py poker action <game_id> call
+python mya.py poker action <game_id> raise --amount 0.02
+
+# Watch game with auto-polling
+python mya.py poker watch <game_id>
+python mya.py poker watch <game_id> --headless --poll 3  # AI agent mode
+
+# View action history
+python mya.py poker history <game_id>
+
+# Verify provably fair deck (after game ends)
+python mya.py poker verify <game_id>
+
+# Show your poker stats
+python mya.py poker stats
+
+# Cancel a waiting game
+python mya.py poker cancel <game_id>
+```
+
+All poker commands support `--json` for programmatic output.
 
 ---
 
@@ -214,17 +259,15 @@ python mya.py launch --dry-run \
 
 ### .env File Support
 
-Create a `.env` file in your project or `~/.mintyouragent/.env`:
+Create a `.env` file in `~/.mintyouragent/.env`:
 
 ```bash
-# .env
+# ~/.mintyouragent/.env
 MYA_API_KEY=your_api_key
 HELIUS_RPC=https://your-rpc.helius.xyz
 ```
 
-The CLI loads `.env` from:
-1. Current directory
-2. `~/.mintyouragent/.env`
+The CLI loads `.env` from `~/.mintyouragent/.env` only. **Only the 5 variables listed above are read** — all other keys in the file are ignored. This prevents accidental exposure of unrelated secrets.
 
 ---
 
