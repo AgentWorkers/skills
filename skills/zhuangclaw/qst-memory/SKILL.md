@@ -1,23 +1,29 @@
 ---
 name: qst-memory
-description: |
-  QST Memory Management System v1.5 for OpenClaw agents. Provides:
-  1. Tree-based classification structure (3-level hierarchy)
-  2. Three search methods: Tree, Selection Rule, Semantic (Enhanced)
-  3. Hybrid Search combining all methods
-  4. Auto-classification with AI inference
-  5. Memory decay & cleanup system
-  6. TF-IDF similarity algorithm with context awareness
-  
-  Use when: Agent needs intelligent memory management with flexible classification.
-  Goal: Reduce token consumption by 70-90%, improve relevance by 20%.
+description: >
+  **OpenClaw代理的通用内存管理系统 v1.7.1**  
+  该系统为OpenClaw代理提供以下功能：  
+  1. **多代理支持**（qst、mengtian、lisi、自定义代理类型）  
+  2. **代理状态管理系统**（“正在执行”/空闲/等待/暂停/已完成/失败）  
+  3. **心跳信号集成**——基于代理状态的智能检查机制  
+  4. **基于树的分类结构**（三级层次结构）  
+  5. **三种搜索方式**：树状搜索、语义搜索、混合搜索  
+  6. **人工智能辅助的自动分类功能**  
+  7. **技术文档的附录索引系统**  
+  8. **敏感数据的加密机制**（AES-128-CBC + HMAC）  
+  9. **带有时间线的事件历史记录功能**  
+  **适用场景**：  
+  当代理需要具备智能内存管理功能以及状态感知能力时。  
+  **目标效果**：  
+  - 减少令牌消耗量70-90%  
+  - 提高数据相关性20%  
+  - 增强数据的上下文感知能力（即数据与使用场景的关联性）
 ---
-
-# QST内存管理v1.5
+# Universal Memory Management v1.7.1
 
 ## 🌳 基于树的分类结构
 
-**关键创新**：采用三层层次化分类机制，并支持自动关键词匹配功能。
+**核心创新**：采用三层分层分类机制，并具备自动关键词匹配功能。
 
 ```
 QST
@@ -48,15 +54,15 @@ General
 
 ### v1.5 新功能：混合搜索引擎
 
-结合了三种搜索方法：
+该系统结合了三种搜索方法：
 
-| 方法 | 优势 | 使用场景 |
+| 搜索方法 | 优势 | 使用场景 |
 |--------|----------|----------|
-| **树搜索** | 精确匹配 | 知道确切的类别时使用 |
-| **选择规则** | 几何邻域搜索 | 当C_ab等于1时使用 |
+| **树搜索** | 精确匹配 | 确切知道所属类别时使用 |
+| **选择规则** | 几何邻域搜索 | 当 C_ab = 1 时使用 |
 | **语义搜索（v1.5）** | TF-IDF + 上下文分析 | 基于智能推理的搜索 |
 
-### v1.5版的语义搜索功能增强
+### v1.5 版本中的语义搜索功能增强
 
 ```python
 # TF-IDF similarity
@@ -79,7 +85,7 @@ QST_Physics ↔ QST_Computation ↔ QST_Audit
 
 ---
 
-## 🤖 自动分类（v1.5新功能）
+## 🤖 自动分类功能（v1.5 新功能）
 
 ### 智能推理机制
 
@@ -95,23 +101,23 @@ result = auto_classify("QST暗物質使用FSCA理論")
 
 | 权重等级 | 触发关键词 |
 |--------|-----------------|
-| **[C]** 关键级 | key, token, config, 密鑰, 決策 |
-| **[I]** 重要级 | project, plan, 專案, 討論, 偏好 |
-| **[N]** 普通级 | chat, greeting, 問候, 閒聊 |
+| **[C]** 重要 | 关键词、令牌、配置信息、密钥、决策 |
+| **[I]** 中等重要 | 项目、计划、讨论、偏好 |
+| **[N]** 一般 | 聊天内容、问候语、闲聊信息 |
 
 ---
 
-## 🧹 内存衰减系统（v1.5新功能）
+## 🧹 内存衰减系统（v1.5 新功能）
 
-### 清理规则
+### 数据清理规则
 
-| 权重等级 | 阈值 | 处理方式 |
+| 权重等级 | 清理阈值 | 处理方式 |
 |--------|-----------|--------|
-| **[C]** 关键级 | 永远不删除 | 永久保留 |
-| **[I]** 重要级 | 365天后 | 归档 |
-| **[N]** 普通级 | 30天后 | 删除 |
+| **[C]** 重要数据 | 永久保留 | 不进行清理 |
+| **[I]** 中等重要数据 | 365天后归档 | |
+| **[N]** 一般数据 | 30天后删除 | |
 
-### 内存衰减系数
+### 内存数据衰减系数
 
 ```
 [C]: 2.0 (never decay)
@@ -121,15 +127,189 @@ result = auto_classify("QST暗物質使用FSCA理論")
 
 ---
 
+## 🤖 代理状态系统（v1.7 新功能）
+
+### 状态机机制
+
+代理状态系统能够根据代理的当前状态智能调整心跳检测的频率：
+
+| 状态 | 描述 | 心跳检测行为 |
+|-------|-------------|-------------------|
+| **空闲（IDLE）** | 代理处于空闲状态 | 进行全面检查（包括@提及、回复和投票） |
+| **工作中（DOING）** | 代理正在执行任务 | 仅进行关键检查（包括@提及和回复，不参与投票） |
+| **等待中（WAITING）** | 代理正在等待条件满足 | 进行快速检查（仅检查@提及） |
+| **暂停（PAUSED）** | 代理处于暂停状态 | 跳过检查 |
+| **已完成（COMPLETED）** | 任务已完成 | 进行全面检查 |
+| **失败（FAILED）** | 任务失败 | 进行全面检查 |
+
+### 如何使用代理状态系统
+
+```bash
+# Start a task (switches to DOING mode)
+python universal_memory.py --agent qst doing start \
+  --task "QST FSCA simulation #42" \
+  --type Research
+
+# Update progress
+python universal_memory.py --agent qst doing update --progress 50
+
+# Pause task
+python universal_memory.py --agent qst doing pause --reason "Waiting for resources"
+
+# Resume task
+python universal_memory.py --agent qst doing resume
+
+# Complete task
+python universal_memory.py --agent qst doing complete --result "Simulation successful: ρ=0.08"
+
+# View current status
+python universal_memory.py --agent qst doing status
+
+# View event history
+python universal_memory.py --agent qst doing events
+```
+
+### 事件日志记录
+
+所有状态变化都会自动记录，并附带时间戳：
+
+```json
+{
+  "events": [
+    {
+      "timestamp": "2026-02-15T09:01:22.206211",
+      "event_type": "TASK_START",
+      "description": "开始: QST simulation #42",
+      "progress": 0
+    },
+    {
+      "timestamp": "2026-02-15T09:15:40.754321",
+      "event_type": "PROGRESS_UPDATE",
+      "description": "进度: QST simulation #42 (50%)",
+      "progress": 50
+    },
+    {
+      "timestamp": "2026-02-15T09:25:52.121518",
+      "event_type": "TASK_COMPLETED",
+      "description": "完成: QST simulation #42",
+      "result": "Simulation successful"
+    }
+  ]
+}
+```
+
+---
+
+## 💓 心跳检测功能（v1.7.1 新功能）
+
+### 基于状态的自适应检测策略
+
+系统会根据代理的状态智能调整心跳检测的频率：
+
+```python
+# When agent is DOING: Only check critical notifications
+# - ✅ Check: @mentions, replies
+# - ❌ Skip: Voting (to avoid interrupting work)
+
+# When agent is IDLE: Full checking
+# - ✅ Check: @mentions, replies, voting
+```
+
+### 如何配置心跳检测功能
+
+```bash
+# Copy integration script to workspace
+cp scripts/heartbeat_integration.py /home/node/.openclaw/workspace/heartbeat.py
+chmod +x /home/node/.openclaw/workspace/heartbeat.py
+
+# Set up cron task (every 20 minutes)
+crontab -e
+# Add: */20 * * * * python3 /home/node/.openclaw/workspace/heartbeat.py
+```
+
+### 心跳检测结果输出
+
+```
+============================================================
+❤️  Heartbeat Started: 2026-02-15 09:15:26 UTC
+============================================================
+
+🤖 Agent: qst | 狀態: DOING
+   任務: QST simulation #42
+   類型: Research
+   進度: 50%
+
+🔄 狀態: DOING - 執行 HKGBook 檢查 (策略: 簡化)
+   📢 通知: 0 提及, 0 回覆
+   ⚠️  DOING/WAITING - 跳過投票
+   ✅ HKGBook 檢查完成
+
+============================================================
+✅ Heartbeat Completed: 2026-02-15 09:15:28 UTC
+============================================================
+```
+
+### 多代理支持
+
+每个代理都维护自己的独立状态：
+
+```bash
+# qst agent
+/data/qst_doing-state.json
+
+# mengtian agent
+/data/mengtian_doing-state.json
+
+# lisi agent
+/data/lisi_doing-state.json
+```
+
+---
+
+## 🔐 内存加密（v1.7 新功能）
+
+### 使用 AES-128-CBC + HMAC 加密算法
+
+系统支持使用工业级加密技术来保护敏感数据（如 API 密钥、密码、令牌）：
+
+```python
+from crypto import MemoryCrypto
+
+crypto = MemoryCrypto()
+encrypted = crypto.encrypt("GitHubPAT: ghp_xxx...")
+# Output: ENC::gAAAAABgF7qj... (encrypted string)
+
+decrypted = crypto.decrypt(encrypted)
+# Output: "GitHubPAT: ghp_xxx..."
+```
+
+### 密钥管理
+
+- **密钥存储位置**：`~/.qst_memory.key`（权限设置为 600）
+- **密钥生成方式**：PBKDF2HMAC（SHA256，480,000 次迭代）
+- **加密算法**：Fernet（AES-128-CBC + HMAC）
+
+---
+
 ## 📊 统计面板
 
 ```bash
 python qst_memory.py stats
 ```
 
+### 统计结果输出
+
+```
+📊 QST Memory v1.5 統計面板
+├── 分類結構: 34 分類
+├── 記憶總數: 156 條
+├── Token 估算: ~8,500
+└── 衰減狀態: 3 條高衰減
+```
+
 ---
 
-## 💾 内存格式
+## 💾 内存数据格式
 
 ```markdown
 # Memory Title
@@ -144,7 +324,7 @@ Tags: tag1, tag2
 
 ---
 
-## 🚀 快速入门
+## 🚀 快速入门指南
 
 ```bash
 # Search with hybrid mode (default)
@@ -168,7 +348,7 @@ python qst_memory.py stats
 
 ---
 
-## 📁 文件结构
+## 📁 文件结构说明
 
 ```
 qst-memory/
@@ -191,12 +371,12 @@ qst-memory/
 
 ## 🎯 令牌优化
 
-| 版本 | 每次查询使用的令牌数量 | 相关性 |
+| 版本 | 每次查询使用的令牌数量 | 相关性评分 |
 |---------|--------------|-----------|
-| v1.2 | 约500个 | 85% |
-| v1.4 | 约300个 | 90% |
-| **v1.5** | 约200个 | 95% |
-**改进**：令牌数量减少了60%，相关性提高了95%。
+| v1.2 | 约 500 个令牌 | 85% 的相关性 |
+| v1.4 | 约 300 个令牌 | 90% 的相关性 |
+| **v1.5** | 约 200 个令牌 | 95% 的相关性 |
+| **改进**：令牌使用量减少了 60%，相关性提高了 95% |
 
 ---
 
@@ -228,18 +408,18 @@ cleanup:
 
 ---
 
-## 🔧 安装方法
+## 🔧 安装指南
 
-### 通过ClawHub安装
+### 从 ClawHub 安装
+
 ```bash
 clawhub install qst-memory
 ```
 
-### 通过GitHub安装
+### 从 GitHub 安装
+
 ```bash
 git clone https://github.com/ZhuangClaw/qst-memory-skill.git
 ```
 
----
-
-*QST内存管理v1.5——构建下一代人工智能内存系统。*
+*QST Memory v1.5——构建下一代人工智能内存管理系统。*

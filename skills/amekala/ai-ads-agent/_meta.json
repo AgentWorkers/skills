@@ -1,0 +1,11 @@
+{
+  "owner": "amekala",
+  "slug": "ai-ads-agent",
+  "displayName": "AI Ads Agent — Google, Meta, LinkedIn & TikTok Ad Automation",
+  "latest": {
+    "version": "1.3.0",
+    "publishedAt": 1771117865434,
+    "commit": "https://github.com/openclaw/skills/commit/17f67a5e66c7c1d2d023b300aee175643219e14e"
+  },
+  "history": []
+}

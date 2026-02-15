@@ -1,0 +1,11 @@
+{
+  "owner": "deepcapt",
+  "slug": "agent-signet-id",
+  "displayName": "Agent Signet ID",
+  "latest": {
+    "version": "1.1.0",
+    "publishedAt": 1771095466577,
+    "commit": "https://github.com/openclaw/skills/commit/0af9d09453caec389226accc3860edd6699ea3f4"
+  },
+  "history": []
+}

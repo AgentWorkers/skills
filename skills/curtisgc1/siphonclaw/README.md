@@ -132,6 +132,33 @@ siphonclaw ingest /path/to/your/docs
 siphonclaw search "calibration procedure for sensor module"
 ```
 
+## MCP Server
+
+SiphonClaw exposes all five tools via [Model Context Protocol](https://modelcontextprotocol.io/). Any MCP-compatible client can connect.
+
+```bash
+# Start the MCP server (stdio transport)
+python mcp_server.py
+
+# SSE transport for HTTP clients
+python mcp_server.py --sse --port 8000
+```
+
+Add to your MCP client config (Claude Desktop, OpenClaw, etc.):
+
+```json
+{
+  "mcpServers": {
+    "siphonclaw": {
+      "command": "python",
+      "args": ["/path/to/siphonclaw/mcp_server.py"]
+    }
+  }
+}
+```
+
+Tools available: `siphonclaw_search`, `siphonclaw_ingest`, `siphonclaw_field_note`, `siphonclaw_identify`, `siphonclaw_status`.
+
 ## CLI Reference
 
 ```bash
@@ -302,6 +329,7 @@ siphonclaw/
 │   ├── run_ingest.py               # Batch ingestion runner
 │   ├── monitor_ingest.sh           # Ingestion monitoring
 │   └── start-mlx-server.sh         # Local MLX model server
+├── mcp_server.py                   # MCP server (stdio + SSE transport)
 ├── .env.example                    # Configuration template
 ├── requirements.txt
 └── pyproject.toml

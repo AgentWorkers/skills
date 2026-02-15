@@ -1,136 +1,102 @@
 ---
-name: Upbit Trading Bot (A-Plan)
-description: 这是一个由Cron定时触发、单次运行的自动化交易引擎，专为Upbit平台设计，并针对OpenClaw进行了优化。
-version: 3.2.0
-author: sgyeo
-metadata:
-  openclaw:
-    runtime: nodejs
-    entry: skill.js
-    scheduler:
-      cron: "*/5 * * * *"
-      command: "node skill.js monitor_once"
+name: trading-upbit-skill
+description: Upbit自动化交易系统（采用激进型突破策略），支持通过cron任务一次性执行的命令；具备TopVolume（交易量排名）监控功能，并支持基于百分比的预算分配机制。
+user-invocable: true
+metadata: {"version":"13.1.0","author":"Kuns9","type":"automated-trading","openclaw":{"requires":{"bins":["node"],"env":["UPBIT_ACCESS_KEY","UPBIT_SECRET_KEY"]},"primaryEnv":"UPBIT_ACCESS_KEY"}}
 ---
+# trading-upbit-skill
 
-# Upbit交易机器人（A-Plan）
+这是一个专为 OpenClaw 设计的自动化交易技能，支持在 Upbit 平台上进行本地执行。
 
-这是一个专为OpenClaw环境设计的高可靠性自动化交易工具。它采用**单次运行执行模型（A-Plan）**进行操作，每次执行都会完成完整的市场扫描和交易流程后才会退出。
+## 安装前的注意事项（安全问题）
 
----
+该技能会使用 Upbit 的 API 密钥来运行自动化交易机器人。在安装或使用生产环境密钥之前，请务必：
 
-# 1. 概述
+1. **检查关键文件**：
+   - `scripts/execution/upbitClient.js`（Upbit HTTP 客户端）
+   - `scripts/config/index.js`（配置文件及密钥的加载逻辑）
+   - `skill.js`（技能的入口脚本）
 
-该工具具备以下功能：
-- **单次运行调度**：每5分钟通过cron触发一次。
-- **波动性突破策略**：根据每日价格范围的突破来识别入场时机。
-- **状态感知执行**：使用独立的存储/键值对（KV）来管理持仓，以避免重复操作。
-- **安全锁机制**：通过分布式锁机制防止多个cron任务同时执行。
-- **严格的JSON输出格式**：输出单行JSON数据，便于日志记录和监控。
+2. **先进行模拟测试**：
+   - 将 `execution.dryRun` 设置为 `true`，然后运行 `node skill.js smoke_test`、`node skill.js monitor_once` 或 `node skill.js worker_once`。
 
-该工具还提供了仅用于执行的**查询命令**，以便OpenClaw能够回答用户的问题：
-- 获取价格：`node skill.js price KRW-BTC`
-- 查看持仓：`node skill.js holdings`
-- 获取资产价值（韩元）：`node skill.js assets`
+3. **使用平台提供的密钥存储机制**：
+   - 通过环境变量（OpenClaw Skills 配置或密钥存储）来配置 API 密钥：
+     - `UPBIT_OPEN_API_ACCESS_KEY`
+     - `UPBIT_OPEN_API_SECRET_KEY`
+   - **切勿将密钥直接存储在 `config.json` 文件中**。
 
----
+4. **在测试期间限制密钥的使用权限**：
+   - 尽量使用小额资金或测试账户进行测试。
+   - 密切监控您的 Upbit 账户活动。
 
-# 2. 执行流程（monitor_once）
+5. **快速自我检查**：
+   - 运行 `node skill.js security_check` 命令，检查代码中是否存在硬编码的外部 URL（允许的 URL 为 `api.upbit.com`）。
 
-当执行`node skill.js monitor_once`时：
+**安全提示**：
+- 该技能 **不包含任何数据传输功能**，也不会上传任何数据。
+- Upbit API 的基础 URL 已被设置为 `https://api.upbit.com/v1`，并且所有重定向都被禁用了。
 
-1. **并发检查**：检查存储中是否存在`lock:monitor_once`键。如果存在有效的锁（且未过期），则直接退出。
-2. **卖出评估**：
-    - 从存储中加载所有处于“OPEN”状态的持仓。
-    - 通过OpenClaw的`getTickers`函数获取当前价格。
-    - 计算盈亏（PnL）。如果`PnL >= TARGET_PROFIT`或`PnL <= STOP_LOSS`，则执行卖出操作。
-3. **买入扫描**：
-    - 遍历`WATCHLIST`中的市场。
-    - 通过OpenClaw的`getCandles`函数获取每日和每小时的价格数据。
-    - 验证是否满足**波动性突破**（价格突破目标值）和**看涨条件**（当前价格高于开盘价）。
-4. **买入执行**：
-    - 进行风险检查（当前余额与预算的对比）。
-    - 通过OpenClaw的`placeOrder`函数下达市场买入订单。
-    - 将持仓状态更新为“OPEN”。
-5. **终止**：以单行JSON格式输出执行总结（包括诊断日志），然后退出。
+## 功能概述
 
----
+- 监控市场（包括关注列表和可选的成交量最高的交易对）
+- 在 `resources/events.json` 文件中生成买入/卖出指令
+- 在后台线程中处理这些指令（执行交易或进行模拟测试），并将交易结果保存到 `resources/positions.json` 文件中
+- 该技能支持定时任务（Cron）执行：`monitor_once` 和 `worker_once` 命令均为一次性执行。
 
-# 3. 存储/键值对（KV）结构
+## 命令说明
 
-| 键        | 格式        | 用途                |
-|------------|------------|-------------------|
-| `lock:monitor_once` | JSON        | 用于并发控制的锁信息（包含`runId`和`ts`） |
-| `positions:<market>` | JSON        | 持仓状态（`OPEN`、`FLAT`）以及买入价格和数量 |
-| `cooldown:<market>` | JSON        | 防止快速再次买入的冷却时间（以秒为单位） |
-| `active_markets` | Array       | 所有曾经进行交易的市场列表 |
+### monitor_once
+- 执行一次市场监控周期，并将生成的交易指令加入队列。
+  - 命令：`node skill.js monitor_once`
 
----
+### worker_once
+- 处理待处理的交易指令（买入/卖出），并更新交易持仓。
+  - 命令：`node skill.js worker_once`
 
-# 4. 策略逻辑
+### smoke_test
+- 验证配置文件和公共 API 端点的可用性（不执行实际交易）。
+  - 命令：`node skill.js smoke_test`
 
-### 入场条件（两个条件都必须满足）：
-1. **价格突破**：`price > (today_open + (yesterday_high - yesterday_low) * K_VALUE)`
-2. **看涨信号**：`current_price > hour_opening_price`
+## 预算策略（v13）
 
-### 退出条件（满足任意一个条件即可）：
-1. **获利平仓**：`PnL >= TARGET_PROFIT`（默认值：0.05 / 5%）
-2. **止损**：`PnL <= STOP_LOSS`（默认值：-0.05 / -5%）
+订单金额可以根据可用韩元（KRW）的百分比来设置，并在同一轮交易中平均分配到多个买入指令中。
 
----
+**计算公式**：
+- `totalBudget = floor((availableKRW - reserveKRW) * pct)`（总预算）
+- 如果有 N 个待处理的买入信号，`perOrderKRW = floor(totalBudget / N)`（每个订单的金额），结果向下取整。
 
-# 5. 环境变量
+## 推荐的定时任务设置
 
-使用以下环境变量配置机器人：
+- **监控任务**：每 5 分钟执行一次：
+  - 命令：`cd <skillRoot> && node skill.js monitor_once`
 
-| 变量        | 默认值       | 描述                |
-|------------|------------|-------------------|
-| `WATCHLIST`    | `KRW-BTC,KRW-ETH,KRW-SOL` | 以逗号分隔的市场代码 |
-| `TARGET_PROFIT` | `0.05`      | 盈利目标比例           |
-| `STOP_LOSS`    | `-0.05`      | 止损比例             |
-| `K_VALUE`     | `0.5`      | 用于判断波动性的因子         |
-| `BUDGET_KRW`    | `10000`      | 每笔买入订单的金额（韩元）       |
-| `BUY_COOLDOWN_SEC` | `1800`      | 重新买入同一市场的冷却时间（秒）     |
-| `LOCK_TTL_SEC`    | `120`      | 单次运行的最大锁持续时间（秒）     |
+- **后台处理任务**：每 1 分钟执行一次：
+  - 命令：`cd <skillRoot> && node skill.js worker_once`
 
----
+## 所需文件
 
-# 6. JSON输出格式
+- 必需文件：`config.json`（请勿提交到代码仓库）
 
-执行完成后，机器人会输出一行JSON数据：
+- 自动生成的文件：
+  - `resources/events.json`
+  - `resources/positions.json`
+  - `resources/topVolumeCache.json`
+  - `resources/nearCounter.json`
+  - `resources/heartbeat.json`
+
+- 测试工具：`scripts/tests/*`（详见 README_TESTING.md）
 
 ```json
 {
-  "ok": true,
-  "runId": "run_1707920000000",
-  "actions": [
-    { "type": "BUY", "market": "KRW-BTC", "result": "SUCCESS" }
-  ],
-  "errors": [],
-  "logs": [
-    { "level": "INFO", "message": "Signal: BUY KRW-BTC breakout detected" }
-  ],
-  "timestamp": "2026-02-14T23:30:00Z"
+  "trading": {
+    "budgetPolicy": {
+      "mode": "balance_pct_split",
+      "pct": 0.3,
+      "reserveKRW": 0,
+      "minOrderKRW": 5000,
+      "roundToKRW": 1000
+    }
+  }
 }
-```
-
----
-
-# 7. 目录结构
-
-```
-skill.js                # CLI Entrypoint & Runner
-handlers/
-  monitorOnce.js        # Main A-Plan Orchestrator
-repo/
-  positionsRepo.js      # Storage/KV Abstraction
-domain/
-  strategies.js         # Strategy Math (Pure)
-  riskManager.js        # Balance & Order Validation
-adapters/
-  execution.js          # OpenClaw Tool Interface
-services/
-  orderService.js       # Trade Execution logic
-utils/
-  log.js                # In-memory log buffer (NO stdout)
-  time.js               # Time & Config Utilities
 ```

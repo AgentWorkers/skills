@@ -1,163 +1,280 @@
 ---
 name: meta-business
-description: Meta Business CLI 是一款用于 WhatsApp、Instagram、Facebook Pages 和 Messenger 自动化的命令行工具。
+description: "Meta Business CLI 的核心功能是通过 Graph API 完成对 WhatsApp、Instagram、Facebook Pages 以及 Messenger 的自动化操作。该工具支持消息发送、媒体文件上传、模板使用、数据分析、Webhook 配置以及 systemd 服务管理等功能。"
+version: 1.2.0
+author: adolago
+tags:
+  - whatsapp
+  - instagram
+  - facebook
+  - messenger
+  - meta
+  - cli
+  - automation
+triggers:
+  - whatsapp
+  - instagram
+  - facebook
+  - messenger
+  - meta
+  - send message
 metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "📱",
-        "requires": { "bins": ["meta"] },
-        "install":
-          [
-            {
-              "id": "bun",
-              "kind": "command",
-              "command": "bun install -g meta-business-cli",
-              "bins": ["meta"],
-              "label": "Install meta CLI (bun)",
-            },
-          ],
-      },
-  }
+  openclaw:
+    requires:
+      bins: [meta]
+    install:
+      - id: bun
+        kind: command
+        command: "bun install -g meta-business-cli"
+        bins: [meta]
+        label: "Install meta CLI (bun)"
+      - id: compile
+        kind: command
+        command: "git clone https://github.com/adolago/meta-cli.git && cd meta-cli && bun install && bun build --compile --outfile ~/.bun/bin/meta src/index.ts"
+        bins: [meta]
+        label: "Build from source (standalone binary)"
 ---
-
 # Meta Business CLI
 
-使用 `meta` 命令通过 Graph API 实现 WhatsApp、Instagram、Facebook Pages 和 Messenger 的自动化操作。
+使用 `meta` 命令，可以通过 Graph API 自动化 WhatsApp、Instagram、Facebook Pages 和 Messenger 的操作。
 
-**设置（只需执行一次）：**
-- `meta config set app.id YOUR_APP_ID`  
-- `meta config set app.secret YOUR_APP_SECRET`  
-- `meta auth login`（使用 OAuth PKCE 流程，会打开浏览器）  
-- `meta doctor`（验证连接性和权限）  
-- 或者使用 `--token YOUR_TOKEN` 选项跳过 OAuth 验证。
+## 设置
 
-**具体配置：**  
-- **WhatsApp：**  
-  - `meta config set whatsapp.phoneNumberId ID`  
-  - `meta config set whatsapp.businessAccountId ID`  
-- **Instagram：**  
-  - `meta config set instagram.accountId ID`  
-- **Facebook Pages/Messenger：**  
-  - `meta config set pages.pageId ID`  
-- **查看所有配置：**  
-  - `meta config list`  
+```bash
+# 1. Configure app credentials
+meta config set app.id YOUR_APP_ID
+meta config set app.secret YOUR_APP_SECRET
 
-**WhatsApp 命令：**  
-- **发送文本消息：**  
-  `meta wa send "+1234567890" --text "Hello" --json`  
-- **发送带 Markdown 格式的消息：**  
-  `meta wa send "+1234567890" --text "**bold** and _italic_" --markdown --json`  
-- **分块发送长消息：**  
-  `meta wa send "+1234567890" --text "very long message..." --chunk --json`  
-- **发送图片：**  
-  `meta wa send "+1234567890" --image "https://example.com/photo.jpg" --caption "Look" --json`  
-- **发送视频：**  
-  `meta wa send "+1234567890" --video "https://example.com/video.mp4" --caption "Watch" --json`  
-- **发送文档：**  
-  `meta wa send "+1234567890" --document "https://example.com/file.pdf" --json`  
-- **发送音频：**  
-  `meta wa send "+1234567890" --audio "https://example.com/note.ogg" --json`  
-- **发送语音笔记：**  
-  `meta wa send "+1234567890" --audio "./recording.ogg" --voice --json`  
-- **发送模板消息：**  
-  `meta wa send "+1234567890" --template "hello_world" --template-lang en_US --json`  
-- **标记消息为已读：**  
-  `meta wa read WAMID --json`  
-- **列出所有模板：**  
-  `meta wa template list --json`  
-- **获取模板：**  
-  `meta wa template get TEMPLATE_NAME --json`  
-- **删除模板：**  
-  `meta wa template delete TEMPLATE_NAME --json`  
-- **上传媒体文件：**  
-  `meta wa media upload ./photo.jpg --json`  
-- **获取媒体文件 URL：**  
-  `meta wa media url MEDIA_ID --json`  
-- **下载媒体文件：**  
-  `meta wa media download MEDIA_ID ./output.jpg`  
-- **查看分析数据：**  
-  `meta wa analytics --days 30 --granularity DAY --json`  
+# 2. Authenticate (OAuth PKCE, opens browser)
+meta auth login
 
-**电话号码管理：**  
-- **列出所有电话号码：**  
-  `meta wa phone list --json`  
-- **获取号码详情：**  
-  `meta wa phone get --json`  
-- **选择活跃号码：**  
-  `meta wa phone select PHONE_NUMBER_ID`  
+# 3. Configure WhatsApp (from API Setup page)
+meta config set whatsapp.phoneNumberId YOUR_PHONE_NUMBER_ID
+meta config set whatsapp.businessAccountId YOUR_WABA_ID
 
-**允许列表（防止恶意代码注入）：**  
-- **列出允许的号码：**  
-  `meta wa allowlist list`  
-- **添加号码到允许列表：**  
-  `meta wa allowlist add "+1234567890"`  
-- **从允许列表中删除号码：**  
-  `meta wa allowlist remove "+1234567890"`  
-- 当允许列表非空时，`meta wa send` 命令仅向列表中的号码发送消息。  
+# 4. Verify everything works
+meta doctor
+```
 
-**Webhook（接收消息）：**  
-- **启动监听器：**  
-  `meta webhook listen --port 3000 --verify-token TOKEN --app-secret SECRET`  
-- **测试验证：**  
-  `meta webhook verify --verify-token TOKEN --json`  
-- **订阅事件：**  
-  `meta webhook subscribe --object whatsapp_business_account --fields messages --callback-url "https://example.com/webhook" --json`  
-  - 通过配置 `webhook.forwardUrl` 将接收到的消息转发到外部服务（例如 Zee Gateway）；消息会去重并转换为标准的 PlatformMessage 格式。  
+或者在使用任何命令时加上 `--token YOUR_TOKEN` 以跳过 OAuth 验证（例如，使用系统用户令牌）。
 
-**Instagram 命令：**  
-- **发布图片：**  
-  `meta ig publish --image "https://example.com/photo.jpg" --caption "My post" --json`  
-- **发布视频：**  
-  `meta ig publish --video "https://example.com/video.mp4" --caption "Watch this" --json`  
-- **发布 Reel（Instagram 动态视频）：**  
-  `meta ig publish --video "https://example.com/reel.mp4" --reel --caption "New reel" --json`  
-- **查看账户洞察：**  
-  `meta ig insights --period day --days 30 --json`  
-- **查看媒体洞察：**  
-  `meta ig insights --media-id MEDIA_ID --json`  
-- **列出评论：**  
-  `meta ig comments list MEDIA_ID --json`  
-- **回复评论：**  
-  `meta ig comments reply COMMENT_ID "Thanks!" --json`  
-- **隐藏评论：**  
-  `meta ig comments hide COMMENT_ID --json`  
-- **删除评论：**  
-  `meta ig comments delete COMMENT_ID --json`  
+## 认证
 
-**Facebook Pages 命令：**  
-- **发布帖子：**  
-  `meta fb post --message "Hello from the CLI" --json`  
-- **发布链接帖子：**  
-  `meta fb post --message "Check this out" --link "https://example.com" --json`  
-- **列出帖子：**  
-  `meta fb list --limit 10 --json`  
-- **查看洞察数据：**  
-  `meta fb insights --period day --days 30 --json`  
+```bash
+meta auth login                              # OAuth PKCE flow (opens browser)
+meta auth login --token YOUR_ACCESS_TOKEN    # Use existing token
+meta auth login --scopes "whatsapp_business_messaging,instagram_basic,pages_show_list"
+meta auth status                             # Show token validity and scopes
+meta auth logout                             # Remove stored credentials
+```
 
-**Messenger 命令：**  
-- **发送文本消息：**  
-  `meta messenger send PSID --text "Hello" --json`  
-- **发送图片：**  
-  `meta messenger send PSID --image "https://example.com/photo.jpg" --json`  
-- **带标签发送消息：**  
-  `meta messenger send PSID --text "Update" --type MESSAGE_TAG --tag HUMAN_AGENT --json`  
-- **列出对话记录：**  
-  `meta messenger receive --json`  
-- **查看对话记录：**  
-  `meta messenger receive --conversation-id CONV_ID --json`  
+## 配置
 
-**诊断工具：**  
-- `meta doctor --json` 可用于检查配置、凭据、令牌有效性、Graph API 连接性、权限以及特定平台的资产访问权限。  
+```bash
+meta config set app.id YOUR_APP_ID           # App ID (numeric)
+meta config set app.secret YOUR_APP_SECRET   # App secret
+meta config set whatsapp.phoneNumberId ID    # WhatsApp phone number ID
+meta config set whatsapp.businessAccountId ID  # WhatsApp business account ID
+meta config set instagram.accountId ID       # Instagram account ID
+meta config set pages.pageId ID              # Facebook Page ID
+meta config set webhook.forwardUrl URL       # Forward inbound messages to URL
+meta config get <key>                        # Get a config value
+meta config list                             # Show all config values
+```
 
-**注意事项：**  
-- 在自动化操作时，始终使用 `--json` 选项以获得结构化的输出。  
-- 如果命令需要参数，只需将其作为标志传递即可。  
-- 可使用 `--token TOKEN` 选项覆盖存储的凭据。  
-- 使用 `--api-version v22.0` 可指定使用的 Graph API 版本。  
-- WhatsApp 需要配置电话号码 ID 和企业账户 ID。  
-- Instagram 发布图片/视频时需要使用外部链接（不能使用本地文件）。  
-- 在 24 小时之外发送消息时需要使用 `message tag`。  
-- 语音笔记需要 OGG/Opus 格式才能在 WhatsApp 中正确显示。  
-- Webhook 会自动发送已读确认和接收消息时的反应信息。  
-- 首次使用前请运行 `meta doctor` 命令以验证配置是否正确。
+配置文件存储在 `~/.meta-cli/config.json` 中。
+
+## WhatsApp
+
+### 发送消息
+
+```bash
+# Text
+meta wa send "+1234567890" --text "Hello" --json
+
+# Markdown (converts to WhatsApp formatting)
+meta wa send "+1234567890" --text "**bold** and _italic_" --markdown --json
+
+# Chunked (splits long text into multiple messages)
+meta wa send "+1234567890" --text "very long message..." --chunk --json
+
+# Image
+meta wa send "+1234567890" --image "https://example.com/photo.jpg" --caption "Look" --json
+
+# Video
+meta wa send "+1234567890" --video "https://example.com/video.mp4" --caption "Watch" --json
+
+# Document
+meta wa send "+1234567890" --document "https://example.com/file.pdf" --json
+
+# Local file (auto-uploads)
+meta wa send "+1234567890" --document ./report.pdf --caption "Q4 report" --json
+
+# Audio
+meta wa send "+1234567890" --audio "https://example.com/note.ogg" --json
+
+# Voice note (renders as playable voice note, requires OGG/Opus)
+meta wa send "+1234567890" --audio "./recording.ogg" --voice --json
+
+# Template
+meta wa send "+1234567890" --template "hello_world" --template-lang en_US --json
+
+# Mark as read
+meta wa read WAMID --json
+```
+
+### 媒体文件大小限制
+
+| 类型 | 最大大小 |
+|------|----------|
+| 图片 | 5 MB |
+| 视频 | 16 MB |
+| 文档 | 100 MB |
+
+### 模板
+
+```bash
+meta wa template list --json                 # List all templates
+meta wa template get TEMPLATE_NAME --json    # Get template details
+meta wa template delete TEMPLATE_NAME --json # Delete template
+```
+
+### 媒体文件上传
+
+```bash
+meta wa media upload ./photo.jpg --json      # Upload media
+meta wa media url MEDIA_ID --json            # Get media URL
+meta wa media download MEDIA_ID ./output.jpg # Download media
+```
+
+### 分析数据
+
+```bash
+meta wa analytics --days 30 --granularity DAY --json
+```
+
+### 手机号码管理
+
+```bash
+meta wa phone list --json                    # List numbers
+meta wa phone get --json                     # Get active number details
+meta wa phone select PHONE_NUMBER_ID         # Select active number
+```
+
+### 允许列表（防止恶意信息注入）
+
+```bash
+meta wa allowlist list                       # List allowed numbers
+meta wa allowlist add "+1234567890"          # Add number
+meta wa allowlist remove "+1234567890"       # Remove number
+```
+
+当允许列表不为空时，`meta wa send` 命令只会将消息发送到列表中的号码。
+
+## Instagram
+
+```bash
+# Publish image
+meta ig publish --image "https://example.com/photo.jpg" --caption "My post" --json
+
+# Publish video
+meta ig publish --video "https://example.com/video.mp4" --caption "Watch this" --json
+
+# Publish Reel
+meta ig publish --video "https://example.com/reel.mp4" --reel --caption "New reel" --json
+
+# Account insights
+meta ig insights --period day --days 30 --json
+
+# Media insights
+meta ig insights --media-id MEDIA_ID --json
+
+# Comments
+meta ig comments list MEDIA_ID --json        # List comments
+meta ig comments reply COMMENT_ID "Thanks!" --json  # Reply
+meta ig comments hide COMMENT_ID --json      # Hide
+meta ig comments delete COMMENT_ID --json    # Delete
+```
+
+在 Instagram 上发布图片或视频时，需要使用公共 URL（不能使用本地文件）。
+
+## Facebook Pages
+
+```bash
+meta fb post --message "Hello from the CLI" --json           # Create post
+meta fb post --message "Check this" --link "https://example.com" --json  # Link post
+meta fb list --limit 10 --json                               # List posts
+meta fb insights --period day --days 30 --json               # View insights
+```
+
+## Messenger
+
+### 注意事项
+
+在 24 小时之外发送 Messenger 消息时，需要使用 `message tag`。
+
+## Webhook
+
+```bash
+# Start listener
+meta webhook listen --port 3000 --verify-token TOKEN --app-secret SECRET
+
+# Test verification locally
+meta webhook verify --verify-token TOKEN --json
+
+# Subscribe to events
+meta webhook subscribe \
+  --object whatsapp_business_account \
+  --fields messages \
+  --callback-url "https://example.com/webhook" --json
+```
+
+在配置文件中设置 `webhook.forwardUrl`，以便将收到的消息转发到外部服务。
+Webhook 会自动发送已读通知并确认用户的反应。
+
+## Webhook 服务（systemd）
+
+```bash
+meta service install                         # Install systemd user service
+meta service start                           # Start the webhook service
+meta service stop                            # Stop the service
+meta service restart                         # Restart the service
+meta service status                          # Show service status
+meta service logs                            # Show service logs
+meta service uninstall                       # Remove systemd service
+```
+
+## Shell 完成提示（Shell Completion）
+
+```bash
+# Bash
+meta completion >> ~/.bashrc
+
+# Zsh (add to .zshrc)
+meta completion >> ~/.zshrc
+```
+
+## 日志诊断
+
+```bash
+meta doctor --json
+```
+
+检查配置文件、凭证、令牌的有效性、Graph API 的连接状态、权限以及特定平台的资源访问权限。首次使用前请运行此命令。
+
+## 全局参数
+
+| 参数 | 说明 |
+|------|-------------|
+| `--json` | 为脚本编写或代理程序提供结构化输出 |
+| `--verbose` | 将调试日志输出到标准错误流（stderr） |
+| `--token TOKEN` | 覆盖已保存的凭证 |
+| `--api-version v22.0` | 指定使用的 Graph API 版本 |
+
+## 注意事项：
+
+- 在自动化操作时，始终使用 `--json` 以获得结构化输出。
+- 如果所需参数以参数标志的形式提供，所有命令将以非交互式方式运行。
+- 语音笔记需要 OGG/Opus 格式才能在 WhatsApp 中正确显示。
+- 超过大小限制的文件会被拒绝，并会显示相应的错误信息。
+- 对于较大的文件，请将其托管在某个 URL 上，并直接传递该 URL。

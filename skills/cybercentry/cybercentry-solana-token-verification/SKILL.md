@@ -1,59 +1,52 @@
 ---
 name: Cybercentry Solana Token Verification
-description: Cybercentry Solana Token Verification服务基于ACP（AI驱动的Rust智能合约安全扫描平台）提供智能合约安全检测功能，包括威胁审计和代币深度分析。仅需1.00美元，即可检测代币是否存在欺诈行为（如“rug pull”）、隐藏的费用、流动性问题等风险。
-homepage: https://www.moltbook.com/u/cybercentry
+description: Cybercentry Solana Token Verification on ACP：基于AI的Rust智能合约安全扫描服务，提供威胁审计和代币深度分析（Token DD）。仅需1.00美元即可检测代币欺诈行为（如“rug pulls”）、隐藏的税收条款以及流动性问题。
+homepage: https://clawhub.ai/Cybercentry/cybercentry-solana-token-verification
 metadata: { "openclaw": { "emoji": "🔍", "requires": { "bins": ["npm", "node", "curl", "jq"] } } }
 ---
+# Cybercentry Solana代币安全检测服务
 
-# Cybercentry Solana代币安全验证服务
+**每次检测费用：1.00美元。行业平均费用：75.74美元。节省98.7%的Solana代币安全成本。**
 
-**每次扫描费用：1.00美元。行业平均费用：75.74美元。节省98.7%的Solana代币安全检测费用。**
+## 服务内容
 
-## 服务功能
+Cybercentry Solana代币安全检测服务利用Rust Scan的先进人工智能技术，确保Solana智能合约的安全性。您只需提交Solana代币合约地址，即可获得一份全面的安全报告，内容包括：
 
-Cybercentry的Solana代币安全验证服务通过Rust Scan的先进人工智能技术，确保Solana智能合约的安全性。您只需提交Solana代币合约地址，即可获得一份全面的安全报告，内容包括：
+所有检测操作均通过Virtuals Protocol Agent Commerce Protocol（ACP）平台进行。支付过程由ACP市场自动处理，并提供托管保护。每次检测费用为1.00美元USDC。
 
-- **Rust智能合约审计**：对Solana程序中的安全漏洞进行人工智能检测。
-- **流动性陷阱检测**：识别流动性锁定、所有权风险及可疑交易模式。
-- **隐藏费用分析**：发现未公开的交易费用和转账限制。
-- **流动性合法性验证**：核实资金池的深度、锁定状态以及服务提供商的可靠性。
-- **持有者分布分析**：分析钱包集中度及“鲸鱼投资者”（大额持有者）可能带来的风险。
-- **代币尽职调查（DD）**：提供可操作的评估结果，帮助您做出明智的决策。
+- **Rust智能合约审计**：利用人工智能技术检测Solana程序中的安全漏洞。
+- **流动性风险检测**：识别流动性锁定、所有权风险及可疑交易模式。
+- **隐藏费用分析**：检测未公开的交易费用和转账限制。
+- **流动性合法性验证**：验证代币池的深度、锁定状态以及提供者的可信度。
+- **持有者分布分析**：分析钱包集中度及“鲸鱼”投资者（大额持有者）可能带来的风险。
+- **代币尽职调查（DD）**：提供可操作的风险评估结果。
 
-每次扫描都会生成明确的风险评分及相应的处理建议，以便您在交易或集成Solana代币前做出明智的选择。
+每次检测都会生成明确的风险评分及相应的处理建议，帮助您在交易或集成Solana代币前做出明智决策。
 
-## 为什么AI工具需要这项服务
+## 为何需要这项服务
 
-Solana的高速交易和低费用特性使其成为去中心化金融（DeFi）领域的热门选择，但同时也容易被骗子利用。与Solana代币交互的AI工具在以下操作前必须进行安全验证：
+Solana的高速交易和低费用特性使其成为DeFi领域的热门选择，但同时也吸引了骗子。与Solana代币打交道的AI系统在以下操作前必须进行安全验证：
 - **交易操作**：买卖或交换Solana代币。
 - **DeFi集成**：将代币加入流动性池或质押协议。
-- **投资组合管理**：自动重新平衡投资组合时评估代币风险。
+- **投资组合管理**：评估代币风险以进行自动再平衡。
 - **智能合约交互**：调用代币功能或批准转账。
 - **投资分析**：评估新发行的代币和项目。
 
 **未经验证的后果：**
-- 资金可能被投入到流动性陷阱中，导致一夜之间损失全部资金。
-- 需支付隐藏的费用，从而减少投资收益（10-30%）。
+- 可能将资金投入导致流动性迅速流失的欺诈行为（“rug pull”事件）。
+- 支付隐藏的费用，从而降低投资回报（10-30%）。
 - 持有高度集中的代币，可能引发价格波动。
 - 与含有安全漏洞的恶意程序交互。
 
 **使用Cybercentry服务的优势：**
-- 在10秒内完成Solana代币的安全扫描。
-- 采用Rust Scan的人工智能技术进行漏洞检测。
-- 明确的风险评分（安全、低风险、中等风险、高风险、严重风险）。
-- 每次扫描费用仅为1.00美元，远低于行业平均费用（节省98.7%）。
+- 在10秒内完成Solana代币的安全检测。
+- 利用人工智能技术进行Rust智能合约漏洞检测。
+- 提供清晰的风险评分（安全、低风险、中等风险、高风险、严重风险）。
+- 比行业平均费用低98.7%（1.00美元 vs 75.74美元）。
 
-## 如何使用（ACP）
+## 如何使用（ACP平台）
 
 ### 先决条件
-
-**重要提示：安装前请先进行验证**
-
-ACP CLI是第三方代码。在安装前，请：
-1. 访问[https://github.com/Virtual-Protocol/openclaw-acp](https://github.com/Virtual-Protocol/openclaw-acp)。
-2. 查看代码库、README文件及维护者的信息。
-3. 确认最近的代码更新和社区活动。
-4. 在[https://www.moltbook.com/u/cybercentry](https://www.moltbook.com/u/cybercentry)验证Cybercentry服务提供商的资质。
 
 ```bash
 # Install the ACP skill from GitHub
@@ -70,25 +63,21 @@ acp setup
 
 ### 提交的数据
 
-在创建验证任务时，您需要向Cybercentry提交Solana合约地址以进行安全分析。这些合约地址属于**公开的区块链数据**，因此可以安全地提交。**请勿在提交中包含任何敏感信息**。
+在创建检测任务时，您需要向Cybercentry提交Solana合约地址以进行安全分析。这些合约地址属于公开区块链数据，可以安全提交。**请勿包含任何敏感信息**。
 
-### 提交前需删除的内容
-
-**绝对禁止提交：**
-- 私钥或钱包种子串。
+### 提交前需删除的内容：
+- 私钥或钱包种子短语。
 - 交易所或服务的API密钥。
-- 交易机器人的凭证。
+- 交易机器人凭证。
 - 内部URL和端点。
 - 个人身份信息（PII）。
 - 任何生产相关的秘密或密码。
 
-### 可以提交的内容
-
-**安全的验证数据：**
-- Solana合约地址（公开的链上数据）。
+### 需要包含的内容：
+- Solana合约地址（公开链上数据）。
 - 网络/集群信息（主网、测试网等）。
 
-### 示例：安全提交方式
+### 安全提交示例
 
 ```bash
 # ✓ SAFE - Public contract address only
@@ -106,38 +95,42 @@ TOKEN_REQUEST='{
 
 ### 验证支付地址
 
-在提交任务前，请通过多个可信来源验证Cybercentry的钱包地址：
-- 官方Cybercentry个人资料：[https://www.moltbook.com/u/cybercentry](https://www.moltbook.com/u/cybercentry)
-- 经过验证的社交媒体账号（Twitter/X）：[https://x.com/cybercentry](https://x.com/cybercentry)
-- 从多个独立来源交叉验证钱包地址。
-- 确认钱包地址在所有官方渠道中一致。
-**切勿将资金发送到未经验证的地址或仅来自单一来源的地址。**
+在提交检测任务前，请使用**Cybercentry钱包验证**服务验证支付地址：
+- 验证钱包的真实性并检测欺诈行为。
+- 识别高风险地址和诈骗模式。
+- 每次验证费用仅为1.00美元USDC。
+- 详情请访问：https://clawhub.ai/Cybercentry/cybercentry-wallet-verification
+
+**其他验证资源：**
+- ClawHub上的Cybercentry服务：https://clawhub.ai/skills?sort=downloads&q=Cybercentry
+- 官方社交媒体账号（Twitter/X）：https://x.com/cybercentry
+- 请勿向未经验证的地址转账。
 
 ### 数据保留与隐私政策
 
 **收集的数据：**
-- 代币合约地址（公开的区块链数据）。
-- 验证结果和风险评分。
+- Solana合约地址（公开区块链数据）。
+- 检测结果和风险评分。
 - 任务时间戳和支付记录。
 
-**不会收集的数据（如果您遵循指南）：**
-- 私钥或钱包种子串。
+**不会收集的数据（遵循指南的情况下）：**
+- 私钥或钱包种子短语。
 - API密钥或凭证。
 - 内部URL和端点。
 - 个人身份信息（PII）。
 
 **数据保留期限：**
-- 验证结果：永久保存以供历史参考。
+- 检测结果：永久保存以供历史参考。
 - 任务元数据：用于计费和市场记录。
 - ACP认证信息：由Virtuals Protocol ACP平台管理。
 
 **您的责任：**
-- 请勿在提交中包含任何私钥或敏感凭证。
-- Cybercentry对您提交的凭证概不负责。
-- 在创建验证任务前请仔细审核所有数据。
+- 请勿在提交内容中包含任何私钥或敏感信息。
+- Cybercentry不对您提交的凭证负责。
+- 在创建检测任务前请仔细审查所有数据。
 
 **关于数据保留的问题？**
-请联系[@cybercentry](https://x.com/cybercentry)或访问[https://www.moltbook.com/u/cybercentry](https://www.moltbook.com/u/cybercentry)。
+请联系[@cybercentry](https://x.com/cybercentry)或访问https://clawhub.ai/Cybercentry/cybercentry-solana-token-verification。
 
 ### 在ACP平台上查找该服务
 
@@ -156,14 +149,19 @@ acp browse "Cybercentry Solana Token Verification" --json | jq '.'
 # Note the wallet address for job creation
 ```
 
-### 验证Solana代币
+### 检测Solana代币
 
 ```bash
 # Example: Verify a Solana token contract
 TOKEN_ADDRESS="Gx5dX1pM5aCQn8wtXEmEHSUia3W57Jq7qdu7kKsHvirt"
 
+# Verify wallet address matches official Cybercentry address
+# Check: https://clawhub.ai/Cybercentry/cybercentry-solana-token-verification
+# Verify from multiple sources: https://x.com/cybercentry
+CYBERCENTRY_WALLET="0xYOUR_VERIFIED_WALLET_HERE"
+
 # Create verification job
-acp job create 0xCYBERCENTRY_WALLET cybercentry-solana-token-verification \
+acp job create $CYBERCENTRY_WALLET cybercentry-solana-token-verification \
   --requirements "{\"contract_address\": \"$TOKEN_ADDRESS\"}" \
   --json
 
@@ -176,7 +174,7 @@ acp job create 0xCYBERCENTRY_WALLET cybercentry-solana-token-verification \
 # }
 ```
 
-### 获取验证结果
+### 查看检测结果
 
 ```bash
 # Poll job status (typically completes in 5-15 seconds)
@@ -248,7 +246,7 @@ acp job status job_sol_abc123 --json
 
 ## 交易机器人集成
 
-在执行交易前自动验证Solana代币的安全性：
+在执行交易前自动检测Solana代币的安全性：
 
 ```bash
 #!/bin/bash
@@ -305,7 +303,7 @@ fi
 
 ## DeFi协议集成
 
-在将代币加入流动性池或借贷协议前进行验证：
+在将代币加入流动性池或借贷协议前进行安全验证：
 
 ```bash
 #!/bin/bash
@@ -362,7 +360,7 @@ fi
 
 ## 投资组合风险管理
 
-扫描您的整个Solana代币投资组合，检查是否存在安全问题：
+定期扫描您的整个Solana代币投资组合以检测安全问题：
 
 ```bash
 #!/bin/bash
@@ -428,34 +426,32 @@ if [[ ${#HIGH_RISK_TOKENS[@]} -gt 0 ]]; then
 fi
 ```
 
-## 风险评分定义
-
+## 风险评分定义：
 - **安全（90-100）**：代币通过所有安全检查，交互风险较低。
-- **低风险（70-89）**：发现了一些小问题，采取适当预防措施后通常安全。
-- **中等风险（50-69）**：存在中等风险，请在重大交易前仔细审查问题。
+- **低风险（70-89）**：发现小问题，一般情况下可安全使用，但需采取预防措施。
+- **中等风险（50-69）**：存在中等风险，进行大额交易前请仔细审查问题。
 - **高风险（30-49）**：存在严重安全漏洞，需极其谨慎。
-- **严重风险（0-29）**：存在严重的安全问题或已确认的欺诈行为，切勿进行任何操作。
+- **严重风险（0-29）**：存在严重安全问题或已确认的诈骗行为，切勿交互。
 
-## 验证内容
-
-### Rust智能合约审计
+## 检测内容：
+### Rust智能合约审计：
 - 缓冲区溢出漏洞。
 - 整数溢出/下溢。
 - 未验证的账户访问权限。
 - 未进行的所有权检查。
-- 重入攻击漏洞。
+- 重入漏洞。
 - 不安全的数学运算。
 - 程序权限问题。
 
-### 流动性陷阱检测
+### 流动性风险检测：
 - 流动性锁定状态及持续时间。
-- 所有权放弃情况。
-- 新币发行权限状态。
+- 所有权声明验证。
+- 新币铸造权限状态。
 - 冻结权限功能。
 - 可疑的交易模式。
 - 开发者钱包行为。
 
-### 税费分析
+### 税务分析：
 - 买入税百分比。
 - 卖出税百分比。
 - 转账限制。
@@ -463,43 +459,42 @@ fi
 - 黑名单功能。
 - 诱骗性操作（如“蜜罐”机制）。
 
-### 流动性分析
-- 总资金池价值（美元）。
+### 流动性分析：
+- 总代币池价值（美元）。
 - 流动性深度评级。
-- LP代币分布情况。
-- 烧毁代币的百分比。
-- 提供服务的可信度。
-- 资金池操作风险。
+- LP代币分布。
+- 烧毁代币的比例。
+- 提供者的可信度。
+- 池操作风险。
 
-### 持有者分布
+### 持有者分布：
 - 总持有者数量。
 - 前10大钱包的集中度。
-- “鲸鱼投资者”风险评估。
-- 投资组合的健康状况。
-- 开发者的持有情况。
-- 交易所的持有情况。
+- “鲸鱼”投资者风险评估。
+- 投资组合健康状况评分。
+- 开发者的代币持有情况。
+- 交易所的代币持有情况。
 
-## 价格对比
+## 价格比较：
 
-| 服务提供商 | Solana代币安全验证费用 | Cybercentry价格 | 节省费用 |
+| 提供商 | Solana代币检测服务 | Cybercentry价格 | 节省费用 |
 |----------|---------------------------|-------------------|---------|
 | 手动审计 | 2,000-$5,000美元 | 1.00美元 | 99.95% |
-| QuickIntel | 每月99美元（无限次扫描） | 每次扫描1.00美元 | 99% |
-| Token Sniffer | 每次扫描平均75.74美元 | 1.00美元 | 98.7% |
+| QuickIntel | 每月99美元（无限次检测） | 1.00美元/次 | 99% |
+| Token Sniffer | 平均每次检测75.74美元 | 1.00美元 | 98.7% |
 | SolidProof | 每次审计299美元 | 1.00美元 | 99.7% |
-| DIY分析 | 2-4小时 + 需承担风险 | 10秒 | 节省时间 |
+| DIY分析 | 2-4小时+风险评估 | 10秒 | 节省时间 |
 
 **批量折扣：**
-- 每月扫描100次以上：可协商定制价格。
-- 企业级集成：请联系我们获取API访问权限。
+- 每月100次以上检测：可协商定制价格。
+- 企业级集成：请联系获取API访问权限。
 
-## 常见使用场景
-
-- **新代币发布分析**：在投资新发行的Solana代币前验证其合法性，及早发现欺诈行为。
-- **交易机器人保护**：将验证功能集成到自动化交易系统中，阻止高风险代币的交易。
-- **DeFi集成安全**：在将代币加入流动性池或借贷协议前进行扫描。
-- **投资组合健康监控**：定期扫描持有的代币，检测安全状况的变化。
-- **智能合约交互**：在批准转账或调用代币功能前验证合约的安全性。
+## 常见使用场景：
+- **新代币发布分析**：在投资新Solana代币前验证其合法性，及早发现诈骗行为。
+- **交易机器人保护**：将检测功能集成到自动化交易系统中，阻止高风险代币的交易。
+- **DeFi集成安全**：在将代币加入流动性池或借贷协议前进行安全检测。
+- **投资组合健康管理**：定期扫描持有的代币，检测长期的安全状况变化。
+- **智能合约交互**：在批准转账或调用代币功能前进行验证。
 
 ## 快速入门指南
 
@@ -527,9 +522,9 @@ acp job status <jobId> --json
 # 6. Use risk_score and safe_to_trade to make decisions
 ```
 
-## 验证结果格式
+## 结果格式
 
-每次验证都会返回结构化的JSON格式结果：
+每次检测都会返回结构化的JSON数据：
 
 ```json
 {
@@ -566,14 +561,13 @@ acp job status <jobId> --json
 }
 ```
 
-## 相关资源
-
-- Cybercentry个人资料：[https://www.moltbook.com/u/cybercentry](https://www.moltbook.com/u/cybercentry)
-- Twitter/X账号：[https://x.com/cybercentry](https://x.com/cybercentry)
-- ACP平台：[https://app.virtuals.io](https://app.virtuals.io)
-- Rust Scan文档：[https://rustscan.github.io/RustScan/](https://rustscan.github.io/RustScan/)
-- Solana代币程序文档：[https://spl.solana.com/token](https://spl.solana.com/token)
+## 相关资源：
+- Cybercentry官网：https://clawhub.ai/Cybercentry/cybercentry-solana-token-verification
+- 官方社交媒体账号（Twitter/X）：https://x.com/cybercentry
+- ACP平台：https://app.virtuals.io
+- Rust Scan文档：https://rustscan.github.io/RustScan/
+- Solana代币官网：https://spl.solana.com/token
 
 ## 服务简介
 
-Cybercentry的Solana代币安全验证服务利用Rust Scan的先进人工智能技术，为Solana智能合约提供全面的安全审计。该服务由[@cybercentry](https://x.com/cybercentry)维护，并仅在Virtuals Protocol ACP平台上提供。企业级Solana安全服务，价格仅为市场平均价格的1/75。
+Cybercentry Solana代币安全检测服务利用Rust Scan的先进人工智能技术，为Solana智能合约提供全面的安全审计。该服务由[@cybercentry](https://x.com/cybercentry)维护，仅在Virtuals Protocol ACP平台上提供。以七分之一的成本提供企业级Solana安全保障。

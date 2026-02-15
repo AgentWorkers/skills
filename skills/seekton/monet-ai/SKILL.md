@@ -1,8 +1,8 @@
 ---
 name: monet-ai
-description: |
-  Monet AI - AI content generation API for video, image and music.
-  Supports Sora, Wan, Hailuo, Kling, Veo, GPT-4o, Flux, Imagen, Suno and more.
+description: >
+  Monet AI – 一款用于生成视频、图片和音乐内容的人工智能 API。  
+  支持多种模型，包括 Sora、Wan、Hailuo、Kling、Veo、GPT-4o、Flux、Imagen、Suno 等。
 metadata:
   openclaw:
     requires:
@@ -15,10 +15,9 @@ metadata:
         package: monet-ai
         label: Install monet-ai SDK (npm)
 ---
-
 # Monet AI Skill
 
-这是一个用于生成AI内容的API，适用于各种AI代理。
+这是一个用于AI代理的内容生成API。
 
 ## 使用场景
 
@@ -38,9 +37,9 @@ npm install monet-ai
 
 1. 访问 https://monet.vision 注册一个账户。
 2. 登录后，前往 https://monet.vision/skills/keys 创建API密钥。
-3. 将API密钥配置在环境变量或代码中。
+3. 将API密钥配置到环境变量或代码中。
 
-如果您没有API密钥，请联系您的管理员在monet.vision上申请。
+如果您没有API密钥，请联系您的管理员在monet.vision上为您申请。
 
 ## 快速入门
 
@@ -75,7 +74,7 @@ console.log("Result:", task.outputs);
 
 ### 视频生成
 
-#### Sora（OpenAI）
+#### Sora (OpenAI)
 
 **sora-2**
 ```typescript
@@ -99,7 +98,7 @@ console.log("Result:", task.outputs);
 }
 ```
 
-#### Veo（Google）
+#### Veo (Google)
 
 **veo-3-1-fast**, **veo-3-1**
 ```typescript
@@ -340,7 +339,7 @@ console.log("Result:", task.outputs);
 
 ### 图像生成
 
-#### GPT（OpenAI）
+#### GPT (OpenAI)
 
 **gpt-4o**
 ```typescript
@@ -439,7 +438,7 @@ console.log("Result:", task.outputs);
 }
 ```
 
-#### Imagen（Google）
+#### Imagen (Google)
 
 **imagen-3-0**, **imagen-4-0**
 ```typescript
@@ -509,14 +508,14 @@ console.log("Result:", task.outputs);
 const task = await monet.createTask({
   type: "video",
   input: { model: "sora-2", prompt: "A cat" },
-  idempotency_key: "unique-key"  // Optional but RECOMMENDED
+  idempotency_key: "unique-key"  // Required - must be a unique value (e.g., UUID)
 });
 ```
 
-> ⚠️ **重要提示**：`idempotency_key` 是可选的，但 **强烈推荐** 使用唯一值（例如UUID）以防止请求重试时创建重复任务。
+> ⚠️ **重要提示**：`idempotency_key` 是必需的。请使用一个唯一的值（例如UUID）以防止请求重试时创建重复的任务。
 
 ### createTaskStream(options)
-创建一个支持SSE流式的任务。返回一个 `ReadableStream` 对象。
+创建一个支持SSE流式传输的任务。返回一个 `ReadableStream` 对象。
 
 ```typescript
 const stream = await monet.createTaskStream({
@@ -533,7 +532,7 @@ const task = await monet.getTask("task_id");
 ```
 
 ### listTasks(options)
-分页显示任务列表。
+分页列出所有任务。
 
 ```typescript
 const list = await monet.listTasks({ page: 1, pageSize: 20 });
@@ -571,7 +570,7 @@ curl -X POST https://monet.vision/api/v1/tasks/async \
   }'
 ```
 
-### 获取任务状态
+### 获取任务信息
 
 ```bash
 curl https://monet.vision/api/v1/tasks/task_id \

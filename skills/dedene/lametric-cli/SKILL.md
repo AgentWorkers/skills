@@ -2,16 +2,32 @@
 name: lametric-cli
 description: 通过命令行控制 LaMetric 的 TIME/SKY 智能显示屏。适用于发送通知、调节设备亮度/音量、管理定时器，或在 LaMetric 设备上显示数据等场景。相关命令包括：“LaMetric”、“smart display”、“notification to device”、“set timer”以及“send alert to clock”。
 license: MIT
+homepage: https://github.com/dedene/lametric-cli
 metadata:
   author: dedene
-  version: "1.0.0"
+  version: "1.1.0"
+  openclaw:
+    primaryEnv: LAMETRIC_API_KEY
+    requires:
+      env:
+        - LAMETRIC_API_KEY
+        - LAMETRIC_DEVICE
+      bins:
+        - lametric
+    install:
+      - kind: brew
+        tap: dedene/tap
+        formula: lametric
+        bins: [lametric]
+      - kind: go
+        package: github.com/dedene/lametric-cli/cmd/lametric
+        bins: [lametric]
 ---
-
 # LaMetric CLI
 
-LaMetric CLI 是一个用于控制 LaMetric TIME/SKY 设备的工具。它可以发送通知、调整设备设置、管理定时器以及流式传输内容。
+这是一个用于控制LaMetric TIME/SKY设备的命令行工具（CLI），支持发送通知、调整设备设置、管理定时器以及流式传输内容等功能。
 
-## 先决条件
+## 前提条件
 
 ### 安装
 
@@ -25,14 +41,14 @@ go install github.com/dedene/lametric-cli/cmd/lametric@latest
 
 ### 设置
 
-1. 从 LaMetric 移动应用中获取 API 密钥：设备设置 > API 密钥
+1. 从LaMetric移动应用中获取API密钥：设备设置 > API密钥
 2. 运行设置向导：
 
 ```bash
 lametric setup
 ```
 
-或者手动配置：
+或手动配置：
 
 ```bash
 # Store API key securely
@@ -99,7 +115,7 @@ lametric display brightness 50      # Set to 50%
 lametric display mode auto          # Auto brightness
 ```
 
-- **调整音量：**
+- **调节音量：**
 ```bash
 lametric audio get
 lametric audio volume 30            # Set to 30%
@@ -147,7 +163,7 @@ lametric app prev                   # Switch to previous app
 
 ### 流式传输
 
-- 将图像或视频流式传输到显示屏：
+- 将图像或视频流式传输到设备显示屏：
 ```bash
 lametric stream start               # Start streaming session
 lametric stream image logo.png      # Send static image
@@ -155,22 +171,22 @@ lametric stream gif animation.gif   # Send animated GIF
 lametric stream stop                # End streaming
 ```
 
-- 从 ffmpeg 输入数据：
+- 从ffmpeg程序接收数据并传输：
 ```bash
 ffmpeg -i video.mp4 -vf "scale=37:8" -f rawvideo -pix_fmt rgb24 - | lametric stream pipe
 ```
 
 ### 设备发现
 
-- 在网络中查找 LaMetric 设备：
+- 在网络中查找LaMetric设备：
 ```bash
 lametric discover
 lametric discover --timeout=10s
 ```
 
-## 常见用法
+## 常用功能模式
 
-- **构建/持续集成通知：**
+- **构建/持续集成（Build/CI）通知：**
 ```bash
 # Success
 lametric notify "Build #123 passed" --icon=checkmark --sound=positive1
@@ -191,7 +207,7 @@ lametric notify "High CPU: 95%" --priority=warning --icon=warning
 lametric notify "Disk: 85% full" --goal=85/100 --icon=harddrive
 ```
 
-- **Pomodoro 计时器：**
+- **Pomodoro计时器：**
 ```bash
 lametric app timer set 25m && lametric app timer start
 ```
@@ -210,43 +226,43 @@ lametric notify "Meeting in 5 min" --icon=calendar --sound=alarm3 --priority=war
 | `checkmark` | 成功/完成 |
 | `error` | 错误/失败 |
 | `warning` | 警告/注意 |
-| `info` | 信息 |
+| `info` | 信息提示 |
 | `rocket` | 部署/启动 |
 | `github` | GitHub |
-| `slack` | Slack |
-| `mail` | 电子邮件 |
-| `calendar` | 日历/会议 |
+| `slack` | Slack通知 |
+| `mail` | 邮件通知 |
+| `calendar` | 日历/会议提醒 |
 | `download` | 下载 |
 | `upload` | 上传 |
 
-运行 `lametric icons` 可查看完整图标列表。
+运行 `lametric icons` 命令可查看所有可用图标。
 
-### 常用声音
+### 常用声音效果
 
-| 声音 | 类别 |
+| 声音效果 | 类别 |
 |-------|----------|
 | `positive1-5` | 成功提示音 |
 | `negative1-5` | 错误提示音 |
-| `alarm1-13` | 警报声 |
+| `alarm1-13` | 警报音 |
 | `notification1-4` | 轻柔的通知音 |
 
-运行 `lametric sounds` 可查看完整声音列表。
+运行 `lametric sounds` 命令可查看所有可用声音效果。
 
 ### 全局参数
 
 | 参数 | 描述 |
 |------|-------------|
-| `-d, --device` | 设备名称或 IP 地址 |
-| `-j, --json` | 以 JSON 格式输出结果 |
-| `--plain` | 以 TSV 格式输出结果（适用于脚本编写） |
+| `-d, --device` | 设备名称或IP地址 |
+| `-j, --json` | 以JSON格式输出结果 |
+| `--plain` | 以TSV格式输出结果（适用于脚本编写） |
 | `-v, --verbose` | 详细日志输出 |
 
 ## 故障排除
 
 - **连接失败**：
-  1. 验证设备 IP 地址：`lametric discover`
-  2. 确保设备位于同一网络中
-  3. 检查 API 密钥是否正确：`lametric auth get-key --device=NAME`
+  1. 验证设备IP地址：`lametric discover`
+  2. 确保设备在同一网络内
+  3. 检查API密钥是否正确：`lametric auth get-key --device=NAME`
 
 ### 认证错误：
 ```bash
@@ -266,7 +282,8 @@ lametric discover --timeout=10s
 lametric setup
 ```
 
-## 安装说明：
+## 安装说明
+
 ```bash
 brew install dedene/tap/lametric
 ```

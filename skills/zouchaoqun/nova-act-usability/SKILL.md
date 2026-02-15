@@ -1,7 +1,7 @@
 ---
-name: website-usability-test-nova-act
-version: 1.0.4
-description: 使用 Amazon Nova Act 进行由 AI 支持的可用性测试。该工具可以生成用户角色（personas），运行测试以收集原始数据，解析用户反馈以判断测试目标是否达成，并生成 HTML 格式的报告。这些测试涵盖了真实用户的工作流程（如预订、结账、发布等），同时具备相应的安全防护机制。适用于需要“测试网站可用性”、“执行可用性测试”、“生成可用性报告”、“评估用户体验”、“测试结账流程”、“测试预订流程”或“分析网站用户界面（UX）”等场景。
+name: nova-act-usability
+version: 1.0.5
+description: 使用 Amazon Nova Act 进行由 AI 支持的可用性测试。该工具可以生成用户角色（personas），运行测试以收集原始数据，解析用户反馈以判断测试目标是否达成，并生成 HTML 格式的报告。这些测试能够模拟真实用户的工作流程（如预订、结账、发布等），同时具备相应的安全防护机制。适用于需要执行以下任务的情况：测试网站可用性、运行可用性测试、生成可用性报告、评估用户体验、测试结账流程、测试预订流程或分析网站的用户界面（UX）。
 metadata:
   openclaw:
     requires:
@@ -10,10 +10,9 @@ metadata:
       bins:
         - python3
 ---
-
 # Nova Act可用性测试 v1.0.2
 
-**由AI协作的**可用性测试，使用由Amazon Nova Act支持的数字孪生角色进行测试。
+**由AI协作的**可用性测试，使用基于Amazon Nova Act的数字孪生角色进行测试。
 
 ## ⚠️ 先决条件与凭证
 
@@ -35,13 +34,13 @@ metadata:
 
 **跟踪文件包含的内容：**
 - 访问的每个页面的截图 |
-- 页面的全部内容（HTML、文本） |
+- 完整的页面内容（HTML、文本） |
 - 浏览器操作和AI决策
 
 **建议：**
 - 仅在**非生产环境**或**测试环境**中运行测试 |
 - 请注意，跟踪文件可能会捕获测试页面上可见的**个人身份信息（PII）或敏感数据 |
-- 如果跟踪文件包含敏感内容，请在使用后进行审查或删除 |
+- 如果跟踪文件包含敏感内容，请在使用后删除 |
 - 对于不受信任的网站，考虑在**沙箱环境**（容器/虚拟机）中运行测试 |
 
 ---
@@ -67,11 +66,11 @@ metadata:
 | 3. 解释 | 读取JSON，确定每个步骤的目标是否达成 | **代理** |
 | 4. 生成 | 生成包含解释结果的HTML报告 | 代理 |
 
-**⚠️ 脚本不解释响应或生成最终报告。你必须完成第3-4步。**
+**⚠️ 脚本不解释响应或生成最终报告。你必须完成第3-4阶段。**
 
 ### 🎯 建议：AI代理生成角色
 
-**你已经是AI（Claude）了——利用你的智能来生成符合上下文的角色吧！**
+**你已经是AI（Claude）了——利用你的智能来生成符合上下文的角色！**
 
 ```python
 import subprocess
@@ -187,11 +186,11 @@ subprocess.run([sys.executable, test_script, website_url])
 **✅ 优势：**
 - **更好的上下文理解**：你拥有完整的对话历史和领域知识 |
 - **更智能的推理**：你可以分析URL、行业和用户意图 |
-- **避免重复的API调用**：你已经是Claude了——不需要再次调用自己！ |
-- **根据用户偏好进行调整**：你可以根据用户说明的偏好进行适应 |
+- **避免重复的API调用**：你已经是Claude了——不需要再次调用API！ |
+- **根据用户偏好进行调整**：你可以根据用户声明的偏好进行适应 |
 - **澄清问题**：你可以询问用户关于目标人群的信息 |
 
-**❌ 应避免的做法：**
+**❌ 应避免的情况：**
 - 不要让Python脚本自己调用Claude API（浪费资源） |
 - 不要依赖通用的备用角色（准确性较低） |
 - 不要跳过角色生成（会影响测试质量） |
@@ -200,14 +199,14 @@ subprocess.run([sys.executable, test_script, website_url])
 
 **分析网站：**
 - **URL域名**：`.gov` → 市民 | `.edu` → 学生/教职员工 |
-- **关键词**："shop" → 购物者 | "book" → 旅行者 | "play" → 玩家 |
+- **关键词**："shop" → 购物者 | "book" → 旅行者 | "play" → 游戏玩家 |
 - **行业**：Golf → 粉丝/玩家 | Banking → 客户/企业 |
 
 **创建多样化的角色：**
 - 混合不同的经验水平（初学者、中级、专家） |
-- 混合技术熟练程度（低、中、高） |
-- 混合年龄范围（年轻、中年、老年） |
-- 混合动机（休闲、专业、热情）
+- 混合不同的技术熟练程度（低、中、高） |
+- 混合不同的年龄范围（年轻、中年、老年） |
+- 混合不同的动机（休闲、专业、热情）
 
 **生成现实的目标：**
 - 与网站的目的具体相关 |
@@ -223,7 +222,7 @@ subprocess.run([sys.executable, test_script, website_url])
 
 ## 用户调用方式
 
-用户可以通过以下方式触发此技能：
+用户可以通过以下命令触发此技能：
 - “测试[网站URL]的可用性”
 - “对[网站URL]运行可用性测试”
 - “为[网站URL]生成可用性报告”
@@ -233,9 +232,9 @@ subprocess.run([sys.executable, test_script, website_url])
 - **新功能：** “测试[社交媒体网站]的发布工作流程”
 
 **AI将自动：**
-1. 加载Nova Act手册以获取指导 |
+1. 加载Nova Act的指南文件以获取指导 |
 2. 分析页面以理解其功能 |
-3. 检测是否是基于工作流程的网站（如预订、电子商务、社交媒体等） |
+3. 检测该网站是否是基于工作流程的（如预订、电子商务、社交媒体等） |
 4. **生成符合上下文的角色：**
    - 如果指定了自定义角色 → 创建与该描述匹配的角色 |
    - 如果没有自定义角色 → 使用Claude AI推断出3种最可能的真实用户类型 |
@@ -253,10 +252,10 @@ subprocess.run([sys.executable, test_script, website_url])
 ### 支持的工作流程
 
 **电子商务：**
-- 产品搜索 → 添加到购物车 → 结账 → **在支付前停止**
+- 产品搜索 → 加入购物车 → 结账 → **在支付前停止**
 
 **航班/酒店预订：**
-- 搜索 → 选择 → 填写详情 → **在预订前停止**
+- 搜索 → 选择 → 填写详细信息 → **在预订前停止**
 
 **社交媒体：**
 - 创建帖子 → 添加内容 → **在发布前停止**
@@ -269,31 +268,31 @@ subprocess.run([sys.executable, test_script, website_url])
 
 ### 安全保障
 
-该技能**绝不会**：
-- 完成实际购买 |
+该技能**绝不会：**
+- 完成实际的购买 |
 - 创建真实账户 |
 - 公开发布内容 |
 - 发送电子邮件/消息 |
 - 订阅新闻通讯 |
-- 执行任何可能产生金钱/法律/声誉影响的操作
+- 执行任何具有金钱/法律/声誉影响的操作
 
-该技能**始终**：
+该技能**始终会：**
 - 测试到（但不包括）最终操作 |
 - 验证最终按钮是否存在且可访问 |
 - 在观察结果中记录安全停止的情况 |
 
 ## 🧠 代理分析（至关重要）
 
-**你必须分析测试结果！** 脚本收集原始响应，但不解释它们。
+**你必须分析测试结果！** 脚本只收集原始响应，但不进行解释。
 
 ### 为什么需要代理分析？
 
 脚本返回的原始Nova Act响应例如：
-- `"No"` - 有价格链接吗？ |
+- `"No"` - 是否有价格链接？ |
 - `"I don't see any documentation"` - 有文档吗？ |
 - `"Amazon Nova Act"` - 标题是什么？ |
 
-**你必须确定每个响应是否意味着目标已经达成：**
+**你必须确定每个响应是否表示目标已经达成：**
 
 | 响应 | 目标是否达成？ |
 |----------|---------------|
@@ -306,7 +305,7 @@ subprocess.run([sys.executable, test_script, website_url])
 
 ### 结果数据结构
 
-测试脚本运行后，读取JSON结果。每个步骤包含：
+测试脚本运行后，阅读JSON结果。每个步骤包含：
 
 ```json
 {
@@ -330,7 +329,7 @@ subprocess.run([sys.executable, test_script, website_url])
 - `raw_response`：实际的Nova Act响应 - 你需要确定其含义 |
 - `api_success`：API调用是否成功？（脚本会处理这一点） |
 - `needs_agent_analysis`：始终为`true` - 表示你需要进行解释 |
-- `attempts`：尝试的次数（脚本最多尝试3种不同的方法）
+- `attempts`：尝试的次数（脚本最多尝试3种替代方法）
 
 ### 如何分析
 
@@ -390,7 +389,7 @@ retry_prompt = create_agent_prompt_for_alternative(
 1. **运行测试脚本** → 输出包含原始数据的`test_results_adaptive.json` |
 2. **将JSON读入你的上下文** |
 3. **解释每个步骤** → 根据`raw_response`设置`goal_achieved: true/false` |
-4. **设置整体成功率** → 为每个测试设置`overall_success: true/false` |
+4. **设置整体成功状态** → 为每个测试设置`overall_success: true/false` |
 5. **保存更新后的JSON** |
 6. **调用报告生成器** 并提供解释结果
 
@@ -454,22 +453,22 @@ print(f"Report: {report_path}")
 - 没有硬编码的正则表达式或模式匹配 |
 - 你理解上下文（“Yes”对于这个特定问题的含义） |
 - 你可以对部分成功或边缘情况做出判断 |
-- 你已经在运行了，不需要再次调用Claude API！
+- 你已经在运行中，不需要再次调用Claude API！
 
 ## ⚠️ 关键：保持Nova Act提示的简洁性
 
 **Nova Act是一个浏览器自动化工具，而不是一个推理引擎。**
 
-Claude代理（你）负责所有关于以下内容的推理：
+Claude代理（你）负责所有关于以下方面的推理：
 - 根据角色决定测试什么 |
 - 结果是好还是坏 |
 - 用户体验的影响是什么
 
-Nova Act只是：
+Nova Act只负责：
 - 点击、输入、滚动 |
 - 报告它所看到的内容
 
-### ❌ 错误的做法：让Nova Act进行推理
+### ❌ 错误做法：让Nova Act进行推理
 
 ```python
 # DON'T ask Nova Act to think about personas
@@ -492,13 +491,13 @@ nova.act_get("List the navigation menu items visible on this page")
 
 1. **代理**（你）根据角色决定要测试什么：例如：“Dorothy 68岁，技术水平较低——她想知道如何在线观看高尔夫比赛” |
 2. **代理** 生成简单的Nova Act提示：“点击导航栏中的‘Watch & Listen’” |
-3. **Nova Act** 执行浏览器任务并返回原始结果：“点击了‘Watch & Listen’，现在处于视频页面” |
-4. **代理** 解释结果：“Dorothy会觉得这很困惑，因为选项不够清晰...” |
+3. **Nova Act** 执行浏览器任务并返回原始结果：“点击了‘Watch & Listen’，现在进入视频页面” |
+4. **代理** 解释结果：“Dorothy可能会觉得这很困惑，因为选项不够清晰...” |
 
-## 这个技能的工作原理
+## 工作原理
 
-**你（AI）是协调者。** 该技能提供以下内容：
-1. **Nova Act手册**（`references/nova-act-cookbook.md`） - 最佳实践、工作流程模式和安全指南（在测试开始时自动加载） |
+**你（AI）是整个过程的协调者。** 此技能提供以下内容：
+1. **Nova Act指南**（`references/nova-act-cookbook.md`） - 最佳实践、工作流程模式和安全指南（在测试开始时自动加载） |
 2. **自适应测试协调器**（`run_adaptive_test.py`） - 主要的执行脚本，负责工作流程检测 |
 3. **动态策略生成器**（`scripts/dynamic_exploration.py`） - 生成适合工作流程的测试策略 |
 4. **会话管理**（`scripts/nova_session.py`） - Nova Act的封装层 |
@@ -561,19 +560,19 @@ python3 "$SKILL_DIR/scripts/run_adaptive_test.py" "https://example.com"
 # - Provide 60-second status updates during test
 ```
 
-### ⏱️ 超时指南
+### ⏱️ 超时设置
 
-**推荐的超时时间：30分钟（1800秒）**
+**建议的超时时间：30分钟（1800秒）**
 
-使用3个角色和3个目标的完整可用性测试可能需要10-20分钟以上的时间，具体取决于：**
-- 网站加载时间（如媒体内容较多的体育网站加载较慢） |
+完整的可用性测试（3个角色 × 3个目标 = 9个测试）可能需要10-20分钟以上，具体取决于：**
+- 网站加载时间（例如，包含大量媒体的体育网站加载较慢） |
 - Nova Act API的响应时间（每个act()调用需要5-60秒） |
 - 网络状况
 
-**优雅关闭：** 如果测试被中断（超时、SIGTERM、SIGINT），它将：**
-1. 将所有已完成的测试结果保存到`test_results_adaptive.json` |
+**优雅的关闭：** 如果测试被中断（超时、SIGTERM、SIGINT），它将：**
+1. 将所有完成的测试结果保存到`test_results_adaptive.json` |
 2. 生成一个明确标记为不完整的**部分报告** |
-3. 显示完成了多少测试与计划中的测试数量
+3. 显示已完成与计划中的测试数量
 
 **对于较短的测试：** 使用更少的角色或目标：**
 
@@ -587,7 +586,7 @@ personas = [{"name": "Test User", "archetype": "casual", ...}]
 1. **检查依赖项**（运行上述检查） |
 2. **如果缺少依赖项**：告诉用户运行`pip3 install nova-act pydantic playwright && playwright install chromium` |
 3. **如果依赖项已安装**：从用户的请求中提取网站URL |
-4. **使用该URL作为参数运行测试** |
+4. **使用URL作为参数运行测试** |
 5. **监控进度**（每60秒更新一次状态） |
 6. **与用户分享报告的查看说明** |
 
@@ -618,23 +617,23 @@ result = subprocess.run(
 print(result.stdout)
 ```
 
-## 详细的工作流程（内部）
+## 内部详细工作流程
 
-自适应测试脚本（`run_adaptive_test.py`）处理以下步骤：
+自适应测试脚本（`run_adaptive_test.py`）的处理流程：
 
 ### 第1步：页面分析
 - 使用Nova Act加载页面 |
-- 提取标题、导航栏、页面目的 |
+- 提取页面标题、导航栏和页面目的 |
 - 识别关键元素（文档、演示内容、价格信息）
 
 ### 第2步：生成符合上下文的角色
 - 根据页面提供的内容生成角色 |
-- 如果页面侧重于API或代码，则生成开发人员角色 |
-- 如果页面提供演示内容，则生成业务角色 |
-- 如果页面提供演示内容，则生成初学者角色
+- 如果页面侧重于API或代码，则生成开发者角色 |
+- 如果页面包含演示内容，则生成业务角色 |
+- 如果页面提供演示功能，则生成初学者角色
 
 ### 第3步：生成真实的测试用例
-- 为每个角色生成3个最常见的用例 |
+- 为每个角色生成3个最可能的用例 |
 - 基于页面的实际内容 |
 - 与角色的目标相匹配
 
@@ -752,6 +751,7 @@ AI应根据以下因素决定如何分解每个任务：
 - 任务的性质（导航、数据输入、搜索）
 
 **技术水平较低的角色的示例：**
+
 ```python
 # More explicit, step-by-step
 nova.act("Look for a button labeled 'Contact' or 'Contact Us'")
@@ -760,6 +760,7 @@ result = nova.act_get("Is there a phone number or email address visible?")
 ```
 
 **技术水平较高的角色的示例：**
+
 ```python
 # Test efficiency features
 nova.act("Look for keyboard shortcuts or quick access features")
@@ -769,11 +770,11 @@ nova.act("Try to use search (Ctrl+K or Cmd+K)")
 ### 实时观察
 
 在每次`act()`调用之后，分析：
-- 是否成功？ |
+- 操作是否成功？ |
 - 用户界面元素是否容易找到？ |
 - 标签是否清晰？ |
 - 需要尝试多少次？ |
-- 有任何错误信息吗？
+- 有错误信息吗？
 
 立即在观察结果中记录遇到的问题。
 
@@ -781,9 +782,9 @@ nova.act("Try to use search (Ctrl+K or Cmd+K)")
 
 根据角色的特点调整`act()`的提示：
 - **老年人/技术水平较低的用户**：寻找明显的、有标签的按钮；阅读所有内容 |
-- **高级用户**：尝试键盘快捷键、高级功能 |
-- **移动设备用户**：测试移动设备的响应性、触摸目标 |
-- **屏幕阅读器用户**：测试键盘导航、ARIA标签
+- **高级用户**：尝试使用键盘快捷键、高级功能 |
+- **移动设备用户**：测试移动设备的响应性、触控目标 |
+- **屏幕阅读器用户**：测试键盘导航和ARIA标签的使用情况 |
 
 ## 资源
 
@@ -791,21 +792,21 @@ nova.act("Try to use search (Ctrl+K or Cmd+K)")
 **在开始任何测试之前必须阅读。** 包含以下内容的最佳实践：**
 - 有效的act()提示 |
 - 任务分解策略 |
-- 数据提取模式 |
+- 数据提取方法 |
 - 错误处理 |
 - 角色适应
 
-### `references/persona-examples.md**
+### `references/persona-examples.md`
 包含详细角色的模板：
 - 技术娴熟的千禧一代 |
-- 年长的初次使用者 |
+- 年长的首次使用者 |
 - 忙碌的专业人士 |
-- 注重预算的用户 |
-- 关注无障碍性的用户 |
+- 注重预算的学生 |
+- 关注无障碍设计的用户 |
 - 国际用户/非母语者
 
 ### `scripts/nova_session.py`
-提供Nova Act会话的基本封装：
+提供Nova Act会话的基本封装层：
 
 ```python
 with nova_session(url, headless=True, logs_dir="./logs") as nova:
@@ -825,7 +826,7 @@ with nova_session(url, headless=True, logs_dir="./logs") as nova:
 
 ### 对于AI代理：依赖项检查
 
-**在运行测试之前，务必检查依赖项是否已安装：**
+**在运行测试之前，请务必检查依赖项是否已安装：**
 
 ```python
 # Quick dependency check
@@ -843,18 +844,20 @@ except ImportError:
 ### 对于用户：一次性设置
 
 **步骤1：安装Python包**
+
 ```bash
 pip3 install nova-act pydantic playwright
 ```
 
 **步骤2：安装Playwright浏览器**
+
 ```bash
 playwright install chromium
 ```
 
 **步骤3：配置API密钥**
 1. 从[AWS控制台](https://console.aws.amazon.com/)获取你的Nova Act API密钥 |
-2. 创建配置文件：
+2. 创建配置文件：**
 ```bash
 mkdir -p ~/.openclaw/config
 echo '{"apiKey": "your-key-here"}' > ~/.openclaw/config/nova-act.json
@@ -869,7 +872,7 @@ echo '{"apiKey": "your-key-here"}' > ~/.openclaw/config/nova-act.json
 
 1. 阅读`references/nova-act-cookbook.md` |
 2. 阅读`references/persona-examples.md` |
-3. 生成老年角色（Dorothy，72岁，技术水平较低） |
+3. 生成一个老年角色（Dorothy，72岁，技术水平较低） |
 4. 生成任务：
    - “查找联系信息”
    - “阅读关于服务的信息”
@@ -879,11 +882,11 @@ echo '{"apiKey": "your-key-here"}' > ~/.openclaw/config/nova-act.json
    - 执行小的act()步骤 |
    - 观察并分析每个结果 |
    - 根据观察结果进行记录 |
-   - 继续或根据观察结果进行调整 |
+   - 根据观察结果继续或进行调整 |
 6. 汇总观察结果 |
 7. 生成包含发现和建议的HTML报告
 
-**所有步骤都由AI决定。** 该技能仅提供工具和指导。
+**所有步骤都由AI决定。** 此技能仅提供工具和指导。
 
 ## 文件结构
 
@@ -918,4 +921,4 @@ nova-act-usability/
 └── nova_act_usability_report.html   # Final report
 ```
 
-所有路径都是相对的——无论从哪个安装位置都可以使用！
+所有路径都是相对路径——无论从哪个安装位置都可以使用！

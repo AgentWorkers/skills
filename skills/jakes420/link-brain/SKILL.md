@@ -1,71 +1,137 @@
 ---
 name: link-brain
-description: "**功能概述：**  
-能够保存并搜索来自网页的链接、文章、视频等任何内容。它充当个人知识库的角色：用户只需提供任意URL，系统便会自动读取、总结、添加标签并存储这些信息，以便日后随时查阅。  
-
-**使用场景：**  
-- 当用户分享链接时，可以使用该功能将其保存下来；  
-- 当用户需要查找之前保存的链接时，也可以通过该功能快速找到；  
-- 当用户想搜索自己保存的内容时，该功能能提供便捷的搜索方式；  
-- 用户还可以执行诸如“保存这个链接”、“记住这个链接”、“将此内容添加书签”或“这篇文章是关于什么的”等操作；  
-- 该功能还支持查看已保存的链接列表、按标签筛选内容或导出整个收藏夹。"
+version: 4.2.0
+description: "本地知识库用于管理链接：您可以保存带有摘要和标签的URL，之后使用自然语言进行搜索，创建链接集合，并通过间隔重复的方式复习待办事项。该知识库还提供独立的HTML图形视图。"
 ---
-
 # Link Brain
 
-这是一个用于管理个人链接的知识库工具。你可以保存任何你想要记住的链接，并通过描述自己的记忆来快速找到它们。
+Link Brain 是一个本地命令行工具（CLI），它将带有标题、摘要、标签和元数据的 URL 保存到 SQLite 数据库中。
 
-## 工作原理
+该工具设计得易于使用且非常可靠：
 
-1. 用户分享一个URL（或者直接说“保存这个链接”）。
-2. 你使用`web_fetch`工具获取该链接的内容，然后阅读并撰写一段简短的摘要。
-3. 使用`brain.py save`命令将链接的内容（包括标题、摘要和标签）保存到数据库中。
-4. 之后，当用户询问“关于X的文章是关于什么的”时，你就可以使用`brain.py search`来查找相关信息。
+- 无需注册账户
+- 无需 API 密钥
+- 不会发送任何遥测数据
+- 数据存储在 `~/.link-brain/` 目录下
 
-## 设置要求
-
-- 无需API密钥。
-- 需要Python 3环境。
-- 数据存储在`~/.link-brain/brain.db`（一个SQLite数据库文件）中。
-
-## 保存链接的步骤
-
-当用户想要保存一个链接时，你需要执行以下操作：
-1. 使用`web_fetch`工具获取页面内容。
-2. 自己阅读内容并撰写一段2-3句话的摘要（请用自己的话表达，不要复制粘贴）。
-3. 为该链接选择3-5个相关的标签。
-4. 判断链接的类型（文章、视频、播客、PDF文件、代码仓库或社交媒体内容）。
-5. 使用`brain.py save`命令保存链接及其相关信息。
+## 快速入门
 
 ```bash
-python3 scripts/brain.py save "https://example.com/article" \
-  --title "How batteries actually work" \
-  --summary "Breaks down lithium-ion chemistry in plain language. Covers why batteries degrade over time and what solid-state batteries might change. Good primer for non-engineers." \
-  --tags "batteries, energy, science, explainer"
+python3 scripts/brain.py setup
+
+# Manual save
+python3 scripts/brain.py save "https://example.com" \
+  --title "Example" \
+  --summary "A short note about what this page is." \
+  --tags "reference, example"
+
+# Auto save (fetches the page with urllib, then summarizes and tags locally)
+python3 scripts/brain.py save "https://example.com" --auto
+
+# Search
+python3 scripts/brain.py search "that article about sqlite"
+
+# Make a graph
+python3 scripts/brain.py graph --open
 ```
 
-**提示：**请确保摘要内容有用，让别人能够理解你保存该链接的原因。
+## 数据存储位置
 
-## 搜索功能
+默认情况下，Link Brain 将所有数据存储在以下位置：
 
-系统支持对标题、摘要、标签和URL进行全文搜索。如果精确搜索没有结果，系统会使用模糊匹配来帮助用户找到相关信息。
+- `~/.link-brain/brain.db`（SQLite 数据库）
+- `~/.link-brain/graph.html`（可选的输出文件）
+- `~/.link-brain/collection-*.md` 和 `collection-*.html`（可选的导出文件）
 
-## 其他命令
+对于测试或临时使用，您可以自定义数据存储目录：
 
-（此处可以列出其他与Link Brain相关的命令，例如删除链接、查看链接列表等。）
+```bash
+LINK_BRAIN_DIR=/tmp/my-link-brain python3 scripts/brain.py setup
+```
 
-## 用户查询时的操作
+## 保存链接
 
-用户可能会提出一些模糊的查询请求，例如：
-- “关于太阳能电池板的文章是讲什么的？”
-- “找到我上个月保存的关于Rust性能的链接”
-- “显示所有标记为‘finance’的链接”
+### 手动保存
 
-系统会执行搜索，并显示包含标题、摘要和URL的搜索结果。如果有多个匹配项，会列出它们供用户选择。
+当您已经知道链接的标题、标签和摘要时，可以使用手动保存功能。
 
-## 使用技巧
+```bash
+python3 scripts/brain.py save "https://docs.python.org" \
+  --title "Python docs" \
+  --summary "Reference docs for the Python standard library." \
+  --tags "python, docs"
+```
 
-- 当用户在聊天中提到某个链接时，系统会自动检测并询问用户是否想要保存该链接。
-- 在保存链接之前，请务必先获取并阅读内容，以确保摘要的准确性。
-- 标签应使用小写字母，并尽量选择通用性强的词汇（例如使用“python”而不是“python-3.12-asyncio-bug”）。
-- 摘要是最重要的部分——它决定了搜索功能的有效性。
+### 自动保存
+
+自动保存功能会使用 `urllib` 获取 URL，然后执行以下操作：
+- 从 HTML 中提取可读文本
+- 生成摘要
+- 根据关键词和您已有的标签推荐合适的标签
+
+**注意：** 自动保存功能会向目标 URL 发送网络请求。其他所有命令都在本地执行。
+
+## 搜索
+
+Link Brain 使用 SQLite 的 FTS5 支持进行搜索，并且还支持自然语言过滤。
+
+示例：
+
+```bash
+python3 scripts/brain.py search "last week unread from github"
+python3 scripts/brain.py search "best rated rust"
+python3 scripts/brain.py search "unrated videos from youtube"
+python3 scripts/brain.py search "oldest unread" --limit 10
+```
+
+## 收藏夹
+
+收藏夹是用于管理已保存链接的列表。
+
+```bash
+python3 scripts/brain.py collection create "Rust" --description "Things to read and revisit"
+python3 scripts/brain.py collection add "Rust" 42
+python3 scripts/brain.py collection show "Rust"
+python3 scripts/brain.py collection export "Rust"          # markdown
+python3 scripts/brain.py collection export "Rust" --html   # html
+```
+
+## 审查流程
+
+每个保存的链接都会被添加到审查队列中。您可以查看下一个待处理的链接并标记为已审查。
+
+```bash
+python3 scripts/brain.py review next
+python3 scripts/brain.py review done 42
+python3 scripts/brain.py review skip 42
+```
+
+## GUI 控制台
+
+Link Brain 提供了一个图形用户界面（GUI），该界面会生成一个独立的 HTML 文件（`~/.link-brain/console.html`），其中包含了所有功能。该界面无需依赖任何外部资源或 CDN，也不需要进行网络请求。功能包括搜索、标签云、知识图谱、收藏夹管理、阅读时间线以及明暗模式切换。
+
+## 图表生成
+
+`graph` 命令会生成一个独立的 HTML 文件，其中包含交互式的图表视图。
+
+**注意：** 该功能不需要任何外部 JavaScript 库。
+
+## 命令列表
+
+所有可用命令的列表如下：
+
+```bash
+python3 scripts/brain.py help
+```
+
+## 反馈
+
+如果您发现了漏洞或有任何建议，请告诉我们！
+
+```bash
+brain.py feedback "your message"
+brain.py feedback --bug "something broke"
+brain.py feedback --idea "wouldn't it be cool if..."
+```
+
+如果您需要提交详细的漏洞报告，请运行 `brain.py debug` 以获取系统信息，这些信息可以直接用于问题报告。

@@ -1,65 +1,81 @@
-# clawRTC
+# ClawRTC
 
-使用您的AI代理在真实硬件上挖掘RustChain的RTC（RustChain Token）。
+使用 Proof-of-Antiquity 共识机制，通过您的 AI 代理来挖掘 RTC（Real-Time Clock）代币。
 
-## 功能简介
+## 功能概述
 
-ClawRTC是RustChain的挖矿客户端，它允许任何AI代理证明其控制了真实的物理硬件，并据此获得RTC奖励。现代的x86/ARM硬件能以1倍的效率进行挖矿；而较旧的硬件（如PowerPC G4/G5、IBM POWER8、Amiga、SPARC）则可以通过“Proof of Antiquity”共识机制获得1.2至2.5倍的奖励。
+- **一键安装**：`pip install clawrtc && clawrtc install --wallet my-agent`
+- **硬件验证**：通过 6 种加密检查来确认您的设备是真实的（时钟漂移、缓存延迟、SIMD 特性、热熵、指令执行抖动、防模拟功能）
+- **自动认证**：每隔几分钟向 RustChain 网络发送认证请求
+- **每个时代周期的奖励**：每个时代周期（约 10 分钟）您的钱包会获得 RTC 代币
+- **虚拟机检测**：虚拟机会被识别并无法获得任何奖励
 
-## 工作原理
+## 安全性
 
-1. **安装**：执行 `clawrtc install --wallet my-agent` 命令，系统会提取包含挖矿脚本的包，并创建一个虚拟环境。
-2. **验证**：挖矿程序每隔几分钟会与RustChain网络通信，提交硬件的相关信息（如CPU型号、时钟漂移情况、缓存性能等）。
-3. **收益**：每个周期（约10分钟）内，您的钱包会根据硬件的“老旧程度”获得相应的RTC奖励。
-4. **转换**：您可以使用 bottube.ai/bridge 将RTC转换为wRTC（Solana的SPL代币），然后在Raydium DEX上进行交易。
+- **安装过程中不收集任何数据** — 安装过程中不会进行网络请求
+- **启用 TLS 验证** — 所有 RustChain API 调用都会验证 SSL 证书（由可信机构签名）
+- **仅包含打包好的代码** — 所有挖矿脚本都包含在软件包中，无需额外下载
+- **需要用户同意** — 安装前会显示交互式确认提示
+- **试运行模式**：`clawrtc install --dry-run` 可以预览功能而无需实际安装
+- **哈希验证**：`clawrtc install --verify` 可显示所有打包文件的 SHA256 哈希值
+- **彻底卸载**：`clawrtc uninstall` 会删除所有文件、服务及配置
+- **默认不启动后台服务** — 必须通过 `--service` 选项才能启用后台服务
+- **源代码公开**：完整源代码可在 https://github.com/Scottcjn/Rustchain （MIT 许可证）获取
 
-## 命令列表
+### 发送的数据
 
-| 命令          | 功能                          |
-|-----------------|------------------------------|
-| `clawrtc install`    | 安装挖矿程序，配置钱包，并提取相关脚本            |
-| `clawrtc install --dry-run` | 不进行安装，仅进行安全审计                |
-| `clawrtc install --verify` | 显示打包文件的SHA256哈希值                |
-| `clawrtc start`    | 在前台启动挖矿程序                    |
-| `clawrtc start --service` | 启动挖矿程序，并创建后台服务（systemd/launchd）     |
-| `clawrtc stop`    | 停止挖矿程序                    |
-| `clawrtc status`    | 检查挖矿程序、钱包和网络状态                |
-| `clawrtc logs`    | 查看挖矿程序的输出日志                  |
-| `clawrtc uninstall`    | 卸载整个工具包                        |
+在认证过程中（即挖矿时），以下数据会被发送到 RustChain 节点：
 
-## 安全性措施
+- CPU 型号和架构（例如 "AMD Ryzen 5"、"x86_64"）
+- 时钟计时精度（用于验证时钟的真实性）
+- 缓存延迟信息（用于确认缓存层次结构）
+- 虚拟机检测结果（是否为虚拟机）
+- 钱包名称（您选择的标识符）
 
-- 所有挖矿代码都包含在软件包内，无需外部下载；
-- 网络通信使用经过CA签名的TLS证书；
-- 提供 `--dry-run` 和 `--verify` 选项，以便在安装前进行安全审计；
-- 在提取任何文件之前会提示用户是否同意；
-- 如果检测到虚拟机，系统会警告用户（虚拟机几乎无法获得任何奖励）；
-- 该工具不收集任何个人数据，仅记录CPU型号、性能参数和硬件架构。
+**不会发送的数据**：文件内容、浏览历史记录、凭证信息、IP 地理位置、个人数据。
 
-## 硬件奖励倍数
+## 安装方法
 
-| 硬件类型       | 奖励倍数                        |
-|--------------|----------------------------|
-| PowerPC G4       | 2.5倍                          |
-| PowerPC G5       | 2.0倍                          |
-| PowerPC G3       | 1.8倍                          |
-| IBM POWER8       | 1.5倍                          |
-| Pentium 4       | 1.5倍                          |
-| Retro x86       | 1.4倍                          |
-| Apple Silicon   | 1.2倍                          |
-| Modern x86_64/ARM    | 1.0倍                          |
-| 虚拟机         | 接近0倍                          |
+```bash
+pip install clawrtc
+```
 
-## 系统要求
+## 使用方法
 
-- Node.js 14及以上版本（用于命令行界面）；
-- Python 3.8及以上版本（用于挖矿脚本）；
-- Linux或macOS操作系统；
-- 必须使用真实硬件（系统会检测并惩罚虚拟机）。
+```bash
+# Install miner + configure wallet
+clawrtc install --wallet my-agent
 
-## 链接资源
+# Start mining (foreground)
+clawrtc start
 
-- 项目源代码：https://github.com/Scottcjn/Rustchain
-- PyPI仓库：https://pypi.org/project/clawrtc/
-- RustChain官网：https://rustchain.org
-- RTC代币信息：https://solscan.io/token/12TAdKXxcGf6oCv4rqDz2NkgxjyHq6HQKoxKZYGf5i4X
+# Check status
+clawrtc status
+
+# View logs
+clawrtc logs
+
+# Stop mining
+clawrtc stop
+
+# Clean uninstall
+clawrtc uninstall
+```
+
+## 奖励系数
+
+| 硬件类型 | 奖励系数 |
+|----------|-----------|
+| 现代 x86/ARM 处理器 | 1.0x |
+| Apple Silicon (M1-M3) | 1.2x |
+| PowerPC G5 | 2.0x |
+| PowerPC G4 | 2.5x |
+| 虚拟机/模拟器 | 约 0x（会被识别并受到惩罚） |
+
+## 链接
+
+- 源代码：https://github.com/Scottcjn/Rustchain
+- PyPI：https://pypi.org/project/clawrtc/
+- 块链浏览器：https://rustchain.org/explorer
+- RustChain 官网：https://rustchain.org
+- BoTTube：https://bottube.ai

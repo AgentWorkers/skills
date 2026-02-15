@@ -1,33 +1,42 @@
 ---
 name: windows-tts
-description: 在 Windows 11 中，可以通过 WSL2/TUI 使用 Windows 内置的 TTS（System.Speech）功能将文本朗读出来。当用户要求中文语音播放、希望助手在电脑上“直接播放声音”，或者 OpenClaw 的内置 TTS 功能不支持中文时，可以使用此方法。
+description: 在 Windows 11 上"直接发声"的 TTS（从 WSL2/TUI 调用 powershell.exe + System.Speech）。适用于用户说"说出来/读出来/语音播报/用TTS"，或反馈"没声音/tts 生成的 mp3 是空的/播不出来"，以及需要中文语音但 OpenClaw 内置 tts 不可用时。
 ---
 
 # Windows TTS (WSL2)
 
-通过 `powershell.exe` 使用 Windows 内置的 TTS 功能，这样音频将会通过 Windows 的声音设备播放（无需使用 WSLg PulseAudio）。
+Use Windows built-in TTS via `powershell.exe` so audio plays through the **Windows 默认输出设备**（无需 WSLg/PulseAudio）。
 
-## 快速入门（中文发音）
+## 什么时候用这个 skill（触发提示）
 
-在 WSL 中运行以下命令：
+当用户出现以下表达时，优先用本 skill，而不是 OpenClaw 内置 `tts`（后者可能生成空 mp3 或在某些环境无声）：
+- "说出来 / 读出来 / 念一下 / 语音播报 / 用 TTS"
+- "还没声音 / 没声音 / 播不出来"
+- "中文语音"且希望**直接从电脑扬声器播放**
+
+> 注意：本 skill 是"直接播放"，不会返回音频文件路径。
+
+## Quick start（直接说出来）
+
+Run from WSL:
 
 ```bash
-bash {baseDir}/scripts/saycn.sh "你好，我是你的助手。"
+bash {baseDir}/scripts/say.sh "你好，我是你的助手。"
 ```
 
-## 列出已安装的语音
+## List installed voices
 
 ```bash
 bash {baseDir}/scripts/list_voices.sh
 ```
 
-## 使用特定的语音进行发音
+## Speak with a specific voice
 
 ```bash
-bash {baseDir}/scripts/saycn.sh --voice "VOICE_NAME" "你好，我以后会用这个声音说话。"
+bash {baseDir}/scripts/say.sh --voice "VOICE_NAME" "你好，我以后会用这个声音说话。"
 ```
 
-## 注意事项：
+## Notes
 
-- 如果你直接在 bash 中使用 PowerShell，请记得对 `$` 进行转义处理，或者使用外部单引号；否则 bash 会解析 `$s` 并导致命令执行失败。
-- 如果用户遇到诸如 `=New-Object` 或 `TypeName:` 等提示错误，建议使用提供的脚本，而不是自行编写引号。
+- If you embed PowerShell directly in bash, remember: **escape `$`** or use outer single quotes; otherwise bash expands `$s` and breaks the command.
+- If the user reports errors like `=New-Object` or `TypeName:` prompts, prefer the provided scripts instead of ad-hoc quoting.

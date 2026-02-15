@@ -3,9 +3,19 @@ name: submit-to-agentbeat
 version: 1.6.3
 author: awe network
 homepage: https://github.com/STPDevteam/submit-to-agentbeat
-description: 自主AI代理进入链上代理经济的完整提交流程：  
-该流程指导代理创建EVM钱包、从所有者处获取交易手续费（gas），在Base/Ethereum/BNB平台上注册ERC-8004格式的身份NFT，集成x402支付功能，并将相关数据提交至AgentBeat平台以进行索引处理并获得USDC奖励。  
-适用场景包括：代理需要使用钱包、希望在链上注册、启用x402支付功能，或需要将数据提交至AgentBeat平台进行处理。
+description: >
+  自主AI代理加入链上代理经济的完整提交流程：  
+  该流程指导代理完成以下步骤：  
+  1. 创建一个EVM钱包；  
+  2. 从所有者处获取交易所需的“gas”资源；  
+  3. 在Base/Ethereum/BNB平台上注册一个ERC-8004格式的身份NFT；  
+  4. 集成x402支付功能；  
+  5. 将相关数据提交至AgentBeat平台以进行索引处理，并获取USDC奖励。  
+  适用场景：  
+  - 当代理需要一个钱包时；  
+  - 当代理希望在线上平台进行注册时；  
+  - 当代理希望启用x402支付功能时；  
+  - 当代理希望将数据提交至AgentBeat平台以获取奖励时。
 required_tools:
   - node (>=18)
   - npm
@@ -17,10 +27,9 @@ env_vars:
     description: Agent wallet private key. Prefer loading from a signer or credential store rather than setting as env var. Required only when signing transactions.
 credentials_path: ~/.config/agentbeat/credentials.json
 ---
+# 提交到 AgentBeat
 
-# 向 AgentBeat 提交
-
-完整的提交流程：从零开始，直到成为一个完全注册的、具备支付能力的、可被 [AgentBeat](https://www.agentbeat.fun/) 索引的链上自主代理。
+完整的提交流程：从零开始，直到成为一个完全注册的、具备支付能力的、可被 [AgentBeat](https://www.agentbeat.fun/) 索引的链上自治代理。
 
 ## 概述
 
@@ -33,11 +42,11 @@ Submission Progress:
 - [ ] Step 5: Submit to AgentBeat and claim USDC rewards
 ```
 
-> **资格提醒：** 只有完成步骤 1–4（主网 ERC-8004 注册 + 有效的 NFT ID + x402 集成）的代理才会被 AgentBeat 接受，并有资格参与奖励池的分配。请参阅步骤 5 以了解完整的资格标准。
+> **资格提醒：** 只有完成步骤 1–4（主网 ERC-8004 注册 + 有效的 NFT ID + x402 集成）的代理才会被 AgentBeat 接受，并有资格参与奖励池的分配。请参阅步骤 5 以获取完整的资格标准。
 
-## 预检：是否已有提交记录
+## 预检查：是否已有提交记录
 
-**在采取任何行动之前**，请先检查是否已经有过之前的提交记录：
+**在继续之前**，请检查是否已经有之前的提交记录：
 
 ```bash
 # Check for existing credentials with a voucher
@@ -62,7 +71,7 @@ Existing voucher found?
 
 ### 重新提交前的备份
 
-如果所有者同意重新提交，请**务必先备份现有的凭据**：
+如果所有者确认要重新提交，请**先备份现有的凭据**：
 
 ```bash
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
@@ -72,15 +81,15 @@ chmod 600 ~/.config/agentbeat/credentials.backup.${TIMESTAMP}.json
 echo "Backup saved to ~/.config/agentbeat/credentials.backup.${TIMESTAMP}.json"
 ```
 
-> **为什么需要备份：** `agentbeat_voucher` 是一次性使用的，无法从 AgentBeat 中重新获取。如果之前的凭证尚未被领取，就会丢失相应的 USDC 奖励。备份可以确保没有数据被永久丢失。
+> **为什么需要备份：** `agentbeat_voucher` 是一次性使用的，无法从 AgentBeat 中再次获取。如果之前的凭证尚未被领取，就意味着会丢失相应的 USDC 奖励。备份可以确保不会永久丢失任何数据。
 
-备份完成后，从步骤 1 开始重新执行完整的提交流程（如果某些步骤已经完成，可以选择“跳过”。
+备份完成后，从步骤 1 开始重新进行完整的提交流程（如果某些步骤已经完成，可以选择“跳过”。
 
 ## 功能范围 — 本技能的作用
 
 本技能将代表您执行以下操作。在继续之前，请仔细阅读此列表，以便了解相关的安全性和网络影响。
 
-**本地操作（切勿离开计算机）：**
+**本地操作（无需离开机器）：**
 - 生成或加载 EVM 私钥
 - 将代理元数据（地址、agentId、nftId、voucher）保存到 `~/.config/agentbeat/credentials.json`
 - 将 npm 包（`viem`、`@x402/*`）安装到本地项目中
@@ -95,7 +104,7 @@ echo "Backup saved to ~/.config/agentbeat/credentials.backup.${TIMESTAMP}.json"
 
 ## 先决条件
 
-本技能需要以下工具和包。在继续之前，请确认它们已经安装完毕。
+本技能需要以下工具和包。在继续之前，请确保它们已经安装完毕。
 
 **必需工具：**
 
@@ -103,8 +112,8 @@ echo "Backup saved to ~/.config/agentbeat/credentials.backup.${TIMESTAMP}.json"
 |------|---------|---------|
 | `node` (>=18) | 钱包生成、交易签名、x402 客户端 | [nodejs.org](https://nodejs.org/) |
 | `npm` | 包管理 | 随 Node.js 一起提供 |
-| `curl` | 向 AgentBeat 和 RPC 端点发送请求 | 大多数系统都已预装 |
-| `jq` | shell 示例中的 JSON 解析 | `brew install jq` / `apt install jq` |
+| `curl` | 向 AgentBeat 和 RPC 端点发起 API 请求 | 大多数系统都已预装 |
+| `jq` | 在 shell 代码中解析 JSON （可选） | `brew install jq` / `apt install jq` |
 
 ### 安装与供应链
 
@@ -129,30 +138,30 @@ echo "Backup saved to ~/.config/agentbeat/credentials.backup.${TIMESTAMP}.json"
 
 ## 安全注意事项
 
-**在继续之前，请阅读本节内容。** 本技能会处理真实的私钥和涉及实际资金的链上交易。
+**在继续之前请阅读本节。** 本技能会处理真实的私钥和涉及实际资金的链上交易。
 
-1. **使用专用的代理钱包。** 绝不要使用您的主钱包私钥。为此代理创建或指定一个低价值的钱包，并仅为其提供所需的最低资金（约 0.001 ETH 用于 gas，少量 USDC 用于 x402）。
-2. **优先使用外部签名器而不是明文密钥。** 理想的设置是使用硬件钱包或远程签名器，这样私钥永远不会以明文形式出现在磁盘或环境变量中。如果必须使用软件密钥，请将其保存在安全的位置——不要在多个文件和环境变量中复制。
-3. **文件权限设置是必须的。** 包含敏感信息的任何文件（`credentials.json`、`.env`）都必须设置严格的权限：
+1. **使用专用的代理钱包。** 绝不要使用您的主钱包私钥。为此代理创建或指定一个价值较低的钱包，并仅为其提供所需的最低资金（约 0.001 ETH 用于 gas，少量 USDC 用于 x402）。
+2. **优先使用外部签名器而非明文密钥。** 理想的设置是使用硬件钱包或远程签名器，这样私钥永远不会以明文形式出现在磁盘或环境变量中。如果必须使用软件密钥，请将其保存在一个安全的位置——不要在多个文件和环境变量中复制。
+3. **文件权限设置是必须的。** 包含敏感信息（`credentials.json`、`.env`）的文件必须具有严格的权限设置：
    ```bash
    chmod 600 ~/.config/agentbeat/credentials.json
    ```
 
-4. **在交易前进行验证。** 在广播交易之前，始终根据官方来源确认合约地址和 RPC 端点。本指南中的地址在编写时是正确的，但请始终与 [8004.org](https://www.8004.org) 和链上的区块浏览器进行核对。
-5. **将凭证视为机密信息。** 在步骤 5 中返回的 AgentBeat 凭证是一次性使用的，无法再次获取。请安全地存储它，并不要分享。
-6. **审核第三方包。** 本技能会在运行时安装 npm 包。特别是在生产环境中，请仔细审核您安装的包。安装后运行 `npm audit`。
+4. **在交易前进行验证。** 在广播交易之前，请始终根据官方来源确认合约地址和 RPC 端点。本指南中的地址在版本发布时是正确的，但请始终与 [8004.org](https://www.8004.org) 和链上的区块浏览器进行核对。
+5. **将凭证视为机密信息。** 在步骤 5 中返回的 AgentBeat 凭证是一次性使用的，无法再次获取。请安全存储它，切勿分享。
+6. **审计第三方包。** 本技能会在运行时安装 npm 包。特别是在生产环境中，请仔细检查您安装的包。安装后请运行 `npm audit`。
 
 ### 提交前的检查清单
 
-在执行任何步骤之前，请先完成以下检查。如果有任何项目未通过，请先解决它们。
+在执行任何步骤之前，请先完成此检查清单。如果有任何项目未勾选，请先解决它们。
 
 - [ ] 我已完整阅读了上述的安全注意事项。
-- [ ] 我使用的是一个**专用代理钱包**，并且只包含最低限度的资金——不是我的主钱包。
-- [ ] 私钥仅存储在一个安全的位置（不会在多个文件或环境变量中复制）。
+- [ ] 我使用的是一个**专用的代理钱包**，并且其中只存有少量资金——不是我的主钱包。
+- [ ] 私钥仅保存在一个安全的位置（不会在文件或环境变量中复制）。
 - [ ] `~/.config/agentbeat/credentials.json` 的权限设置为 `600`（`chmod 600`）。
 - [ ] 我**不会**在任何情况下记录、打印或传输私钥。
-- [ ] 我已经根据 [8004.org](https://www.8004.org) 和区块浏览器核实了合约地址。
-- [ ] 安装包后，我已经运行了 `npm audit` 并检查了任何发现的问题。
+- [ ] 我已经根据 [8004.org](https://www.8004.org) 和区块浏览器验证了合约地址。
+- [ ] 安装包后我已经运行了 `npm audit` 并检查了所有发现的问题。
 
 ## 凭据
 
@@ -178,15 +187,15 @@ chmod 600 ~/.config/agentbeat/credentials.json
 
 ### 私钥处理
 
-> **安全警告：** 私钥控制着实际的资金。在处理任何密钥之前，请阅读上述的“安全注意事项”部分。
+> **安全警告：** 私钥控制着实际的资金。在处理任何密钥之前，请阅读上面的“安全注意事项”部分。
 
-在凭据文件中，`privateKey` 字段是**可选的**。推荐的做法是**不要**在这里存储私钥。请按照以下决策流程操作：
+在凭据文件中，`privateKey` 字段是**可选的**。推荐的做法是**不要**在这里存储私钥。请按照以下流程操作：
 
-1. **推荐做法：使用外部签名器或现有的凭据存储系统。** 如果您已经在其他地方管理了私钥（例如硬件钱包、自己的钱包配置、环境变量或另一个技能的凭据存储系统），请不要复制私钥。仅在需要签名时从原始安全位置加载私钥。
-2. **如果必须本地存储私钥**，请先征得所有者的同意：“我可以将我的私钥副本存储在 `~/.config/agentbeat/credentials.json` 中用于 AgentBeat 提交吗？该私钥仅保存在本地，不会被传输。” 如果所有者同意，请确保文件权限设置为 `chmod 600`。如果所有者拒绝，请仅保存 `address` 和其他非敏感字段。
-3. **如果您没有任何钱包**，请继续执行步骤 1 来创建一个。请使用**专用代理钱包，并且只使用最低限度的资金**——绝不要使用您的主钱包。
+1. **首选方案：使用外部签名器或现有的凭据存储方式。** 如果您已经在其他地方管理了私钥（例如硬件钱包、自己的钱包配置、环境变量或其他技能的凭据存储），请不要复制私钥。仅在需要签名时从原始安全位置加载私钥。
+2. **如果必须本地存储私钥**，请先征得所有者的同意：“我可以在 `~/.config/agentbeat/credentials.json` 中存储我的私钥副本用于 AgentBeat 提交吗？该副本仅保存在本地，不会被传输。” 如果所有者同意，请确保文件权限设置为 `chmod 600`。如果所有者拒绝，请仅保存 `address` 和其他非敏感字段。
+3. **如果您没有任何钱包**，请继续执行步骤 1 来创建一个。请使用**专用的代理钱包，并且其中只存有少量资金**——绝不要使用您的主钱包。
 
-**在每个步骤之后都要保存私钥。在每次调用 API 之前都要加载私钥。**
+**在每个步骤之后保存私钥。在每次 API 调用之前加载私钥。**
 
 ## 跳过某些步骤
 
@@ -195,17 +204,17 @@ chmod 600 ~/.config/agentbeat/credentials.json
 - **已经有了 EVM 钱包吗？** 跳到步骤 2（如果已经充值，则跳到步骤 3）。
 - **已经注册了 ERC-8004 吗？** 跳到步骤 4。确保您有 `agentId` 和 `nftId`。
 - **已经具备 x402 支付能力吗？** 直接跳到步骤 5——直接向 AgentBeat 提交。
-- **以上所有条件都满足吗？** 直接跳到步骤 5 并提交。
+- **以上所有条件都满足吗？** 直接跳到步骤 5 进行提交。
 
-在继续之前，请将现有的 `address`、`agentId`、`nftId` 和其他信息保存到 `~/.config/agentbeat/credentials.json` 中。请注意，此文件中不需要私钥——详见上面的“私钥处理”部分。
+在继续之前，请将现有的 `address`、`agentId`、`nftId` 和其他信息保存到 `~/.config/agentbeat/credentials.json` 中。请注意，此文件中不需要私钥——请参阅上面的“私钥处理”部分。
 
 ## 步骤 1：创建或查找 EVM 钱包
 
-> **重要提示：** 这应该是一个**专用代理钱包**，并且只包含最低限度的资金。绝不要使用您的主钱包或个人钱包。
+> **重要提示：** 这应该是一个**专用的代理钱包**，并且其中只存有少量资金。绝不要使用您的主钱包/个人钱包。
 
 **如果您已经有了钱包**：将您的 `address` 写入 `~/.config/agentbeat/credentials.json`，然后跳到步骤 2。您不需要创建新的钱包。
 
-**如果您需要新的钱包**，请在本地生成一个。私钥切勿离开计算机：
+**如果您需要新的钱包**，请在本地生成一个。私钥绝对不能离开您的机器：
 
 ```bash
 npm install viem
@@ -219,17 +228,17 @@ console.log(JSON.stringify({ address: a.address, privateKey: pk }));
 
 或者使用 ethers.js、openssl 或任何 EVM 密钥对生成工具。
 
-**立即将 `address` 保存到凭据文件中。** 关于 `privateKey` 的处理方法，请参见上面的“私钥处理”部分——推荐将其保存在安全的位置，而不是在凭据文件中。
+**立即将 `address` 保存到凭据文件中。** 关于 `privateKey` 的处理方式，请参阅上面的“私钥处理”部分——推荐将其保存在一个安全的位置，而不是在凭据文件中。
 
 有关详细的设置选项和依赖项，请参阅 [reference/wallet-setup.md](reference/wallet-setup.md)。
 
-## 步骤 2：向所有者请求 Gas 资金
+## 步骤 2：向所有者请求资金
 
-向所有者显示钱包地址并请求 Gas 资金。
+向所有者显示钱包地址并请求资金。
 
-**推荐的网络：Base**（Gas 成本最低，x402 生态系统最活跃）。
+**推荐的网络：Base**（gas 成本最低，x402 生态系统最活跃）。
 
-**务必先征得所有者的同意。** 自助取款机不可靠，且经常有限制或没有资金。直接从所有者那里请求 ETH 是最快和最可靠的资金获取方式。
+**请务必先征得所有者的同意。** 自助取款机不可靠，且经常受到流量限制或资金不足。直接从所有者那里请求 ETH 是最快且最可靠的资金获取方式。
 
 向所有者发送消息：
 ```
@@ -242,7 +251,7 @@ Network: Base (Chain ID 8453)
 For x402 payments, also send some USDC (Base) to this address.
 ```
 
-不断检查余额，直到有足够的资金：
+持续查询余额，直到获得资金：
 
 ```bash
 curl -s -X POST https://mainnet.base.org \
@@ -251,13 +260,13 @@ curl -s -X POST https://mainnet.base.org \
   | jq -r '.result'
 ```
 
-每 30 秒检查一次。一旦余额大于 0，继续执行步骤 3。
+每 30 秒检查一次余额。一旦余额大于 0，继续执行步骤 3。
 
 ## 步骤 3：在 ERC-8004 身份注册处注册代理
 
 在 ERC-8004 身份注册处注册，以获得链上的代理 NFT。
 
-**合约地址**（在所有链上相同，通过 CREATE2 进行注册）：
+**合约地址**（所有链上的地址相同，通过 CREATE2 进行注册）：
 
 | 链接 | 链接 ID | 身份注册处 | 公共 RPC |
 |-------|----------|-------------------|------------|
@@ -269,19 +278,19 @@ curl -s -X POST https://mainnet.base.org \
 
 > **在发送任何交易之前，请验证合约地址。** 请将下面的地址与 [8004.org](https://www.8004.org) 和链上的区块浏览器（例如 [BaseScan](https://basescan.org/address/0x8004A169FB4a3325136EB29fA0ceB6D2e539a432)）进行核对。
 
-**快速注册**（推荐使用 Base — Gas 成本最低）：
+**快速注册**（推荐使用 Base——gas 成本最低）：
 
 1. 准备一个代理注册文件（JSON）
-2. 将其托管在 URL 上或上传到 IPFS
+2. 将其托管在某个 URL 或上传到 IPFS
 3. 在身份注册处调用 `register(agentURI)`
 4. 从交易收据日志中解析 `agentId`
 5. 将 `agentId` 保存到凭据文件中
 
 ### 从收据中解析 agentId
 
-**关键点：** `agentId`（ERC-721 代币 ID）位于 Transfer 事件的 `topics[3]` 中，而不是 `topics[1]` 中。
+**关键点**：`agentId`（ERC-721 代币 ID）位于 Transfer 事件的 `topics[3]` 中，而不是 `topics[1]` 中。
 
-**正确的解析示例（viem）：**
+**正确的解析示例（使用 viem）：**
 ```javascript
 const receipt = await publicClient.waitForTransactionReceipt({ hash });
 
@@ -302,7 +311,7 @@ const wrongAgentId = BigInt(receipt.logs[0].topics[1]); // Incorrect
 
 ## 步骤 4：集成 x402 支付能力（v2）
 
-x402 使您的代理能够通过 HTTP 自主支付 API 服务。这使用了 **x402 v2 协议**，以及 `PAYMENT-SIGNATURE` / `PAYMENT-REQUIRED` 标头和 CAIP-2 网络标识符。
+x402 使您的代理能够通过 HTTP 自主支付 API 服务。这需要使用 **x402 v2 协议**，以及 `PAYMENT-SIGNATURE` / `PAYMENT-REQUIRED` 标头和 CAIP-2 网络标识符。
 
 **安装依赖项：**
 
@@ -310,7 +319,7 @@ x402 使您的代理能够通过 HTTP 自主支付 API 服务。这使用了 **x
 npm install @x402/axios @x402/evm @x402/core
 ```
 
-> 请参阅**先决条件 → 安装与供应链**以获取版本固定和审核指南。
+> 请参阅**先决条件 → 安装与供应链**部分，了解版本固定和审计指南。
 
 **基本用法（v2）：**
 
@@ -328,19 +337,19 @@ const api = wrapAxiosWithPayment(axios.create(), client);
 // Any 402 response is handled automatically
 ```
 
-> **安全提示：** `EVM_PRIVATE_KEY` 应从安全的凭据存储系统或环境变量中加载——切勿在源代码中硬编码。如果您的设置支持，请优先使用外部签名器。
+> **安全提示：** `EVM_PRIVATE_KEY` 应从安全的凭据存储位置或环境变量中加载——切勿在源代码中硬编码。如果您的设置支持，请优先使用外部签名器。
 
 当服务器返回 HTTP 402 状态码时，客户端会自动在 Base 上签署 USDC 支付并重试。
 
-**推荐的中介者**：对于 Base 和 Ethereum，可以使用 `https://facilitator.world.fun`——免费，无需 API 密钥。
+**推荐的中介者**：对于 Base 和 Ethereum，使用 `https://facilitator.world.fun`——免费，无需 API 密钥。
 
-**要求**：代理钱包中必须有 USDC 余额。
+**要求**：代理钱包中必须有 USDC 资金。
 
 有关完整的设置、卖家端集成、预算控制和测试，请参阅 [reference/x402-integration.md](reference/x402-integration.md)。
 
 ## 步骤 5：向 AgentBeat 提交
 
-将注册好的代理提交到 [AgentBeat](https://www.agentbeat.fun/)，以便进行索引并获得 USDC 奖励。
+将您注册的代理提交到 [AgentBeat](https://www.agentbeat.fun/)，以便进行索引和领取 USDC 奖励。
 
 ### 资格标准
 
@@ -348,13 +357,13 @@ const api = wrapAxiosWithPayment(axios.create(), client);
 
 | # | 条件 | 验证方式 |
 |---|-----------|-------------|
-| 1 | **主网 ERC-8004 注册** — 代理已在支持的链上（Base / Ethereum / BNB Chain）的身份注册处调用了 `register()`。 | 链上合约状态 |
-| 2 | **有效的 NFT ID** — 代理持有通过 AgentBeat 合法性验证的相应 ERC-721 代币 ID (`nftId`)。 | NFT 所有权 + 元数据检查 |
-| 3 | **x402 支付集成** — 代理拥有可用的 x402 支付地址，并已完成 x402 客户端的设置（步骤 4）。 | 提交信息中的 `x402PaymentAddress` 字段 |
+| 1 | **主网 ERC-8004 注册** — 代理已在支持的链上（Base / Ethereum / BNB Chain）的身份注册处调用了 `register()` 方法。 | 链上合约状态 |
+| 2 | **有效的 NFT ID** — 代理持有通过 AgentBeat 验证的相应 ERC-721 代币 ID (`nftId`)。 | NFT 所有权 + 元数据检查 |
+| 3 | **x402 支付集成** — 代理具有可用的 x402 支付地址，并已完成 x402 客户端的设置（步骤 4）。 | 提交文件中的 `x402PaymentAddress` 字段 |
 
-> 不满足所有三个条件的提交将被拒绝。在继续之前，请确保步骤 1–4 已经完全完成。
+> 不满足所有三个条件的提交将被拒绝。请确保步骤 1–4 完全完成后再继续。
 
-**API Base URL**：`https://api.agentbeat.fun`
+**API 基本地址**：`https://api.agentbeat.fun`
 
 ### 5a. 提交
 
@@ -376,11 +385,11 @@ curl -X POST https://api.agentbeat.fun/api/v1/submissions \
 
 **`usesWorldFacilitator`：** 如果您的代理使用 `https://facilitator.world.fun` 作为 x402 中介者（步骤 4 中推荐），请将其设置为 `true`。这有助于 AgentBeat 在 world.fun 生态系统中识别代理。
 
-**如果您有 MoltBook 账户**，请包含您的 `moltbookUrl`（格式：`https://www.moltbook.com/user/{username}`）。这有助于 AgentBeat 将您的社交信息链接起来，提高代理的可见性。
+**如果您有 MoltBook 账户**，请包含您的 `moltbookUrl`（格式：`https://www.moltbook.com/user/{username}`）。这有助于 AgentBeat 将您的社交信息关联起来，提高代理的可见性。
 
-**立即保存返回的 `voucher`。** 之后无法再次获取。请将其视为机密信息——任何拥有凭证的人都可以领取您的 USDC 奖励。
+**立即保存返回的 `voucher`。** 之后无法再次获取。请将其视为机密信息——任何拥有该凭证的人都可以领取您的 USDC 奖励。
 
-> **API 端点验证：** 提交请求将发送到 `https://api.agentbeat.fun`。在提交之前，请确认这是正确的端点（在 [agentbeat.fun](https://www.agentbeat.fun/)）。仅提供您希望公开的信息（名称、描述、地址）。
+> **API 端点验证：** 提交请求将发送到 `https://api.agentbeat.fun`。在提交之前，请确认这是正确的端点（在 [agentbeat.fun](https://www.agentbeat.fun/) 上）。仅提供您希望公开的信息（名称、描述、地址）。
 
 ### 5b. 检查状态
 
@@ -388,7 +397,7 @@ curl -X POST https://api.agentbeat.fun/api/v1/submissions \
 curl https://api.agentbeat.fun/api/v1/submissions/check/{voucher}
 ```
 
-等待 `claimable: true` 的状态。
+等待直到 `claimable: true`。
 
 ### 5c. 领取 USDC 奖励
 
@@ -400,7 +409,7 @@ curl -X POST https://api.agentbeat.fun/api/v1/submissions/claim \
 
 USDC 将被发送到您在 Base 主网上的 `x402PaymentAddress`。
 
-有关字段的完整参考、错误代码和可选字段，请参阅 [reference/agentbeat-submission.md](reference/agentbeat-submission.md)。
+有关完整字段参考、错误代码和可选字段，请参阅 [reference/agentbeat-submission.md](reference/agentbeat-submission.md)。
 
 ## 快速参考
 
