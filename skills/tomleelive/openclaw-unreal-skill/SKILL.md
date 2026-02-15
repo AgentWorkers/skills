@@ -1,184 +1,98 @@
-# OpenClaw Unreal 技能
+# OpenClaw Unreal插件  
+版本：1.0.0  
 
-通过 OpenClaw AI 助手控制 Unreal 编辑器。
+这是一个用于通过OpenClaw控制Unreal Engine编辑器的MCP（Media Control Protocol）插件。  
 
-## 概述
+## 连接模式  
 
-该技能通过 OpenClaw Unreal 插件实现 AI 辅助的 Unreal Engine 开发。该插件通过 HTTP 轮询（`/unreal/*` 端点）与 OpenClaw Gateway 进行通信。
+### 模式A：OpenClaw Gateway（远程）  
+该插件通过HTTP轮询连接到OpenClaw Gateway。当Gateway正在运行时，插件会自动进行连接。  
 
-## 架构
-
-```
-┌──────────────────┐     HTTP      ┌─────────────────────┐
-│  OpenClaw        │ ←──────────→  │  Unreal Editor      │
-│  Gateway:18789   │  /unreal/*    │  (C++ Plugin)       │
-└──────────────────┘               └─────────────────────┘
-         ↑
-         │ Extension
-┌──────────────────┐
-│  extension/      │
-│  index.ts        │
-└──────────────────┘
-```
-
-## 先决条件
-
-1. 拥有 Unreal Engine 5.x 项目
-2. 项目中已安装 OpenClaw Unreal 插件
-3. OpenClaw Gateway 正在运行（默认端口：18789）
-
-## 安装
-
-### 插件安装
-
-1. 将 `openclaw-unreal-plugin` 文件夹复制到项目的 `Plugins` 目录中
-2. 重启 Unreal 编辑器
-3. 在“编辑”（Edit）→“插件”（Plugins）→“OpenClaw”中启用该插件
-4. 打开“窗口”（Window）→“OpenClaw”以查看连接状态
-
-### 技能安装
+### 模式B：MCP直接连接（Claude代码/光标）  
+该插件会在端口**27184**上运行一个内嵌的HTTP服务器。请使用随附的MCP桥接工具进行连接：  
 
 ```bash
-# Copy skill to OpenClaw workspace
-cp -r openclaw-unreal-skill ~/.openclaw/workspace/skills/unreal-plugin
-```
+# Claude Code
+claude mcp add unreal -- node /path/to/Plugins/OpenClaw/MCP~/index.js
 
-## 可用工具
+# Cursor — add to .cursor/mcp.json
+{"mcpServers":{"unreal":{"command":"node","args":["/path/to/Plugins/OpenClaw/MCP~/index.js"]}}}
+```  
 
-### 级别管理
-- `level.current` - 获取当前关卡信息
-- `level.list` - 列出所有关卡
-- `level.open` - 通过路径打开关卡
-- `level.save` - 保存当前关卡
+这两种模式可以同时运行。  
 
-### 角色操作
-- `actor.find` - 通过名称查找角色
-- `actor.getAll` - 获取所有角色
-- `actor.create` - 创建新角色（立方体、点光源、相机等）
-- `actor.delete` / `actor.destroy` - 删除角色
-- `actor.getData` - 获取角色详细信息
-- `actor.setProperty` - 修改角色属性
+## 编辑器面板  
+点击“窗口 → OpenClaw Unreal插件”会打开一个可停靠的标签页，其中包含以下内容：  
+- 连接状态指示器  
+- MCP服务器信息（地址、协议）  
+- 连接/断开连接按钮  
+- 工具调用和消息的实时日志  
 
-### 变换（Transform）
-- `transform.position` / `setPosition` - 设置/获取角色位置
-- `transform.getRotation` / `setRotation` - 设置/获取角色旋转
-- `transform.getScale` / `setScale` - 设置/获取角色缩放
+## 工具  
 
-### 组件（Component）
-- `component.get` - 获取角色组件
-- `component.add` - 添加组件
-- `component.remove` - 删除组件
+### 地图（Level）  
+- `level.getCurrent`：当前地图的名称  
+- `level.list`：项目中的所有地图  
+- `level.open`：按名称打开地图  
+- `level.save`：保存当前地图  
 
-### 编辑器控制
-- `editor.play` - 开始 PIE（在编辑器中播放）
-- `editor.stop` - 停止 PIE
-- `editor.pause` / `resume` - 暂停/恢复游戏播放
-- `editor.getState` - 检查是否正在播放或编辑
+### 角色（Actor）  
+- `actor.find`：按名称或类别查找角色  
+- `actor.getAll`：列出所有角色  
+- `actor.create`：创建角色（类型包括：StaticMeshActor（立方体、球体、圆柱体、圆锥体）、PointLight、Camera）  
+- `actor.delete`：按名称删除角色  
+- `actor.getData`：获取角色的详细信息  
+- `actor.setProperty`：通过UE反射系统设置角色属性  
 
-### 调试
-- `debug.hierarchy` - 世界层次结构树
-- `debug.screenshot` - 捕获视图窗口截图
-- `debug.log` - 输出日志信息
+### 变换（Transform）  
+- `transform.position` / `transform.setPosition`：设置/获取角色的位置  
+- `transform.rotation` / `transform.setRotation`：设置/获取角色的旋转  
+- `transform.scale` / `transform.setScale`：设置/获取角色的缩放比例  
 
-### 输入模拟
-- `input.simulateKey` - 模拟键盘输入（W、A、S、D、空格键等）
-- `input.simulateMouse` - 模拟鼠标点击/移动/滚动
-- `input.simulateAxis` - 模拟游戏手柄/轴输入
+> 这些变换工具需要一个有效的RootComponent（适用于StaticMeshActor、PointLight等对象，不适用于单独的Actor）。  
 
-### 资产（Assets）
-- `asset.list` - 浏览资源浏览器
-- `asset.import` - 导入外部资源
+### 组件（Component）  
+- `component.get`：获取组件的数据  
+- `component.add`：添加组件（尚未实现）  
+- `component.remove`：删除组件（尚未实现）  
 
-### 控制台（Console）
-- `console.execute` - 运行控制台命令
-- `console.getLogs` - 获取输出日志信息
+### 编辑器（Editor）  
+- `editor.play`：启动Play In Editor（ PIE）模式  
+- `editor.stop`：停止Play In Editor模式  
+- `editor.pause` / `editor.resume`：暂停/恢复Play In Editor模式  
+- `editor.getState`：获取当前的编辑器状态  
 
-### 蓝图（Blueprint）
-- `blueprint.list` - 列出项目中的蓝图
-- `blueprint.open` - 在编辑器中打开蓝图
+### 调试（Debug）  
+- `debug.hierarchy`：显示角色的层次结构树  
+- `debug.screenshot`：捕获编辑器视图窗口的截图  
+- `debug.log`：将信息写入输出日志  
 
-## 示例用法
+### 输入（Input）  
+- `input.simulateKey`：模拟按键操作  
+- `input.simulateMouse`：模拟鼠标操作  
+- `input.simulateAxis`：模拟轴的移动  
 
-```
-User: Create a cube at position (100, 200, 50)
-AI: [Uses unreal_execute tool="actor.create" parameters={type:"Cube", x:100, y:200, z:50}]
+### 资产（Asset）  
+- `asset.list`：列出指定路径下的所有资产  
+- `asset.import`：导入资产（尚未实现）  
 
-User: Move the player start to the center
-AI: [Uses unreal_execute tool="actor.find" parameters={name:"PlayerStart"}]
-    [Uses unreal_execute tool="transform.setPosition" parameters={name:"PlayerStart", x:0, y:0, z:0}]
+### 控制台（Console）  
+- `console.execute`：执行控制台命令  
+- `console.getLogs`：读取项目日志文件（参数：`count`（日志行数）、`filter`（过滤条件）  
 
-User: Take a screenshot
-AI: [Uses unreal_execute tool="debug.screenshot"]
+###蓝图（Blueprint）  
+- `blueprint.list`：列出所有的蓝图  
+- `blueprint.open`：打开蓝图（尚未实现）  
 
-User: Start the game
-AI: [Uses unreal_execute tool="editor.play"]
-```
+## 故障排除  
 
-## 配置
-
-在项目根目录下创建 `openclaw.json` 文件（可选）：
-
-```json
-{
-  "host": "127.0.0.1",
-  "port": 18789,
-  "autoConnect": true
-}
-```
-
-或者将配置信息放在 `~/.openclaw/unreal-plugin.json` 文件中以实现全局配置。
-
-## HTTP 端点
-
-该插件在 OpenClaw Gateway 上注册了以下端点：
-
-| 端点 | 方法 | 描述 |
-|----------|--------|-------------|
-| `/unreal/register` | POST | 注册新会话 |
-| `/unreal/poll` | GET | 轮询待处理的命令 |
-| `/unreal/heartbeat` | POST | 保持会话活跃 |
-| `/unreal/result` | POST | 发送工具执行结果 |
-| `/unreal/status` | GET | 获取所有会话的状态 |
-
-## 故障排除
-
-### 插件无法连接
-- 检查输出日志中是否有 `[OpenClaw]` 相关信息
-- 确认 Gateway 是否正在运行：`openclaw gateway status`
-- 确认端口 18789 是否可访问
-- 打开“窗口”→“OpenClaw”以查看连接状态
-
-### 会话过期
-- 插件会在会话过期时自动重新连接
-- 确认 Gateway 是否已重新启动
-
-### 工具无法使用
-- 确保插件已启用（“编辑”→“插件”）
-- 在修改角色时确保编辑器未处于 PIE 模式
-- 确认角色名称完全匹配（区分大小写）
-
-## 🔐 安全性：模型调用设置
-
-在将数据发布到 ClawHub 时，可以配置 `disableModelInvocation`：
-
-| 设置 | AI 自动调用 | 用户明确请求 |
-|---------|---------------|----------------------|
-| `false`（默认） | ✅ 允许 | ✅ 允许 |
-| `true` | ❌ 禁用 | ✅ 允许 |
-
-### 建议：**设置为 `false`**（默认值）
-
-**原因：** 在 Unreal 开发过程中，AI 自动执行辅助任务（如检查角色层次结构、截图、检查组件等）非常有用。
-
-**何时使用 `true`：** 对于敏感操作（如支付、删除、发送消息等）。
-
-## 命令行接口（CLI）命令
-
+### 二进制文件过期或插件无法加载  
+请清除构建缓存并重新启动编辑器：  
 ```bash
-# Check Unreal connection status
-openclaw unreal status
-```
+rm -rf YourProject/Plugins/OpenClaw/Binaries YourProject/Plugins/OpenClaw/Intermediate
+```  
 
-## 许可证
-
-MIT 许可证 - 详见 LICENSE 文件
+### 连接问题  
+- 确保OpenClaw Gateway正在运行（使用`openclaw gateway status`命令检查）。  
+- 查看编辑器面板中的日志以获取错误信息。  
+- 确保MCP端口没有被防火墙阻止。

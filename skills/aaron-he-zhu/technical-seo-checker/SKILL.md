@@ -1,10 +1,56 @@
 ---
 name: technical-seo-checker
-description: 执行技术性的SEO审计，涵盖网站速度、可爬取性、可索引性、移动设备友好性、安全性以及结构化数据等方面。识别阻碍网站获得最佳搜索效果的技术问题。
-geo-relevance: "low"
+description: '**使用场景：**  
+当用户请求进行“技术性SEO审计”、“检查页面速度”、“解决爬虫问题”、“评估Core Web Vitals指标”、“排查网站索引问题”、“网站加载缓慢”、“Google无法抓取我的网站”、“存在移动端兼容性问题”或“索引问题”时，可以使用该工具。该工具会执行涵盖网站速度、可爬取性、可索引性、移动设备友好性、安全性以及结构化数据等方面的技术性SEO审计，识别阻碍网站搜索性能优化的技术问题。  
+- 对于内容或标题元素相关的问题，请参考**on-page-seo-auditor**；  
+- 对于链接结构相关的问题，请参考**internal-linking-optimizer**。'
+license: Apache-2.0
+metadata:
+  author: aaron-he-zhu
+  version: "2.0.0"
+  geo-relevance: "low"
+  tags:
+    - seo
+    - technical seo
+    - page speed
+    - core web vitals
+    - crawlability
+    - indexability
+    - mobile-friendly
+    - site speed
+    - security audit
+  triggers:
+    - "technical SEO audit"
+    - "check page speed"
+    - "crawl issues"
+    - "Core Web Vitals"
+    - "site indexing problems"
+    - "mobile-friendly check"
+    - "site speed"
+    - "my site is slow"
+    - "Google can't crawl my site"
+    - "mobile issues"
+    - "indexing problems"
 ---
 
 # 技术性SEO检查工具
+
+> **[SEO与地理定位技能库](https://skills.sh/aaron-he-zhu/seo-geo-claude-skills)** · 20项SEO与地理定位相关技能 · 全部技能的安装命令：`npx skills add aaron-he-zhu/seo-geo-claude-skills`
+
+<details>
+<summary>浏览全部20项技能</summary>
+
+**研究** · [关键词研究](../../research/keyword-research/) · [竞争对手分析](../../research/competitor-analysis/) · [SERP分析](../../research/serp-analysis/) · [内容差距分析](../../research/content-gap-analysis/)
+
+**构建** · [SEO内容编写器](../../build/seo-content-writer/) · [地理内容优化器](../../build/geo-content-optimizer/) · [元标签优化器](../../build/meta-tags-optimizer/) · [结构化数据标记生成器](../../build/schema-markup-generator/)
+
+**优化** · [页面SEO审核器](../on-page-seo-auditor/) · **技术性SEO检查工具** · [内部链接优化器](../internal-linking-optimizer/) · [内容更新工具](../content-refresher/)
+
+**监控** · [排名追踪器](../../monitor/rank-tracker/) · [反向链接分析器](../../monitor/backlink-analyzer/) · [性能报告器](../../monitor/performance-reporter/) · [警报管理器](../../monitor/alert-manager/)
+
+**跨领域技能** · [内容质量审核器](../../cross-cutting/content-quality-auditor/) · [域名权威性审核器](../../cross-cutting/domain-authority-auditor/) · [实体优化器](../../cross-cutting/entity-optimizer/) · [内存管理](../../cross-cutting/memory-management/)
+
+</details>
 
 该工具可执行全面的技术性SEO审计，以识别可能阻碍搜索引擎正确爬取、索引和排名您网站的问题。
 
@@ -12,26 +58,26 @@ geo-relevance: "low"
 
 - 新网站上线时
 - 诊断排名下降的原因
-- 迁移前的SEO审计
+- 迁站前的SEO审计
 - 定期进行技术健康检查
 - 识别爬取和索引问题
 - 提升网站性能
 - 修复Core Web Vitals相关问题
 
-## 工具功能
+## 功能概述
 
-1. **爬取能力审计**：检查robots.txt文件、站点地图（sitemaps）以及爬取过程中遇到的问题。
-2. **可索引性审查**：分析索引状态及可能存在的障碍。
+1. **可爬取性审计**：检查robots.txt文件、站点地图（sitemaps）以及爬取过程中存在的问题。
+2. **可索引性审核**：分析索引状态及潜在的阻碍因素。
 3. **网站速度分析**：评估Core Web Vitals指标及网站性能。
 4. **移动设备友好性**：检查网站的移动优化情况。
-5. **安全性检查**：审核HTTPS设置和安全头部信息。
-6. **结构化数据审计**：验证网站中的结构化数据标记（schema markup）。
-7. **URL结构分析**：审查URL模式和重定向规则。
-8. **国际SEO**：检查网站的国际化设置（如hreflang标签和本地化内容）。
+5. **安全性检查**：审查HTTPS设置和安全头部信息。
+6. **结构化数据审计**：验证网站的结构化数据标记是否正确。
+7. **URL结构分析**：检查URL格式和重定向规则。
+8. **国际SEO**：检查网站的国际化设置（如hreflang和本地化内容）。
 
 ## 使用方法
 
-### 全面技术审计
+### 全面技术性审计
 
 ```
 Perform a technical SEO audit for [URL/domain]
@@ -43,11 +89,7 @@ Perform a technical SEO audit for [URL/domain]
 Check Core Web Vitals for [URL]
 ```
 
-```
-Audit crawlability and indexability for [domain]
-```
-
-### 迁移前的审计
+### 迁站前的审计
 
 ```
 Technical SEO checklist for migrating [old domain] to [new domain]
@@ -55,26 +97,25 @@ Technical SEO checklist for migrating [old domain] to [new domain]
 
 ## 数据来源
 
-> 有关工具类别的详细信息，请参阅[CONNECTORS.md](../../CONNECTORS.md)。
+> 有关工具类别的更多信息，请参阅[CONNECTORS.md](../../CONNECTORS.md)。
 
-**当连接了[网络爬虫 + 网页速度工具 + CDN]时：**
-Claude可以通过网络爬虫自动爬取整个网站结构，从网页速度工具中获取Core Web Vitals指标和性能数据，从CDN中分析缓存信息，并收集移动设备友好性数据，从而实现全面的自动化技术审计。
+**当连接了[网络爬虫 + 页面速度工具 + CDN]时：**
+Claude能够自动爬取整个网站结构，从页面速度工具中获取Core Web Vitals指标和性能数据，从CDN中获取缓存信息，并分析网站的移动设备友好性。这实现了全面的自动化技术审计。
 
 **仅使用手动数据时：**
 用户需要提供以下信息：
 1. 需要审计的网站URL。
 2. PageSpeed Insights的截图或报告。
 3. robots.txt文件的内容。
-4. sitemap.xml文件的路径。
+4. sitemap.xml文件的URL或文件路径。
 
-根据提供的数据执行全面审计，并在报告中明确区分哪些发现是基于自动化爬取的结果，哪些是基于手动审查的结果。
+使用提供的数据开始全面审计。在审计结果中明确标注哪些发现是通过自动化爬取得出的，哪些是通过手动审核得出的。
 
 ## 使用说明
 
 当用户请求进行技术性SEO审计时，请按照以下步骤操作：
 
-1. **爬取能力审计**
-
+1. **可爬取性审计**
    ```markdown
    ## Crawlability Analysis
    
@@ -148,7 +189,6 @@ Claude可以通过网络爬虫自动爬取整个网站结构，从网页速度�
    ```
 
 2. **可索引性审计**
-
    ```markdown
    ## Indexability Analysis
    
@@ -195,7 +235,6 @@ Claude可以通过网络爬虫自动爬取整个网站结构，从网页速度�
    ```
 
 3. **网站速度与Core Web Vitals审计**
-
    ```markdown
    ## Performance Analysis
    
@@ -250,7 +289,6 @@ Claude可以通过网络爬虫自动爬取整个网站结构，从网页速度�
    ```
 
 4. **移动设备友好性审计**
-
    ```markdown
    ## Mobile Optimization Analysis
    
@@ -288,7 +326,6 @@ Claude可以通过网络爬虫自动爬取整个网站结构，从网页速度�
    ```
 
 5. **安全性与HTTPS审计**
-
    ```markdown
    ## Security Analysis
    
@@ -316,7 +353,6 @@ Claude可以通过网络爬虫自动爬取整个网站结构，从网页速度�
    ```
 
 6. **URL结构审计**
-
    ```markdown
    ## URL Structure Analysis
    
@@ -355,41 +391,9 @@ Claude可以通过网络爬虫自动爬取整个网站结构，从网页速度�
    ```
 
 7. **结构化数据审计**
-
-   > **CORE-EEAT对齐性**：验证网站的结构化数据标记是否符合CORE-EEAT基准中的O05标准。有关完整的内容质量审计，请参阅[content-quality-auditor](../../cross-cutting/content-quality-auditor/)。
-
-   ```markdown
-   ## Structured Data Analysis
-   
-   ### Schema Markup Found
-   
-   | Schema Type | Pages | Valid | Errors |
-   |-------------|-------|-------|--------|
-   | [Type 1] | [X] | ✅/❌ | [errors] |
-   | [Type 2] | [X] | ✅/❌ | [errors] |
-   
-   ### Validation Results
-   
-   **Errors**:
-   - [Error 1]: [affected pages] - [solution]
-   - [Error 2]: [affected pages] - [solution]
-   
-   **Warnings**:
-   - [Warning 1]: [notes]
-   
-   ### Missing Schema Opportunities
-   
-   | Page Type | Current Schema | Recommended |
-   |-----------|----------------|-------------|
-   | Blog posts | [current] | Article + FAQ |
-   | Products | [current] | Product + Review |
-   | Homepage | [current] | Organization |
-   
-   **Structured Data Score**: [X]/10
-   ```
+   > **CORE-EEAT对齐性**：检查网站的结构化数据标记是否符合CORE-EEAT基准中的O05标准。有关全面的内容质量审计，请参阅[content-quality-auditor](../../cross-cutting/content-quality-auditor/)。
 
 8. **国际SEO审计（如适用）**
-
    ```markdown
    ## International SEO Analysis
    
@@ -413,8 +417,7 @@ Claude可以通过网络爬虫自动爬取整个网站结构，从网页速度�
    **International Score**: [X]/10
    ```
 
-9. **生成技术审计报告**
-
+9. **生成技术性审计报告**
    ```markdown
    # Technical SEO Audit Report
    
@@ -425,8 +428,8 @@ Claude可以通过网络爬虫自动爬取整个网站结构，从网页速度�
    ## Overall Technical Health: [X]/100
    
    ```
-   评分结果：
-   ████████░░ 爬取能力：8/10
+   评分详情：
+   ████████░░ 可爬取性：8/10
    ███████░░░ 可索引性：7/10
    █████░░░░░ 网站性能：5/10
    ████████░░ 移动设备友好性：8/10
@@ -492,21 +495,20 @@ Claude可以通过网络爬虫自动爬取整个网站结构，从网页速度�
 
 ### 输入验证
 - 必须明确提供网站URL或域名。
-- 必须能够访问技术相关数据（如robots.txt文件、站点地图或爬取结果）。
-- 必须提供性能指标数据（可通过网页速度工具或截图获取）。
+- 必须能够访问技术性数据（如robots.txt文件、站点地图或爬取结果）。
+- 必须提供性能指标数据（通过页面速度工具或截图获取）。
 
 ### 输出验证
-- 每条建议都应引用具体的数据来源。
-- 所有问题都应包含受影响的URL或受影响的页面数量。
-- 性能指标应包含具体的数值（如时间、文件大小等）。
-- 必须明确说明每个数据来源（网络爬虫数据、网页速度工具数据、用户提供的数据或估算值）。
+- 每条建议都必须引用具体的数据来源。
+- 所有问题都应包含受影响的URL或页面数量。
+- 性能指标必须包含具体的数值（如秒数、KB等）。
+- 必须明确说明数据来源（网络爬虫数据、页面速度工具数据、用户提供的数据或估算值）。
 
 ## 示例
 
-**用户请求：** “检查cloudhosting.com的技术SEO情况。”
+**用户**：“检查cloudhosting.com的技术性SEO情况”
 
 **审计结果：**
-
 ```markdown
 # Technical SEO Audit Report
 
@@ -603,11 +605,11 @@ Claude可以通过网络爬虫自动爬取整个网站结构，从网页速度�
 ## Overall Technical Health: 42/100
 
 ```
-评分结果：
-█████░░░░░ 爬取能力：5/10
+评分详情：
+█████░░░░░ 可爬取性：5/10
 ██████░░░░ 可索引性：6/10
 ███░░░░░░ 页面性能：3/10
-██████░░░░ 移动设备友好性：6/10
+██████░░░░░ 移动设备友好性：6/10
 █████░░░░░ 安全性：5/10
 ██████░░░░ URL结构：6/10
 ███░░░░░ 结构化数据：3/10
@@ -663,73 +665,61 @@ Claude可以通过网络爬虫自动爬取整个网站结构，从网页速度�
 - [ ] Internal linking is strong
 ```
 
-## 成功使用技巧
+## 成功技巧
 
-1. **按问题影响程度优先处理**——先解决关键问题。
-2. **持续监控**——利用搜索引擎控制台（search console）的警报功能。
+1. **按问题影响程度优先处理**——先修复关键问题。
+2. **持续监控**——利用搜索控制台（search console）的警报功能。
 3. **测试修改效果**——在广泛部署之前验证修复措施是否有效。
 4. **详细记录所有操作**——便于后续问题排查。
-5. **定期进行审计**——安排每季度的技术审查。
+5. **定期进行审计**——每季度安排一次技术性审查。
 
-## 技术性SEO问题严重性分级框架
-
-### 问题分类
+## 技术性SEO问题严重性分级
 
 | 问题严重性 | 影响描述 | 例子 | 处理时间 |
 |----------|-------------------|---------|---------------|
-| **严重** | 阻止网站被索引或导致全局性问题** | robots.txt文件设置错误、关键页面被设置为noindex、全站出现500错误 | 当天处理 |
-| **高** | 显著影响排名或用户体验** | 网页加载速度慢、缺少hreflang标签、内容重复、存在重定向链 | 1周内处理 |
-| **中** | 影响特定页面或造成中等程度的影响** | 缺少结构化数据标记、默认链接（canonical）设置不当、页面内容较少 | 1个月内处理 |
-| **低** | 存在较小的优化机会** | 图片压缩、轻微的CLS（Cumulative Layout Shift）问题、缺少非必要的结构化数据 | 下一季度处理 |
-
-## 技术性问题的优先级评估矩阵
-
-| 评估因素 | 权重 | 评分标准 |
-|--------|--------|-----------|
-| 受影响的页面数量 | 30% | 全站 > 单个页面 |
-| 对收入的影响 | 25% | 收入相关的页面 > 博客页面 > 辅助性页面 |
-| 修复难度 | 20% | 配置调整 < 模板修改 < 代码重写 |
-| 竞争优势影响 | 15% | 竞争对手的表现优于你 > 与你持平 > 你优于竞争对手 |
-| 爬取效率浪费 | 10% | 严重浪费 > 中等程度 > 极小程度 |
+| **严重** | 阻止网站被索引或导致全局性问题** | robots.txt文件设置错误、关键页面被禁止索引、全站出现500错误 | 当天处理 |
+| **较高** | 显著影响排名或用户体验** | 网页加载速度慢、缺少hreflang标签、重复内容、重定向链问题 | 1周内处理 |
+| **中等** | 影响特定页面或造成中等程度的影响** | 缺少结构化数据标记、默认链接设置不当、内容页面质量较低 | 1个月内处理 |
+| **较低** | 存在较小的优化空间** | 图像压缩、轻微的CLS（Cumulative Layout Shift）问题、非必要的结构化数据缺失 | 下一季度处理 |
 
 ## Core Web Vitals优化快速参考
 
 ### LCP（Largest Contentful Paint，最大内容绘制时间）优化
 
-| 原因 | 检测方法 | 修复方法 |
+| 原因 | 检测方法 | 解决方案 |
 |-----------|-----------|-----|
-| 大尺寸的标题图片 | PageSpeed Insights工具 | 服务器提供WebP格式图片、调整图片尺寸、使用loading="lazy"属性 |
-| 阻碍页面渲染的CSS/JS代码 | 开发工具（DevTools） | 延迟非关键代码的执行、将关键代码内联 |
-| 服务器响应速度慢 | 网页加载时间超过800毫秒 | 使用CDN、服务器端缓存、升级服务器 |
-| 第三方脚本 | 开发工具（DevTools） | 延迟或异步加载这些脚本、使用代理模式（facade pattern） |
+| 大尺寸的标题图片** | PageSpeed Insights工具 | 使用WebP格式、调整图片大小、添加`loading="lazy"`属性 |
+| 阻碍页面渲染的CSS/JavaScript** | 开发工具（DevTools） | 延迟加载非关键代码、将关键代码内联 |
+| 服务器响应缓慢** | 网页加载时间超过800毫秒 | 使用CDN、服务器端缓存、升级托管服务 |
+| 第三方脚本** | 开发工具（DevTools Network） | 延迟加载或异步加载这些脚本 |
 
 ### CLS（Cumulative Layout Shift，累积布局偏移）优化
 
-| 原因 | 检测方法 | 修复方法 |
+| 原因 | 检测方法 | 解决方案 |
 |-----------|-----------|-----|
-| 图片没有尺寸信息 | 开发工具（DevTools） | 为图片添加明确的宽度/高度属性 |
-| 广告或嵌入内容没有预留显示空间 | 直观检查 | 为容器设置最小高度 |
-| 导致页面显示异常的Web字体 | 开发工具（DevTools） | 设置font-display属性、预加载相关字体 |
-| 动态内容的插入 | 直观检查 | 使用CSS为动态内容预留显示空间 |
+| 图片没有尺寸信息** | 开发工具（DevTools） | 为图片添加明确的宽度/高度属性 |
+| 广告或嵌入内容没有预留显示空间** | 直观检查页面布局 | 为相关元素设置最小高度 |
+| 导致页面布局混乱的Web字体** | 开发工具（DevTools） | 设置字体显示方式（font-display: swap）并预加载字体 |
+| 动态内容插入** | 直观检查页面布局 | 使用CSS为动态内容预留显示空间 |
 
-### INP（Interaction to Next Paint，交互到下一次页面绘制的时间）优化
+### INP（Interaction to Next Paint，交互到下一次绘制时间）优化
 
-| 原因 | 检测方法 | 修复方法 |
+| 原因 | 检测方法 | 解决方案 |
 |-----------|-----------|-----|
-| 长时间的JavaScript任务 | 开发工具（DevTools） | 将任务拆分成更小的部分、使用requestIdleCallback函数 |
-| 事件处理程序占用过多系统资源 | 开发工具（DevTools） | 使用debounce或throttle函数、使用被动事件监听器 |
-| 主线程被占用 | 开发工具（DevTools） | 对计算量大的任务使用Web workers线程 |
+| JavaScript任务执行时间过长** | 开发工具（DevTools） | 将复杂任务分解为更小的部分、使用`requestIdleCallback` |
+| 事件处理程序占用过多线程** | 开发工具（DevTools） | 使用节流（debounce/throttle）或被动事件监听器 |
+| 主线程被阻塞** | 开发工具（DevTools） | 使用Web Workers处理耗时任务 |
 
 ## 参考资料
 
-- [robots.txt文件参考](../../references/robots-txt-reference.md) — robots.txt文件的语法指南、模板示例、常见配置设置。
-- [HTTP状态码](../../references/http-status-codes.md) — 各HTTP状态码对SEO的影响及重定向的最佳实践。
+- [robots.txt文件参考](./references/robots-txt-reference.md) — robots.txt文件的语法指南、模板示例和常见配置。
+- [HTTP状态码](./references/http-status-codes.md) — 各HTTP状态码对SEO的影响及重定向的最佳实践。
 
-## 相关工具
+## 相关技能
 
-- [on-page-seo-auditor](../on-page-seo-auditor/) — 页面内SEO审计工具。
-- [schema-markup-generator](../../build/schema-markup-generator/) — 用于修复结构化数据标记问题。
-- [performance-reporter](../../monitor/performance-reporter/) — 用于监控网站性能改进情况。
-- [internal-linking-optimizer](../internal-linking-optimizer/) — 用于修复链接问题。
-- [alert-manager](../../monitor/alert-manager/) — 用于设置技术问题的警报通知。
-- [content-quality-auditor](../../cross-cutting/content-quality-auditor/) — 提供全面的80项评估内容质量工具。
+- [页面SEO审核器](../on-page-seo-auditor/) — 用于检查页面SEO问题。
+- [结构化数据标记生成器](../../build/schema-markup-generator/) — 用于修复结构化数据标记问题。
+- [性能报告器](../../monitor/performance-reporter/) — 用于监控网站性能改进情况。
+- [内部链接优化器](../internal-linking-optimizer/) — 用于修复链接问题。
+- [警报管理器](../../monitor/alert-manager/) — 用于生成技术问题的警报通知。
+- [内容质量审核器](../../cross-cutting/content-quality-auditor/) — 提供全面的80项核心评估（CORE-EEAT）。

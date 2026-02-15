@@ -1,7 +1,12 @@
 ---
 name: google-weather
-description: **Google Weather API** – 提供准确、实时的天气数据。您可以获取当前的天气状况、温度、湿度、风向以及天气预报。该服务基于 Google 的 Weather API，能够提供每 15 分钟更新一次的可靠且高度本地化的天气信息，支持全球任何地点的查询。
+description: **Google Weather API**  
+提供准确、实时的天气数据，包括当前天气状况、温度、湿度、风速以及天气预报。该服务基于 Google 的 Weather API 运行，能够提供每 15 分钟更新一次的、高度精确的本地化天气信息。支持全球任何地点的查询。
+version: 1.2.0
+author: Leo 🦁
 tags: [weather, google, forecast, temperature, real-time, current-conditions, climate, wind, humidity]
+metadata: {"clawdbot":{"emoji":"🌤️","requires":{"env":["GOOGLE_API_KEY"]},"primaryEnv":"GOOGLE_API_KEY","secondaryEnv":["GOOGLE_WEATHER_API_KEY","GOOGLE_MAPS_API_KEY"]}}
+allowed-tools: [exec]
 ---
 
 # Google Weather - 实时天气数据
@@ -46,27 +51,27 @@ Partly Cloudy ⛅
 ## 支持的位置
 
 全球任何地点——只需输入城市名称即可：
-- `New York`（纽约）、`London`（伦敦）、`Paris`（巴黎）、`Berlin`（柏林）、`Sydney`（悉尼）
-- `San Francisco`（旧金山）、`Singapore`（新加坡）、`Dubai`（迪拜）
+- `New York`（纽约），`London`（伦敦），`Paris`（巴黎），`Berlin`（柏林），`Sydney`（悉尼）
+- `San Francisco`（旧金山），`Singapore`（新加坡），`Dubai`（迪拜）
 - 或任何地址、地标或坐标
 
-该功能会使用 Google Maps API 自动进行地理位置编码。
+该功能会自动使用 Google Maps API 对位置进行地理编码。
 
 ## 可用的数据
 
 - **温度**：当前温度及体感温度
-- **天气状况**：晴朗、多云、下雨、下雪等（配有相应的表情符号）
+- **天气状况**：晴朗、多云、下雨、下雪等，并配有相应的表情符号
 - **天气预报**：每小时的温度、风速和天气状况数据
 - **湿度**：百分比
-- **风速**：风速、风向、阵风
+- **风**：风速、风向、阵风
 - **紫外线指数**：阳光暴露程度
-- **降水量**：降水量及其类型
+- **降水量**：降水量及类型
 - **云量**：百分比
 - **能见度**：能见距离
 
 ## 设置步骤
 
-1. 在 [Google Cloud 控制台](https://console.cloud.google.com/) 中创建一个项目。
+1. 在 [Google Cloud Console](https://console.cloud.google.com/) 中创建一个项目。
 2. 启用 [Weather API](https://console.cloud.google.com/apis/library/weather.googleapis.com)。
 3. 启用 [Geocoding API](https://console.cloud.google.com/apis/library/geocoding-backend.googleapis.com)（用于查找地点名称）。
 4. 创建一个 API 密钥，并将其设置为 `GOOGLE_API_KEY` 环境变量。

@@ -1,31 +1,60 @@
 ---
 name: "Coding"
-description: "它会自动学习你的技术栈、编码风格以及个人偏好。初始状态下是空的，但随着每个项目的完成，它会逐渐丰富起来。"
+version: "1.0.1"
+changelog: "Migrate to external memory storage at ~/coding/"
+description: "它会自动学习你的技术栈、编程风格以及个人偏好。初始状态下是空的，但随着每个项目的完成而逐渐丰富起来。"
 ---
 
 ## 自适应代码偏好设置
 
-此功能会随着用户偏好的变化而自动更新。您可以根据用户的行为来编辑以下内容。
+此功能会自动进行优化和更新。它会观察用户的操作，识别使用模式，并记录用户的偏好设置。
 
 **规则：**
-- 从用户的操作中识别出模式（而不仅仅是明确的请求）
-- 在用户连续做出两次相同选择后确认其偏好
-- 每个偏好项的描述必须非常简洁（最多5个字）
-- 请参考 `dimensions.md` 文件了解分类信息，以及何时需要添加新的偏好项
+- 从用户的操作中识别使用模式（而不仅仅是用户的明确请求）
+- 在用户连续做出相同选择两次以上后，确认这些偏好设置
+- 每条偏好设置的信息应保持极简（最多5个单词）
+- 查看 `dimensions.md` 文件以确定偏好设置的分类，以及查看 `criteria.md` 文件以确定何时需要添加新的偏好设置
 
 ---
 
-### 技术栈  
-<!-- 用户默认选择的技术。格式：`context: tech` -->
+## 内存存储
 
-### 代码风格  
-<!-- 代码编写规范。格式：`rule` 或 `thing: preference` -->
+用户的偏好设置保存在 `~/coding/memory.md` 文件中。激活该功能时会读取这些设置。
 
-### 项目结构  
-<!-- 用户对项目组织方式的偏好 -->
+**结构：**
+```
+~/coding/
+├── memory.md      # Active preferences (load always)
+└── history.md     # Old/archived preferences
+```
 
-### 禁忌事项  
-<!-- 用户拒绝或不喜欢的内容 -->
+**规则：**
+- 在功能启动时始终加载 `memory.md` 文件
+- 确保 `memory.md` 文件的行数不超过100行
+- 将旧的偏好设置记录归档到 `history.md` 文件中
+
+**`memory.md` 文件的格式：**
+```markdown
+# Coding Memory
+
+## Stack
+- context: tech
+
+## Style
+- rule or thing: preference
+
+## Structure
+- project organization preference
+
+## Never
+- thing user rejected
 
 ---
-*如果某个部分为空，说明用户尚未对该项有偏好。请继续观察并填写相关信息。*
+*Last updated: YYYY-MM-DD*
+```
+
+**首次使用时：** 如果 `memory.md` 文件不存在，请创建该文件。
+
+---
+
+*如果 `memory.md` 文件为空，说明用户尚未设置任何偏好设置。请继续观察用户的操作并逐步填写相关信息。*

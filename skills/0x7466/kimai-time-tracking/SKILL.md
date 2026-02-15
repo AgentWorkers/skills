@@ -1,60 +1,60 @@
 ---
 name: kimai-time-tracking
-description: 完成 Kimai 时间跟踪 API 的集成。通过 REST API 管理时间表、客户、项目、活动、团队、发票以及数据导出功能。支持时间跟踪工作流程、报告生成及行政操作。关键词：kimai、zeiterfassung（时间跟踪）、时间表、跟踪、项目、客户、活动、发票、导出、计时器。
+description: Complete Kimai time-tracking API integration. Manage timesheets, customers, projects, activities, teams, invoices and exports via REST API. Supports time tracking workflows, reporting, and administrative operations. Keywords - kimai, zeiterfassung, timesheet, tracking, project, customer, activity, invoice, export, timer, stunden
 ---
 
-# Kimai 时间跟踪技能
+# Kimai Time Tracking Skill
 
-该技能实现了与 [Kimai](https://www.kimai.org/) 时间跟踪软件的完整 API 集成，提供了对时间表、项目、客户、活动、团队、发票和系统配置的全面控制。
+Complete API integration for [Kimai](https://www.kimai.org/) time-tracking software. Enables full control over timesheets, projects, customers, activities, teams, invoices, and system configuration.
 
-## 使用场景
+## When to use
 
-**在用户请求以下操作时激活此技能：**
-- 开始/停止/重新开始时间跟踪
-- 列出、筛选或导出时间表
-- 管理客户、项目或活动
-- 创建发票或导出数据
-- 执行管理任务（如用户管理、团队设置、费率调整）
-- 查询系统状态（版本信息、插件列表、配置设置）
+**Activate this skill when the user requests:**
+- Start/stop/restart time tracking (timers)
+- List, filter, or export timesheets
+- Manage customers, projects, or activities
+- Create invoices or export data
+- Administrative tasks (users, teams, rates)
+- Query system status (version, plugins, config)
 
-**激活触发词：**
-- “kimai”、“zeiterfassung”、“timesheet”、“timer”、“stunden”、“erfasse Zeit”、“starte Tracking”、“Projekt anlegen”、“Rechnung erstellen”
-- “为项目 X 开始跟踪”
-- “显示我上周的时间表”
-- “在 Kimai 中创建新客户”
-- “将时间表导出为 CSV 格式”
-- “列出所有活跃的时间跟踪记录”
-- “停止当前的时间跟踪”
+**Activation triggers:**
+- Keywords: "kimai", "zeiterfassung", "timesheet", "timer", "stunden", "erfasse Zeit", "starte Tracking", "Projekt anlegen", "Rechnung erstellen"
+- "Start tracking for project X"
+- "Show my timesheets from last week"
+- "Create new customer in Kimai"
+- "Export timesheets to CSV"
+- "List all active timers"
+- "Stop current time tracking"
 
-**不适用的场景：**
-- 一般性的时间查询（例如：“现在几点了？”）
-- 其他时间跟踪工具（如 Toggl、Clockify 等）
-- 与 Kimai 无关的日历/调度任务
+**Do NOT activate for:**
+- General time questions ("What time is it?")
+- Other time-tracking tools (Toggl, Clockify, etc.)
+- Calendar/scheduling without Kimai context
 
-## 环境设置
+## Environment Setup
 
-**所需环境变量：**
-- `KIMAI_BASE_URL`：Kimai 服务器的完整 URL（例如：`https://kimai.example.com`）
-- `KIMAI_API_TOKEN`：用于身份验证的令牌
+**Required Environment Variables:**
+- `KIMAI_BASE_URL` - Full URL to Kimai instance (e.g., `https://kimai.example.com`)
+- `KIMAI_API_TOKEN` - Bearer token for authentication
 
-**可选设置：**
-- `KIMAI_WORKSPACE`：导出文件的存储路径（默认为 `~/.openclaw/workspace/kimai`）
+**Optional:**
+- `KIMAI_WORKSPACE` - Path for exports/temp files (defaults to `~/.openclaw/workspace/kimai`)
 
-**根据操作类型所需的 API 权限：**
-- `view_own_timesheet`：查看/创建/编辑/删除自己的时间表
-- `view_other_timesheet`：查看其他用户的时间表
-- `view_customer`：查看/编辑/删除客户信息
-- `view_project`：查看/编辑/删除项目信息
-- `view_activity`：查看/编辑/删除活动信息
-- `view_team`：查看/编辑/创建/删除团队信息
-- `viewinvoice`：查看/管理发票信息
-- `view_user`：查看用户信息
+**API Permissions required depend on operation:**
+- `view_own_timesheet`, `create_own_timesheet`, `edit_own_timesheet`, `delete_own_timesheet`
+- `view_other_timesheet` (for viewing other users' entries)
+- `view_customer`, `edit_customer`, `delete_customer`
+- `view_project`, `edit_project`, `delete_project`
+- `view_activity`, `edit_activity`, `delete_activity`
+- `view_team`, `edit_team`, `create_team`, `delete_team`
+- `view_invoice` (for invoice operations)
+- `view_user` (for user management)
 
-**兼容性：** 需要 Kimai 2.x 版本，并且启用了 REST API。需要互联网连接。支持 Linux 和 macOS 系统。
+**Compatibility:** Requires Kimai 2.x with REST API enabled. Internet access required. Linux/macOS supported.
 
-## 工作流程
+## Workflow
 
-### 1. 快速时间跟踪
+### 1. Quick Time Tracking
 
 ```bash
 # List recent activities (to find project/activity IDs)
@@ -70,7 +70,7 @@ description: 完成 Kimai 时间跟踪 API 的集成。通过 REST API 管理时
 ./scripts/kimai_cli.py timesheets stop --id 123
 ```
 
-### 2. 数据管理工作流程
+### 2. Data Management Workflow
 
 ```bash
 # Create customer → Project → Activity hierarchy
@@ -82,7 +82,7 @@ description: 完成 Kimai 时间跟踪 API 的集成。通过 REST API 管理时
 ./scripts/kimai_cli.py timesheets list --customer 1 --begin "2024-01-01T00:00:00" --exported 0
 ```
 
-### 3. 导出/发票管理工作流程
+### 3. Export/Invoice Workflow
 
 ```bash
 # Mark timesheets as exported (locks them)
@@ -92,119 +92,123 @@ description: 完成 Kimai 时间跟踪 API 的集成。通过 REST API 管理时
 ./scripts/kimai_cli.py invoices list --status pending --begin 2024-01-01T00:00:00
 ```
 
-## CLI 工具参考
+## CLI Tool Reference
 
-使用 `scripts/kimai_cli.py` 执行所有操作。该工具的命令结构遵循 API 接口的规范：
+Use `scripts/kimai_cli.py` for all operations. Structure follows API endpoints:
 
-### 时间表 (`timesheets`)
-- `list`：列出时间表条目（支持分页和筛选：用户、客户、项目、活动、标签、日期范围、导出状态）
-- `get <id>`：获取单个时间表条目
-- `create`：创建新的时间表条目或启动时间跟踪
-- `update <id>`：更新现有时间表条目
-- `delete <id>`：删除时间表条目（操作具有破坏性，需要确认）
-- `stop <id>`：停止正在运行的时间跟踪
-- `restart <id>`：重新启动已完成的时间跟踪
-- `duplicate <id>`：复制时间表条目（会重置导出状态）
-- `active`：列出当前正在运行的时间跟踪记录
-- `recent`：列出最近的活动记录
-- `export <id>`：切换导出状态（启用/禁用导出）
+### Timesheets (`timesheets`)
+- `list` - List entries (supports pagination, filters: user, customer, project, activity, tags, date range, exported status)
+- `get <id>` - Fetch single entry
+- `create` - Create manual entry or start timer (omit --end for active tracking)
+- `update <id>` - Patch existing entry
+- `delete <id>` - **Requires confirmation** (destructive)
+- `stop <id>` - Stop active timer
+- `restart <id>` - Restart finished entry (creates new)
+- `duplicate <id>` - Copy entry (resets export status)
+- `active` - List currently running timers
+- `recent` - Recent unique working sets (last activity per project/activity combination)
+- `export <id>` - Toggle export/lock status
 
-### 客户 (`customers`)
-- `list`：列出所有客户（可筛选显示的客户）
-- `get <id>`：获取客户详细信息
-- `create`：创建新客户
-- `update <id>`：更新客户信息
-- `delete <id>`：删除客户信息（操作具有破坏性，会影响到关联的项目和活动）
-- `meta <id>`：更新客户的自定义字段
-- `rates <id>`：管理客户的费率信息
+### Customers (`customers`)
+- `list` - List customers (filter: visible, term)
+- `get <id>` - Fetch customer details
+- `create` - Create new customer
+- `update <id>` - Update customer
+- `delete <id>` - **Requires confirmation** (cascades to projects/activities/timesheets)
+- `meta <id>` - Update custom fields
+- `rates <id>` - Manage customer-specific rates
 
-### 项目 (`projects)`
-- `list`：列出所有项目（可筛选客户和日期范围）
-- `get <id>`：获取项目详细信息
-- `create`：创建新项目（需要指定客户 ID）
-- `update <id>`：更新项目信息
-- `delete <id>`：删除项目信息（操作具有破坏性，会影响到关联的活动和时间表）
-- `rates <id>`：管理项目的费率信息
+### Projects (`projects`)
+- `list` - List projects (filter: customer, visible, date range)
+- `get <id>` - Fetch project
+- `create` - Create project (requires customer ID)
+- `update <id>` - Update project
+- `delete <id>` - **Requires confirmation** (cascades to activities/timesheets)
+- `rates <id>` - Manage project rates
 
-### 活动 (`activities`)
-- `list`：列出所有活动（可筛选项目）
-- `get <id>`：获取活动详细信息
-- `create`：创建新活动（可以是全局的或特定于项目的）
-- `update <id>`：更新活动信息
-- `delete <id>`：删除活动信息（操作具有破坏性，会影响到关联的时间表）
-- `rates <id>`：管理活动的费率信息
+### Activities (`activities`)
+- `list` - List activities (filter: project, visible, global only)
+- `get <id>` - Fetch activity
+- `create` - Create activity (can be global or project-specific)
+- `update <id>` - Update activity
+- `delete <id>` - **Requires confirmation** (cascades to timesheets)
+- `rates <id>` - Manage activity rates
 
-### 团队 (`teams`)
-- `list`、`get`、`create`、`update`、`delete`：基本团队管理操作
-- `member-add <team-id> <user-id>`：添加团队成员
-- `member-remove <team-id> <user-id>`：移除团队成员
-- `grant-customer <team-id> <customer-id>`：授予客户团队访问权限
-- `grant-project <team-id> <project-id>`：授予项目团队访问权限
-- `grant-activity <team-id> <activity-id>`：授予活动团队访问权限
+### Teams (`teams`)
+- `list`, `get`, `create`, `update`, `delete`
+- `member-add <team-id> <user-id>` - Add team member
+- `member-remove <team-id> <user-id>` - Remove member
+- `grant-customer <team-id> <customer-id>` - Grant customer access
+- `grant-project <team-id> <project-id>` - Grant project access
+- `grant-activity <team-id> <activity-id>` - Grant activity access
 
-### 用户 (`users`)
-- `list`：列出所有用户（需要 `view_user` 权限）
-- `me`：显示当前用户信息
-- `get <id>`：获取用户详细信息
-- `create`：创建新用户（仅限管理员）
-- `update <id>`：更新用户信息
+### Users (`users`)
+- `list` - List users (requires view_user permission)
+- `me` - Current user info
+- `get <id>` - User details
+- `create` - Create user (admin)
+- `update <id>` - Update user
 
-### 发票 (`invoices)`
-- `list`：列出所有发票（可筛选日期范围和客户）
-- `get <id>`：获取发票详细信息
+### Invoices (`invoices`)
+- `list` - List invoices (filter: date range, customer, status)
+- `get <id>` - Invoice details
 
-### 系统 (`system`)
-- `ping`：测试系统连接
-- `version`：显示 Kimai 的版本信息
-- `plugins`：列出已安装的插件
-- `config`：配置时间表显示样式
-- `colors`：设置时间表的颜色代码
+### System (`system`)
+- `ping` - Test connectivity
+- `version` - Kimai version info
+- `plugins` - Installed plugins
+- `config` - Timesheet configuration
+- `colors` - Color codes
 
-## 安全性与注意事项
+## Safety & Boundaries
 
-**⚠️ 破坏性操作：**
-- 对客户、项目、活动、时间表或标签的删除操作 **必须得到用户的明确确认**。
-- 删除客户会影响到所有关联的项目、活动和时间表。
-- 删除项目会影响到关联的活动和时间表。
-- CLI 会显示受影响数据的预览，并要求用户确认是否执行删除操作。
+**⚠️ DESTRUCTIVE OPERATIONS**
+- `delete` operations on customers, projects, activities, timesheets, teams, or tags **require explicit user confirmation**.
+- Deleting customers cascades to all linked projects, activities, and timesheets [1].
+- Deleting projects cascades to activities and timesheets [1].
+- The CLI will show a preview of affected data and require "yes" confirmation.
 
-**API 安全性：**
-- API 令牌通过 `Authorization: Bearer` 头部传递。
-- 令牌不会被记录或存储在 CLI 输出中。
-- 可使用 `--dry-run` 标志进行测试（模拟 API 调用，不会实际执行操作）。
+**API Security:**
+- API token is passed via `Authorization: Bearer` header [1].
+- Token is never logged or stored in CLI output.
+- Use `--dry-run` flag for testing (simulates API calls without executing).
 
-**速率限制与分页：**
-- API 返回分页结果（默认每页 50 条记录）。
-- CLI 会自动处理 `list` 命令的分页（可以获取所有页面或根据 `--limit` 参数进行分页）。
-- 可使用 `--page` 和 `--size` 参数手动控制分页。
+**Rate Limiting & Pagination:**
+- API returns paginated results (default 50 items) [1].
+- CLI auto-handles pagination for `list` commands (fetches all pages or respects `--limit`).
+- Use `--page` and `--size` for manual pagination control.
 
-**数据隐私：**
-- 时间表数据可能包含敏感信息。
-- 导出文件会保存在具有受限权限的工作空间文件夹中（默认为 `KIMAI_WORKSPACE` 或 `~/.openclaw/workspace/kimai`）。
-- 分享调试输出时，会隐藏个人数据（如电子邮件和姓名）。
+**Data Privacy:**
+- Timesheet data may contain sensitive information.
+- Export files are saved to workspace with restricted permissions (600).
+- Redact personal data (emails, names) when sharing debug output.
 
-## 输入/输出规范
+**Workspace Safety:**
+- All file exports (CSV, JSON) default to `KIMAI_WORKSPACE` or `~/.openclaw/workspace/kimai`.
+- Never write to system directories outside workspace without explicit confirmation.
 
-**输入：**
-- 实体 ID（整数）
-- ISO 8601 格式的日期时间字符串（格式：YYYY-MM-DDTHH:mm:ss）
-- 用于创建/更新操作的 JSON 数据（通过 `--json` 文件或 CLI 参数传递）
-- 筛选参数（客户 ID、项目 ID、活动 ID、日期范围、可见性设置）
+## Input/Output Specifications
 
-**输出：**
-- JSON 格式（默认格式，便于管道传输）
-- 表格格式（使用 `--format table` 参数）
-- CSV 格式（使用 `--format csv` 参数）
-- 输出代码：0（成功）、1（API 错误）、2（验证错误）、3（用户取消操作）
+**Inputs:**
+- Entity IDs (integers)
+- ISO 8601 datetime strings (YYYY-MM-DDTHH:mm:ss)
+- JSON data for create/update operations (via --json file or CLI args)
+- Filter parameters (customer, project, activity IDs, date ranges, visibility)
 
-**成功标准：**
-- HTTP 响应码 200/201 表示操作成功
-- 输出的 JSON 数据符合 API 的结构规范
-- 导出文件会保存在工作空间中，并包含正确的记录数量
+**Outputs:**
+- JSON (default, pipe-friendly)
+- Table format (`--format table` for human readability)
+- CSV (`--format csv` for exports)
+- Exit codes: 0 (success), 1 (API error), 2 (validation error), 3 (cancelled by user)
 
-## 示例
+**Success Criteria:**
+- HTTP 200/201 for successful operations
+- Valid JSON response structure matching API schemas [1]
+- For exports: File created in workspace with expected record count
 
-### 开始时间跟踪并添加描述
+## Examples
+
+### Start tracking with description
 
 ```bash
 ./scripts/kimai_cli.py timesheets create \
@@ -214,7 +218,7 @@ description: 完成 Kimai 时间跟踪 API 的集成。通过 REST API 管理时
   --tags "meeting,urgent"
 ```
 
-### 列出未导出的时间记录并导出
+### List and export non-exported hours
 
 ```bash
 # Find billable hours not yet exported
@@ -226,7 +230,7 @@ description: 完成 Kimai 时间跟踪 API 的集成。通过 REST API 管理时
   --format csv > january_hours.csv
 ```
 
-### 更新自定义字段（元数据）
+### Update custom fields (meta)
 
 ```bash
 ./scripts/kimai_cli.py customers meta 42 \
@@ -234,38 +238,39 @@ description: 完成 Kimai 时间跟踪 API 的集成。通过 REST API 管理时
   --value "PO-2024-001"
 ```
 
-### 创建团队并分配资源
+### Create team and assign resources
 
 ```bash
 ./scripts/kimai_cli.py teams create --name "Development Team" --members '[{"user": 1, "teamlead": true}]'
 ./scripts/kimai_cli.py teams grant-project 1 5
 ```
 
-## 错误处理
+## Error Handling
 
-**常见的 HTTP 状态码：**
-- 200：操作成功
-- 201：创建成功
-- 204：无内容（删除成功）
-- 400：请求错误（参数不完整）
-- 401：未经授权（令牌无效或过期）
-- 403：权限不足
-- 404：找不到资源（ID 错误）
-- 409：冲突（配置不允许的情况下时间表重复）
+**Common HTTP codes:**
+- `200` - Success
+- `201` - Created
+- `204` - No content (successful delete)
+- `400` - Bad request (validation error, missing fields)
+- `401` - Unauthorized (invalid/expired token)
+- `403` - Forbidden (insufficient permissions)
+- `404` - Not found (invalid ID)
+- `409` - Conflict (overlapping timesheet if not allowed by config)
 
-**CLI 行为：**
-- 在调用 API 之前会验证必要的参数。
-- 会以友好的方式显示验证错误信息，并提示用户如何修复问题（例如：“您是想使用 `PATCH` 而不是 `DELETE` 吗？可以尝试将 `visible` 设置为 `false` 来隐藏记录”）
+**CLI behavior:**
+- Validates required fields before API call (e.g., project+activity for timesheets [1])
+- Pretty-prints validation errors from API
+- Suggests fixes (e.g., "Did you mean to use 'PATCH' instead of DELETE? Try setting visible=false to hide instead of delete")
 
-## 验证
+## Validation
 
-使用 Openclaw 的技能验证工具来验证此技能的功能：
+Validate this skill using the Openclaw skills validator:
 
 ```bash
 skills-ref validate ./kimai-time-tracking
 ```
 
-**测试 API 连接：**
+Test API connectivity:
 
 ```bash
 export KIMAI_BASE_URL="https://your-kimai.example.com"
@@ -273,7 +278,8 @@ export KIMAI_API_TOKEN="your-api-token"
 ./kimai-time-tracking/scripts/kimai_cli.py system ping
 ```
 
-## 参考资料**
-- Kimai REST API 文档：https://www.kimai.org/documentation/rest-api.html
-- 分页指南：https://www.kimai.org/documentation/api-pagination.html
-- API 规范：`references/api-reference.json`（完整的 OpenAPI 架构）
+## References
+
+- Kimai REST API Docs: https://www.kimai.org/documentation/rest-api.html
+- Pagination Guide: https://www.kimai.org/documentation/api-pagination.html
+- API Spec: `references/api-reference.json` (complete OpenAPI schema)

@@ -1,27 +1,35 @@
 ---
 name: settlement-witness
-description: "OpenClaw 技能：从公共的 SettlementWitness HTTPS 端点获取 replay-stable 的 PASS/FAIL 结果。该操作是无状态的（stateless）、确定性的（deterministic），并且结果会经过签名处理。"
+description: "OpenClaw 技能：从 SettlementWitness 生成确定性的、带有签名的 SAR v0.1 收据。该功能是无状态的（即不保留会话状态），且具有确定性（即每次调用都能产生相同的结果）。"
 ---
 
 # SettlementWitness（OpenClaw技能）
 
-该技能会调用公开的SettlementWitness HTTPS接口。无需使用任何本地服务。
+使用SettlementWitness生成用于代理结算的确定性收据（SAR v0.1）。
 
-## 功能说明
-当任务完成后，且需要在结算前获取交付证明时，可以调用SettlementWitness来获取一个具有 replay-stability（可重放稳定性）的收据。
+## 推荐使用方式（MCP - 首选）
+POST https://defaultverifier.com/mcp  
+健康检查：GET https://defaultverifier.com/mcp-healthz  
 
-SettlementWitness不负责评估任务的质量或解决争议，它仅根据预先定义的规则检查提供的输出是否与任务规范（spec）相匹配。
+工具名称：settlement_witness（位于tools/call目录下）  
 
-## 标准接口地址
-- POST: https://defaultverifier.com/settlement-witness
-- GET: https://defaultverifier.com/manifest
+MCP端点会直接返回SettlementWitness收据的JSON格式数据。这是推荐的集成方式。  
 
-## 必需输入参数
-- task_id（字符串）：任务ID
-- spec（对象）：任务规范
-- output（对象）：任务输出结果
+## 直接使用REST接口的替代方案  
+POST https://defaultverifier.com/settlement-witness （推荐，无需在路径末尾添加斜杠）  
+POST https://defaultverifier.com/settlement-witness/ （ également accepté；会重定向）  
+GET https://defaultverifier.com/settlement-witness （返回JSON格式的帮助信息）  
 
-## 示例请求
+## 验证规范  
+规范文档：https://defaultverifier.com/spec/sar-v0.1  
+公钥：https://defaultverifier.com/.well-known/sar-keys.json  
+
+## 必需输入参数  
+- task_id（字符串）  
+- spec（对象）  
+- output（对象）  
+
+## 示例REST请求  
 ```json
 {
   "task_id": "example-002",
@@ -30,15 +38,13 @@ SettlementWitness不负责评估任务的质量或解决争议，它仅根据预
 }
 ```
 
-## 结果解析
-- 如果 `verifier_response.verdict` 的值为 `PASS`，则表示任务已完成且验证通过。
-- 如果 `verifier_response.verdict` 的值为 `FAIL`，则表示任务未通过验证，不能自动进行结算。
-- `receipt_id` 是用于存储、记录或分享的稳定标识符。
+## 结果解释  
+- PASS：验证成功  
+- FAIL：无法自动完成结算  
+- INDETERMINATE：需要重试或升级处理  
+- receipt_id：收据的唯一标识符  
+- reason_code：失败的具体原因（例如：SPEC_MISMATCH）  
 
-## 安全注意事项
-- 请勿在任务规范（spec）或输出结果（output）中包含任何敏感信息（如私钥、API密钥）。
-- 请确保任务规范和输出结果尽可能简洁且具有确定性（使用哈希值或唯一标识符更为理想）。
-
-## 安装方法（适用于OpenClaw用户）
-将以下文件夹复制到您的OpenClaw技能目录中：
-`settlement-witness/SKILL.md`
+## 安全提示  
+- 请勿在spec或output参数中传输任何敏感信息。  
+- 确保spec和output的数据具有确定性（即每次请求产生的结果都应相同）。

@@ -1,17 +1,17 @@
 ---
 name: nofx
-description: NOFX AI Trading OS集成：提供加密货币市场数据、AI交易信号、策略管理、交易员控制以及自动化报告功能。适用于使用NOFX平台（nofxai.com, nofxos.ai）进行加密货币交易、市场分析、AI500/AI300交易信号处理、资金流追踪、保证金监控、策略制定、交易员管理、回测等场景。
+description: NOFX AI Trading OS集成：支持获取加密货币市场数据、AI交易信号、策略管理、交易员控制以及自动化报告功能。适用于使用NOFX平台（nofxai.com, nofxos.ai）进行加密货币交易、市场分析、AI500/AI300交易信号生成、资金流向追踪、保证金（OI）监控、策略创建、交易员管理、回测等操作。
 ---
 
 # NOFX AI交易技能
 
-本技能可与开源的AI驱动的加密货币交易操作系统NOFX集成。
+该技能可与开源的AI驱动的加密货币交易操作系统NOFX集成。
 
 ## 快速参考
 
 | 资源 | URL |
 |----------|-----|
-| 网页仪表板 | https://nofxai.com |
+| 网页仪表盘 | https://nofxai.com |
 | 数据API | https://nofxos.ai |
 | API文档 | https://nofxos.ai/api-docs |
 | GitHub | https://github.com/NoFxAiOS/nofx |
@@ -23,7 +23,7 @@ description: NOFX AI Trading OS集成：提供加密货币市场数据、AI交�
 - Windows安装（Docker Desktop / WSL2）
 - Railway云平台部署
 - 开发者手动安装
-- 使用HTTPS进行服务器部署
+- 带有HTTPS的服务器部署
 
 ## 支持的交易所
 
@@ -74,7 +74,7 @@ curl "https://nofxos.ai/api/netflow/top-ranking?auth=$KEY&limit=10&duration=1h&t
 curl "https://nofxos.ai/api/netflow/low-ranking?auth=$KEY&limit=10&duration=1h&type=institution"
 ```
 
-### 开仓利息（Open Interest）
+### 开仓量（OI）
 
 ```bash
 # OI increase ranking
@@ -117,7 +117,7 @@ curl "https://nofxos.ai/api/heatmap/future/{symbol}?auth=$KEY"
 
 ## 2. 策略管理（浏览器）
 
-在https://nofxai.com/strategy使用浏览器自动化工具进行操作：
+在https://nofxai.com/strategy使用浏览器自动化工具进行策略管理：
 
 ### 策略结构
 
@@ -165,14 +165,14 @@ curl "https://nofxos.ai/api/heatmap/future/{symbol}?auth=$KEY"
 
 ## 3. 交易者管理（浏览器）
 
-在https://nofxai.com/traders使用浏览器自动化工具进行操作：
+在https://nofxai.com/traders使用浏览器自动化工具进行交易者管理：
 
 ### 操作
 
-- **列表**：导航至/traders页面，查看交易者列表
-- **创建**：点击“Create Trader”，选择模型/交易所/策略
-- **开始/停止**：点击交易者卡片上的“Start/Stop”按钮
-- **查看**：点击“View”查看详细信息和交易记录
+- **列表**：导航至/traders，查看交易者列表
+- **创建**：点击“创建交易者”，选择模型/交易所/策略
+- **开始/停止**：点击交易者卡片上的“开始/停止”按钮
+- **查看**：点击“查看”以查看详细信息和交易记录
 
 ### 交易者配置
 
@@ -182,37 +182,37 @@ Exchange: binance|bybit|okx|bitget|kucoin|gate|hyperliquid|aster|lighter
 Strategy: Select from strategy list
 ```
 
-## 4. 仪表板（浏览器）
+## 4. 仪表盘（浏览器）
 
-导航至https://nofxai.com/dashboard
+导航至https://nofxai.com/dashboard：
 
 ### 可用数据
 
-- 账户权益和余额
+- 账户资产和余额
 - 总盈亏（绝对值和百分比）
 - 当前持仓
-- 权益曲线图
+- 资产曲线图
 - 交易历史
 - AI决策日志
 
 ## 5. AI辩论（浏览器）
 
-导航至https://nofxai.com/debate
+导航至https://nofxai.com/debate：
 
 ### 创建辩论
 
-1. 点击“New Debate”
+1. 点击“新建辩论”
 2. 选择交易币种
 3. 选择AI模型和角色：
-   - 多头（Bull）：寻找多头交易机会
-   - 空头（Bear）：寻找空头交易机会
-   - 分析师（Analyst）：提供中性分析
-4. 进行辩论轮次
-5. 获取共识推荐
+   - 多头：寻找多头机会
+   - 空头：寻找空头机会
+   - 分析师：提供中性分析
+4. 运行辩论轮次
+5. 获取共识建议
 
 ## 6. 回测（浏览器）
 
-导航至https://nofxai.com/backtest
+导航至https://nofxai.com/backtest：
 
 ### 运行回测
 
@@ -228,7 +228,7 @@ Strategy: Select from strategy list
 
 ```json
 {
-  "name": "NOFX市场行情汇报",
+  "name": "NOFX Market Report",
   "schedule": {"kind": "cron", "expr": "*/30 * * * *"},
   "sessionTarget": "isolated",
   "payload": {
@@ -243,11 +243,11 @@ Strategy: Select from strategy list
 
 ### 报告内容
 
-- 🤖 AI500信号（币种 + 评分 + 盈利情况）
-- 💰 机构资金流动排名前十
-- 🚀 价格涨幅排名前十
-- 📈 开仓利息增加排名前十
-- 📉 开仓利息减少排名前十
+- 🤖 AI500信号（币种 + 评分 + 盈利）
+- 💰 机构资金流向TOP10
+- 🚀 价格涨幅TOP10
+- 📈 开仓量增加TOP10
+- 📉 开仓量减少TOP10
 - ⚠️ 价格下跌警报
 
 ## 8. 常见工作流程
@@ -255,8 +255,8 @@ Strategy: Select from strategy list
 ### 每日市场检查
 
 1. 获取AI500/AI300信号
-2. 检查机构资金流动
-3. 监控开仓利息变化
+2. 检查机构资金流向
+3. 监控开仓量变化
 4. 识别交易机会
 
 ### 策略开发
@@ -269,10 +269,10 @@ Strategy: Select from strategy list
 
 ### 风险监控
 
-1. 查看仪表板上的盈亏情况
+1. 查看仪表盘上的盈亏情况
 2. 审查持仓情况
 3. 监控资金回撤情况
-4. 根据需要调整或停止交易
+4. 根据需要调整或停止交易策略
 
 ## API响应示例
 

@@ -1,0 +1,11 @@
+{
+  "owner": "547895019",
+  "slug": "qwen-video",
+  "displayName": "Qwen Video (Wan)",
+  "latest": {
+    "version": "1.0.0",
+    "publishedAt": 1771129529593,
+    "commit": "https://github.com/openclaw/skills/commit/1e2132b512c0e3680a2aa3017568738ad00331a0"
+  },
+  "history": []
+}

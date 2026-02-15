@@ -70,8 +70,12 @@ async function fetchMessages(token, chatId, hours = 24) {
                 if (parseInt(item.create_time) < cutoff) break;
                 messages.push(item);
             }
+        } else if (data.code !== 0) {
+            console.error(`[Fetch Error] Chat ${chatId}: ${data.msg} (code ${data.code})`);
         }
-    } catch (e) {}
+    } catch (e) {
+        console.error(`[Network Error] Chat ${chatId}: ${e.message}`);
+    }
     return messages;
 }
 
